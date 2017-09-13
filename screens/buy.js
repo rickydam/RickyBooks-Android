@@ -2,12 +2,12 @@ import React from 'react';
 import {Text, View, Image} from 'react-native';
 const styles = require('../styles.js');
 
-class HomeScreen extends React.Component {
+class BuyScreen extends React.Component {
   static navigationOptions = {
-    tabBarLabel: 'Home',
+    tabBarLabel: 'Buy',
     tabBarIcon: ({tintColor}) => (
       <Image
-        source = {require('./icons/home.png')}
+        source = {require('./icons/buy.png')}
         style = {[styles.icon, {tintColor: tintColor}]}
       />
     ),
@@ -16,10 +16,10 @@ class HomeScreen extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text>This is the home screen.</Text>
+        <Text>This is the buy screen.</Text>
       </View>
     );
   }
 }
 
-module.exports = HomeScreen;
+module.exports = BuyScreen;

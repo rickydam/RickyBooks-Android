@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
+const ScreenHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create ({
   container: {
@@ -7,10 +9,14 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  appNavigator: {
-    paddingTop: 12,
-    height: 70,
+  tabContainer: {
+    height: ScreenHeight,
     backgroundColor: 'white',
   },
+  icon: {
+    width: 26,
+    height: 26,
+  },
 });
+
 module.exports = styles;
