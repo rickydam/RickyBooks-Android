@@ -1,5 +1,14 @@
 {
   "expo": {
-    "sdkVersion": "20.0.0"
+    "name": "Bookstore",
+    "version": "1.0.0",
+    "slug": "bookstore",
+    "sdkVersion": "20.0.0",
+    "android": {
+      "package": "com.RickyDam.bookstore"
+    },
+    "ios": {
+      "bundleIdentifier": "com.RickyDam.bookstore"
+    }
   }
 }
