@@ -1,16 +1,17 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 const ScreenHeight = Dimensions.get("window").height;
+const ScreenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create ({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 10,
+    paddingBottom: 20,
   },
   tabContainer: {
-    height: ScreenHeight,
+    height: ScreenHeight-20,
     backgroundColor: 'white',
   },
   icon: {
@@ -18,12 +19,12 @@ const styles = StyleSheet.create ({
     height: 26,
   },
   input: {
-    width: 250,
+    width: ScreenWidth*0.70,
     height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
     margin: 5,
-    textAlign: 'center',
+    paddingLeft: 10,
   },
   title: {
     fontWeight: 'bold',
@@ -31,7 +32,7 @@ const styles = StyleSheet.create ({
     margin: 10,
   },
   textbookCondition: {
-    width: 250,
+    width: ScreenWidth*0.70,
     height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
@@ -39,12 +40,11 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
   },
   textbookConditionPicker: {
-    width: 110,
+    width: ScreenWidth*0.68,
     height: 40,
-    marginLeft: 30,
   },
   textbookType: {
-    width: 250,
+    width: ScreenWidth*0.70,
     height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
@@ -52,9 +52,8 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
   },
   textbookTypePicker: {
-    width: 120,
+    width: ScreenWidth*0.68,
     height: 40,
-    marginLeft: 25,
     alignItems: 'center',
   },
   submitButton: {
@@ -69,6 +68,30 @@ const styles = StyleSheet.create ({
   submitButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  uploadButton: {
+    width: 200,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  uploadButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  textbookImage: {
+    height: 200,
+    width: 200,
+  },
+  textbookImageBlank: {
+    height: 1,
+    width: 200,
+  },
+  textbookImageContainer: {
+    margin: 10,
   },
 });
 

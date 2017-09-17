@@ -1,7 +1,10 @@
 import React from 'react';
-import {Text, View, Image, TextInput, Picker, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TextInput, Picker, TouchableOpacity, ScrollView} from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
 const styles = require('../styles.js');
+const sellIcon = require('../images//icons/sell.png');
+const placeholderImg = require('../images/placeholder.png')
 
 class SellScreen extends React.Component {
   constructor(props) {
@@ -9,13 +12,30 @@ class SellScreen extends React.Component {
     this.state = {
       textbookType: '',
       textbookCondition: '',
+      textbookImage: '',
     }
+    this.uploadTextbookImage = this.uploadTextbookImage.bind(this);
+  }
+
+  uploadTextbookImage() {
+    var _this = this;
+    var ImagePicker = require('react-native-image-picker');
+    var options = {
+      title: 'Textbook Image',
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      let source = {uri: response.uri};
+      this.setState({
+        textbookImage: source
+      });
+    });
   }
   static navigationOptions = {
     tabBarLabel: 'Sell',
     tabBarIcon: ({tintColor}) => (
       <Image
-        source = {require('./icons/sell.png')}
+        source = {sellIcon}
         style = {[styles.icon, {tintColor: tintColor}]}
       />
     ),
@@ -23,9 +43,27 @@ class SellScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
 
         <Text style={styles.title}>Sell a textbook!</Text>
+
+        <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
+          <View style={styles.uploadButton}>
+            <Text style={styles.uploadButtonText}>UPLOAD TEXTBOOK IMAGE</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.textbookImageContainer}>
+          <Image
+            source={
+              this.state.textbookImage != '' ?
+              this.state.textbookImage :
+              placeholderImg}
+            style={
+              this.state.textbookImage != '' ?
+              styles.textbookImage :
+              styles.textbookImageBlank} />
+        </View>
 
         <TextInput
           style={styles.input}
@@ -51,7 +89,7 @@ class SellScreen extends React.Component {
             itemTextStyle={styles.testPickerItem}
             selectedValue={this.state.textbookCondition}
             onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}>
-            <Picker.Item label="Condition" value="Condition" />
+            <Picker.Item label="Condition" value="" />
             <Picker.Item label="Like New" value="Like New" />
             <Picker.Item label="Good" value="Good" />
             <Picker.Item label="Okay" value="Okay" />
@@ -64,7 +102,7 @@ class SellScreen extends React.Component {
             itemStyle={styles.testPickerItem}
             selectedValue={this.state.textbookType}
             onValueChange={(itemValue, itemIndex) => this.setState({textbookType: itemValue})}>
-            <Picker.Item label="Type" value="Type" />
+            <Picker.Item label="Type" value="" />
             <Picker.Item label="Paperback" value="Paperback" />
             <Picker.Item label="Hardcover" value="Hardcover" />
             <Picker.Item label="Looseleaf" value="Looseleaf" />
@@ -78,19 +116,25 @@ class SellScreen extends React.Component {
         />
 
         <View style={styles.submitContainer}>
-          <TouchableOpacity onPress={theFunction}>
+          <TouchableOpacity onPress={() => checkConditionValue(this.state.textbookCondition)}>
             <View style={styles.submitButton}>
               <Text style={styles.submitButtonText}>SUBMIT</Text>
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+
+      </ScrollView>
     );
   }
 }
 
-function theFunction() {
-  alert("Textbook listing has been successfully posted!");
+function checkConditionValue(textbookCondition) {
+  if(textbookCondition == '') {
+    alert("Please select a textbook condition.");
+  }
+  else {
+    alert(textbookCondition);
+  }
 }
 
 module.exports = SellScreen;

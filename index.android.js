@@ -1,5 +1,5 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {Component} from 'react';
+import {AppRegistry, View} from 'react-native';
 import {TabNavigator} from 'react-navigation';
 
 const styles = require('./styles.js');
@@ -9,9 +9,10 @@ const SellScreen = require('./screens/sell.js');
 const ProfileScreen = require('./screens/profile.js');
 
 const AppNavigator = TabNavigator ({
+  TheSellScreen: {screen: SellScreen},
   TheHomeScreen: {screen: HomeScreen},
   TheBuyScreen: {screen: BuyScreen},
-  TheSellScreen: {screen: SellScreen},
+
   TheProfileScreen: {screen: ProfileScreen},
 }, {
   tabBarPosition: 'bottom',
@@ -35,7 +36,7 @@ const AppNavigator = TabNavigator ({
   },
 });
 
-export default class App extends React.Component {
+export default class RickyBooks extends Component {
   render() {
     return (
       <View style={styles.tabContainer}>
@@ -44,3 +45,5 @@ export default class App extends React.Component {
     );
   }
 }
+
+AppRegistry.registerComponent('RickyBooks', () => RickyBooks);

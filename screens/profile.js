@@ -1,13 +1,15 @@
 import React from 'react';
 import {Text, View, Image} from 'react-native';
+
 const styles = require('../styles.js');
+const profileIcon = require('../images/icons/profile.png');
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Profile',
     tabBarIcon: ({tintColor}) => (
       <Image
-        source = {require('./icons/profile.png')}
+        source = {profileIcon}
         style = {[styles.icon, {tintColor: tintColor}]}
       />
     ),

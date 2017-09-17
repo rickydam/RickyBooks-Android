@@ -1,13 +1,15 @@
 import React from 'react';
 import {Text, View, Image} from 'react-native';
+
 const styles = require('../styles.js');
+const homeIcon = require('../images/icons/home.png')
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
     tabBarIcon: ({tintColor}) => (
       <Image
-        source = {require('./icons/home.png')}
+        source = {homeIcon}
         style = {[styles.icon, {tintColor: tintColor}]}
       />
     ),

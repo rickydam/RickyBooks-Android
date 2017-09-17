@@ -1,13 +1,15 @@
 import React from 'react';
 import {Text, View, Image} from 'react-native';
+
 const styles = require('../styles.js');
+const buyIcon = require('../images/icons/buy.png');
 
 class BuyScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Buy',
     tabBarIcon: ({tintColor}) => (
       <Image
-        source = {require('./icons/buy.png')}
+        source = {buyIcon}
         style = {[styles.icon, {tintColor: tintColor}]}
       />
     ),
