@@ -3,21 +3,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
 
-const styles = StyleSheet.create ({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    marginTop: 10,
-    paddingBottom: 20,
-  },
-  tabContainer: {
-    height: ScreenHeight-20,
-    backgroundColor: 'white',
-  },
-  icon: {
-    width: 26,
-    height: 26,
-  },
+const sellStyles = StyleSheet.create ({
   input: {
     width: ScreenWidth*0.70,
     height: 40,
@@ -25,11 +11,7 @@ const styles = StyleSheet.create ({
     borderColor: 'lightgray',
     margin: 5,
     paddingLeft: 10,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 25,
-    margin: 10,
+    fontSize: 16,
   },
   textbookCondition: {
     width: ScreenWidth*0.70,
@@ -42,6 +24,7 @@ const styles = StyleSheet.create ({
   textbookConditionPicker: {
     width: ScreenWidth*0.68,
     height: 40,
+    color: 'gray',
   },
   textbookType: {
     width: ScreenWidth*0.70,
@@ -54,7 +37,7 @@ const styles = StyleSheet.create ({
   textbookTypePicker: {
     width: ScreenWidth*0.68,
     height: 40,
-    alignItems: 'center',
+    color: 'gray',
   },
   submitButton: {
     width: 70,
@@ -95,4 +78,4 @@ const styles = StyleSheet.create ({
   },
 });
 
-module.exports = styles;
+module.exports = sellStyles;

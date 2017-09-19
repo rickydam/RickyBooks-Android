@@ -2,7 +2,8 @@ import React from 'react';
 import {Text, View, Image, TextInput, Picker, TouchableOpacity, ScrollView} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
-const styles = require('../styles.js');
+const mainStyles = require('../styles/mainStyles.js');
+const sellStyles = require('../styles/sellStyles.js');
 const sellIcon = require('../images//icons/sell.png');
 const placeholderImg = require('../images/placeholder.png')
 
@@ -36,24 +37,24 @@ class SellScreen extends React.Component {
     tabBarIcon: ({tintColor}) => (
       <Image
         source = {sellIcon}
-        style = {[styles.icon, {tintColor: tintColor}]}
+        style = {[mainStyles.icon, {tintColor: tintColor}]}
       />
     ),
   };
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={mainStyles.container}>
 
-        <Text style={styles.title}>Sell a textbook!</Text>
+        <Text style={mainStyles.title}>Sell a textbook!</Text>
 
         <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
-          <View style={styles.uploadButton}>
-            <Text style={styles.uploadButtonText}>UPLOAD TEXTBOOK IMAGE</Text>
+          <View style={sellStyles.uploadButton}>
+            <Text style={sellStyles.uploadButtonText}>UPLOAD TEXTBOOK IMAGE</Text>
           </View>
         </TouchableOpacity>
 
-        <View style={styles.textbookImageContainer}>
+        <View style={sellStyles.textbookImageContainer}>
           <Image
             source={
               this.state.textbookImage != '' ?
@@ -61,32 +62,32 @@ class SellScreen extends React.Component {
               placeholderImg}
             style={
               this.state.textbookImage != '' ?
-              styles.textbookImage :
-              styles.textbookImageBlank} />
+              sellStyles.textbookImage :
+              sellStyles.textbookImageBlank} />
         </View>
 
         <TextInput
-          style={styles.input}
+          style={sellStyles.input}
           placeholder="Title"
           underlineColorAndroid="transparent"
         />
 
         <TextInput
-          style={styles.input}
+          style={sellStyles.input}
           placeholder="Author"
           underlineColorAndroid="transparent"
         />
 
         <TextInput
-          style={styles.input}
+          style={sellStyles.input}
           placeholder="Edition"
           underlineColorAndroid="transparent"
         />
 
-        <View style={styles.textbookCondition}>
+        <View style={sellStyles.textbookCondition}>
           <Picker
-            style={styles.textbookConditionPicker}
-            itemTextStyle={styles.testPickerItem}
+            style={sellStyles.textbookConditionPicker}
+            itemTextStyle={sellStyles.testPickerItem}
             selectedValue={this.state.textbookCondition}
             onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}>
             <Picker.Item label="Condition" value="" />
@@ -96,10 +97,10 @@ class SellScreen extends React.Component {
           </Picker>
         </View>
 
-        <View style={styles.textbookType}>
+        <View style={sellStyles.textbookType}>
           <Picker
-            style={styles.textbookTypePicker}
-            itemStyle={styles.testPickerItem}
+            style={sellStyles.textbookTypePicker}
+            itemStyle={sellStyles.testPickerItem}
             selectedValue={this.state.textbookType}
             onValueChange={(itemValue, itemIndex) => this.setState({textbookType: itemValue})}>
             <Picker.Item label="Type" value="" />
@@ -110,15 +111,15 @@ class SellScreen extends React.Component {
         </View>
 
         <TextInput
-          style={styles.input}
+          style={sellStyles.input}
           placeholder="Course Code"
           underlineColorAndroid="transparent"
         />
 
-        <View style={styles.submitContainer}>
+        <View style={sellStyles.submitContainer}>
           <TouchableOpacity onPress={() => checkConditionValue(this.state.textbookCondition)}>
-            <View style={styles.submitButton}>
-              <Text style={styles.submitButtonText}>SUBMIT</Text>
+            <View style={sellStyles.submitButton}>
+              <Text style={sellStyles.submitButtonText}>SUBMIT</Text>
             </View>
           </TouchableOpacity>
         </View>

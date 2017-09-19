@@ -2,17 +2,16 @@ import React, {Component} from 'react';
 import {AppRegistry, View} from 'react-native';
 import {TabNavigator} from 'react-navigation';
 
-const styles = require('./styles.js');
+const styles = require('./styles/mainStyles.js');
 const HomeScreen = require('./screens/home.js');
 const BuyScreen = require('./screens/buy.js');
 const SellScreen = require('./screens/sell.js');
 const ProfileScreen = require('./screens/profile.js');
 
 const AppNavigator = TabNavigator ({
-  TheSellScreen: {screen: SellScreen},
   TheHomeScreen: {screen: HomeScreen},
   TheBuyScreen: {screen: BuyScreen},
-
+  TheSellScreen: {screen: SellScreen},
   TheProfileScreen: {screen: ProfileScreen},
 }, {
   tabBarPosition: 'bottom',
