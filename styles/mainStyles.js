@@ -14,8 +14,8 @@ const mainStyles = StyleSheet.create ({
     backgroundColor: 'white',
   },
   icon: {
-    width: 26,
-    height: 26,
+    width: 20,
+    height: 20,
   },
   title: {
     fontWeight: 'bold',

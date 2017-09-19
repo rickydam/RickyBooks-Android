@@ -11,6 +11,7 @@ const buyStyles = StyleSheet.create ({
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   listItemImage: {
     width: ScreenWidth*0.40,
@@ -33,7 +34,7 @@ const buyStyles = StyleSheet.create ({
     fontSize: 15,
   },
   listItemPrice: {
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#3EA055'
   },

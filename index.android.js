@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {AppRegistry, View} from 'react-native';
 import {TabNavigator} from 'react-navigation';
 
-const styles = require('./styles/mainStyles.js');
+const mainStyles = require('./styles/mainStyles.js');
 const HomeScreen = require('./screens/home.js');
 const BuyScreen = require('./screens/buy.js');
 const SellScreen = require('./screens/sell.js');
@@ -26,9 +26,6 @@ const AppNavigator = TabNavigator ({
     style: {
       backgroundColor: 'transparent',
     },
-    iconStyle: {
-      paddingTop: 30,
-    },
     showIcon: true,
     activeTintColor: 'black',
     inactiveTintColor: 'lightgray',
@@ -38,7 +35,7 @@ const AppNavigator = TabNavigator ({
 export default class RickyBooks extends Component {
   render() {
     return (
-      <View style={styles.tabContainer}>
+      <View style={mainStyles.tabContainer}>
         <AppNavigator/>
       </View>
     );
