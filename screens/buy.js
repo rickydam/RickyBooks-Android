@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, ScrollView} from 'react-native';
 
 const mainStyles = require('../styles/mainStyles.js');
-const sellStyles = require('../styles/sellStyles.js');
+const buyStyles = require('../styles/buyStyles.js');
 const buyIcon = require('../images/icons/buy.png');
 
 class BuyScreen extends React.Component {
@@ -18,9 +18,101 @@ class BuyScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <View style={mainStyles.container}>
-        <Text>This is the buy screen.</Text>
-      </View>
+      <ScrollView contentContainerStyle={mainStyles.container}>
+
+        <Text style={mainStyles.title}>Buy a textbook!</Text>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={buyStyles.listItem}>
+          <Image
+            source = {require('../images/textbook.jpg')}
+            style = {buyStyles.listItemImage}
+          />
+          <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+            <Text style={buyStyles.listItemPrice}>$150</Text>
+            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+          </View>
+        </View>
+
+      </ScrollView>
     );
   }
 }
