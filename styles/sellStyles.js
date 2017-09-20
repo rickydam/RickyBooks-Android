@@ -8,6 +8,15 @@ const sellStyles = StyleSheet.create ({
     height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
+    borderTopColor: 'transparent',
+    paddingLeft: 10,
+    fontSize: 16,
+  },
+  inputFirst: {
+    width: ScreenWidth*0.70,
+    height: 45,
+    borderWidth: 1,
+    borderColor: 'lightgray',
     paddingLeft: 10,
     fontSize: 16,
   },
@@ -16,6 +25,7 @@ const sellStyles = StyleSheet.create ({
     height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
+    borderTopColor: 'transparent',
     alignItems: 'center',
   },
   textbookConditionPicker: {
@@ -28,6 +38,7 @@ const sellStyles = StyleSheet.create ({
     height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
+    borderTopColor: 'transparent',
     alignItems: 'center',
   },
   textbookTypePicker: {

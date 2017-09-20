@@ -81,7 +81,7 @@ class SellScreen extends React.Component {
           </View>
 
           <TextInput
-            style={sellStyles.input}
+            style={sellStyles.inputFirst}
             placeholder="Title"
             underlineColorAndroid="transparent"
           />
