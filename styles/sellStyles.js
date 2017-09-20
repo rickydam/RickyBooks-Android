@@ -5,19 +5,17 @@ const ScreenWidth = Dimensions.get("window").width;
 const sellStyles = StyleSheet.create ({
   input: {
     width: ScreenWidth*0.70,
-    height: 40,
+    height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
-    margin: 5,
     paddingLeft: 10,
     fontSize: 16,
   },
   textbookCondition: {
     width: ScreenWidth*0.70,
-    height: 40,
+    height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
-    margin: 5,
     alignItems: 'center',
   },
   textbookConditionPicker: {
@@ -27,10 +25,9 @@ const sellStyles = StyleSheet.create ({
   },
   textbookType: {
     width: ScreenWidth*0.70,
-    height: 40,
+    height: 45,
     borderWidth: 1,
     borderColor: 'lightgray',
-    margin: 5,
     alignItems: 'center',
   },
   textbookTypePicker: {
@@ -73,7 +70,7 @@ const sellStyles = StyleSheet.create ({
     width: 200,
   },
   textbookImageContainer: {
-    margin: 10,
+    marginBottom: 10,
   },
 });
 
