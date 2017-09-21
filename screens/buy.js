@@ -28,12 +28,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -43,12 +50,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -58,12 +72,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -73,12 +94,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -88,12 +116,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -103,12 +138,19 @@ class BuyScreen extends React.Component {
             style = {buyStyles.listItemImage}
           />
           <View style={buyStyles.listItemTextContainer}>
+            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
             <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
             <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
             <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <Text style={buyStyles.listItemPrice}>$150</Text>
-            <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+            <View style={buyStyles.listItemColumns}>
+              <View style={buyStyles.listItemLeft}>
+                <Text style={buyStyles.listItemPrice}>$150</Text>
+              </View>
+              <View style={buyStyles.listItemRight}>
+                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+              </View>
+            </View>
           </View>
         </View>
 

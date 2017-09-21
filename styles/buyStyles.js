@@ -6,7 +6,7 @@ const ScreenHeight = Dimensions.get("window").height;
 const buyStyles = StyleSheet.create ({
   listItem: {
     width: ScreenWidth,
-    height: ScreenHeight*0.30,
+    height: ScreenHeight*0.25,
     borderTopWidth: 1,
     paddingLeft: 5,
     flex: 1,
@@ -14,34 +14,52 @@ const buyStyles = StyleSheet.create ({
     alignItems: 'center',
   },
   listItemImage: {
-    width: ScreenWidth*0.40,
-    height: ScreenHeight*0.28,
-    marginTop: 5,
+    width: ScreenWidth*0.25,
+    height: ScreenHeight*0.23,
   },
   listItemTextContainer: {
-    width: ScreenWidth*0.60,
+    width: ScreenWidth*0.70,
+    height: ScreenHeight*0.20,
     paddingLeft: 5,
+  },
+  listItemCourseCode: {
+    fontSize: 14,
   },
   listItemTitle: {
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 14,
     color: 'black',
   },
   listItemAuthor: {
-    fontSize: 15,
+    fontSize: 14,
   },
   listItemEdition: {
-    fontSize: 15,
+    fontSize: 14,
   },
   listItemPrice: {
     fontSize: 25,
     fontWeight: 'bold',
     color: '#3EA055'
   },
+  listItemSeller: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
   listItemDate: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
+    textAlign: 'center',
+  },
+  listItemColumns: {
+    flexDirection: 'row',
+  },
+  listItemLeft: {
+    width: ScreenWidth*0.2,
+    flexDirection: 'column',
+  },
+  listItemRight: {
+    flexDirection: 'column',
   },
 });
 
