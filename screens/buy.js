@@ -4,7 +4,7 @@ import {Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
 const mainStyles = require('../styles/mainStyles.js');
 const buyStyles = require('../styles/buyStyles.js');
 const buyIcon = require('../images/icons/buy.png');
-const textbook = require('../images/textbook2.jpg');
+const textbook = require('../images/textbook.jpg');
 
 class BuyScreen extends React.Component {
   static navigationOptions = {
