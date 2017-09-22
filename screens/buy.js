@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, View, Image, ScrollView} from 'react-native';
+import {Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
 
 const mainStyles = require('../styles/mainStyles.js');
 const buyStyles = require('../styles/buyStyles.js');
 const buyIcon = require('../images/icons/buy.png');
+const textbook = require('../images/textbook2.jpg');
 
 class BuyScreen extends React.Component {
   static navigationOptions = {
@@ -22,136 +23,166 @@ class BuyScreen extends React.Component {
 
         <Text style={mainStyles.title}>Buy a textbook!</Text>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        <View style={buyStyles.listItem}>
-          <Image
-            source = {require('../images/textbook.jpg')}
-            style = {buyStyles.listItemImage}
-          />
-          <View style={buyStyles.listItemTextContainer}>
-            <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
-            <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
-            <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-            <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
-            <View style={buyStyles.listItemColumns}>
-              <View style={buyStyles.listItemLeft}>
-                <Text style={buyStyles.listItemPrice}>$150</Text>
-              </View>
-              <View style={buyStyles.listItemRight}>
-                <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+        <View style={buyStyles.listItemMainContainer}>
+          <TouchableOpacity
+            style={buyStyles.listItem}
+            onPress={() => navigate('TheBuyDetailsScreen')}
+            activeOpacity={100}>
+            <Image
+              source = {textbook}
+              style = {buyStyles.listItemImage}
+            />
+            <View style={buyStyles.listItemTextContainer}>
+              <Text style={buyStyles.listItemCourseCode}>SYSC 4504</Text>
+              <Text style={buyStyles.listItemTitle}>Fundamentals of Web Development</Text>
+              <Text style={buyStyles.listItemAuthor}>Randy Connolly, Ricardo Hoar</Text>
+              <Text style={buyStyles.listItemEdition}>2nd Edition</Text>
+              <View style={buyStyles.listItemColumns}>
+                <View style={buyStyles.listItemLeft}>
+                  <Text style={buyStyles.listItemPrice}>$150</Text>
+                </View>
+                <View style={buyStyles.listItemRight}>
+                  <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                  <Text style={buyStyles.listItemDate}>2 hours ago</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
       </ScrollView>
