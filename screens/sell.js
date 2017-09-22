@@ -83,24 +83,31 @@ class SellScreen extends React.Component {
           <TextInput
             style={sellStyles.inputFirst}
             placeholder="Title"
+            placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
           />
 
           <TextInput
             style={sellStyles.input}
             placeholder="Author"
+            placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
           />
 
           <TextInput
             style={sellStyles.input}
             placeholder="Edition"
+            placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
           />
 
           <View style={sellStyles.textbookCondition}>
             <Picker
-              style={sellStyles.textbookConditionPicker}
+              mode="dropdown"
+              style={
+                this.state.textbookCondition == '' ?
+                sellStyles.textbookConditionPickerPlaceholder :
+                sellStyles.textbookConditionPickerSelected}
               selectedValue={this.state.textbookCondition}
               onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}>
               <Picker.Item label="Condition" value="" />
@@ -112,7 +119,11 @@ class SellScreen extends React.Component {
 
           <View style={sellStyles.textbookType}>
             <Picker
-              style={sellStyles.textbookTypePicker}
+              mode="dropdown"
+              style={
+                this.state.textbookType == '' ?
+                sellStyles.textbookTypePickerPlaceholder :
+                sellStyles.textbookTypePickerSelected}
               itemStyle={sellStyles.testPickerItem}
               selectedValue={this.state.textbookType}
               onValueChange={(itemValue, itemIndex) => this.setState({textbookType: itemValue})}>
@@ -126,6 +137,7 @@ class SellScreen extends React.Component {
           <TextInput
             style={sellStyles.input}
             placeholder="Course Code"
+            placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
           />
 

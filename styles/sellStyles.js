@@ -28,10 +28,15 @@ const sellStyles = StyleSheet.create ({
     borderTopColor: 'transparent',
     alignItems: 'center',
   },
-  textbookConditionPicker: {
+  textbookConditionPickerPlaceholder: {
     width: ScreenWidth*0.68,
     height: 40,
-    color: 'gray',
+    color: 'lightgray',
+  },
+  textbookConditionPickerSelected: {
+    width: ScreenWidth*0.68,
+    height: 40,
+    color: 'black',
   },
   textbookType: {
     width: ScreenWidth*0.70,
@@ -41,10 +46,15 @@ const sellStyles = StyleSheet.create ({
     borderTopColor: 'transparent',
     alignItems: 'center',
   },
-  textbookTypePicker: {
+  textbookTypePickerPlaceholder: {
     width: ScreenWidth*0.68,
     height: 40,
-    color: 'gray',
+    color: 'lightgray',
+  },
+  textbookTypePickerSelected: {
+    width: ScreenWidth*0.68,
+    height: 40,
+    color: 'black',
   },
   textbookImage: {
     height: 200,
