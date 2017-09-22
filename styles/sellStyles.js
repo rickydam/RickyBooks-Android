@@ -46,32 +46,6 @@ const sellStyles = StyleSheet.create ({
     height: 40,
     color: 'gray',
   },
-  submitButton: {
-    width: 70,
-    height: 40,
-    margin: 10,
-    borderRadius: 5,
-    backgroundColor: '#9932CD',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  uploadButton: {
-    width: 200,
-    height: 40,
-    margin: 10,
-    borderRadius: 5,
-    backgroundColor: '#0276FD',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
   textbookImage: {
     height: 200,
     width: 200,

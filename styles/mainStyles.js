@@ -6,8 +6,6 @@ const mainStyles = StyleSheet.create ({
   container: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    marginTop: 10,
-    paddingBottom: 20,
   },
   tabContainer: {
     height: ScreenHeight-20,
@@ -20,7 +18,29 @@ const mainStyles = StyleSheet.create ({
   title: {
     fontWeight: 'bold',
     fontSize: 25,
+    margin: 5,
+  },
+  blueButton: {
+    width: 200,
+    height: 40,
     margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  purpleButton: {
+    width: 70,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#9932CD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

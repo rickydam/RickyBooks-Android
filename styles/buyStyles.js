@@ -4,10 +4,14 @@ const ScreenWidth = Dimensions.get("window").width;
 const ScreenHeight = Dimensions.get("window").height;
 
 const buyStyles = StyleSheet.create ({
+  listItemMainContainer: {
+    width: ScreenWidth,
+    height: ScreenHeight*0.22,
+    borderTopWidth: 1,
+  },
   listItem: {
     width: ScreenWidth,
     height: ScreenHeight*0.25,
-    borderTopWidth: 1,
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
@@ -15,7 +19,7 @@ const buyStyles = StyleSheet.create ({
   },
   listItemImage: {
     width: ScreenWidth*0.25,
-    height: ScreenHeight*0.23,
+    height: ScreenHeight*0.2,
   },
   listItemTextContainer: {
     width: ScreenWidth*0.70,
@@ -55,7 +59,7 @@ const buyStyles = StyleSheet.create ({
     flexDirection: 'row',
   },
   listItemLeft: {
-    width: ScreenWidth*0.2,
+    width: 70,
     flexDirection: 'column',
   },
   listItemRight: {

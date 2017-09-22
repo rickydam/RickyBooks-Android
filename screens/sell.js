@@ -63,8 +63,8 @@ class SellScreen extends React.Component {
           <Text style={mainStyles.title}>Sell a textbook!</Text>
 
           <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
-            <View style={sellStyles.uploadButton}>
-              <Text style={sellStyles.uploadButtonText}>UPLOAD TEXTBOOK IMAGE</Text>
+            <View style={mainStyles.blueButton}>
+              <Text style={mainStyles.buttonText}>UPLOAD TEXTBOOK IMAGE</Text>
             </View>
           </TouchableOpacity>
 
@@ -131,8 +131,8 @@ class SellScreen extends React.Component {
 
           <View style={sellStyles.submitContainer}>
             <TouchableOpacity onPress={() => checkConditionValue(this.state.textbookCondition)}>
-              <View style={sellStyles.submitButton}>
-                <Text style={sellStyles.submitButtonText}>SUBMIT</Text>
+              <View style={mainStyles.purpleButton}>
+                <Text style={mainStyles.buttonText}>SUBMIT</Text>
               </View>
             </TouchableOpacity>
           </View>
