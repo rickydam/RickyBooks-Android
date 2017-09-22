@@ -4,12 +4,17 @@ const ScreenHeight = Dimensions.get("window").height;
 
 const mainStyles = StyleSheet.create ({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
   },
   tabContainer: {
     height: ScreenHeight-20,
     backgroundColor: 'white',
+  },
+  detailsContainer: {
+    backgroundColor: 'white',
+    height: ScreenHeight,
+    alignItems: 'center',
   },
   icon: {
     width: 20,
@@ -22,6 +27,15 @@ const mainStyles = StyleSheet.create ({
   },
   blueButton: {
     width: 200,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  blueButtonSmall: {
+    width: 100,
     height: 40,
     margin: 10,
     borderRadius: 5,

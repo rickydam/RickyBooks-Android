@@ -65,6 +65,43 @@ const buyStyles = StyleSheet.create ({
   listItemRight: {
     flexDirection: 'column',
   },
+  itemImage: {
+    height: 250,
+    width: 200,
+    margin: 20,
+  },
+  itemTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  itemAuthor: {
+    fontSize: 16,
+  },
+  itemEdition: {
+    fontSize: 16,
+  },
+  itemPrice: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#3EA055',
+    margin: 10,
+  },
+  itemSeller: {
+    fontSize: 16,
+  },
+  itemDate: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  itemColumns: {
+    flexDirection: 'row',
+  },
+  itemColumn: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: ScreenWidth*0.3,
+  },
 });
 
 module.exports = buyStyles;
