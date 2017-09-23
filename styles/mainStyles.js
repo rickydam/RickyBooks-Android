@@ -6,6 +6,8 @@ const mainStyles = StyleSheet.create ({
   container: {
     backgroundColor: 'white',
     alignItems: 'center',
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   tabContainer: {
     height: ScreenHeight-20,
@@ -19,6 +21,10 @@ const mainStyles = StyleSheet.create ({
   icon: {
     width: 20,
     height: 20,
+  },
+  mediumImage: {
+    width: 200,
+    height: 200,
   },
   title: {
     fontWeight: 'bold',
