@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-const ScreenWidth = Dimensions.get("window").width;
-const ScreenHeight = Dimensions.get("window").height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 const buyStyles = StyleSheet.create ({
   listItemMainContainer: {
@@ -60,10 +60,8 @@ const buyStyles = StyleSheet.create ({
   },
   listItemLeft: {
     width: 70,
-    flexDirection: 'column',
   },
   listItemRight: {
-    flexDirection: 'column',
   },
   itemImage: {
     height: 250,

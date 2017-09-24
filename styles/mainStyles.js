@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-const ScreenHeight = Dimensions.get("window").height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 const mainStyles = StyleSheet.create ({
   container: {
@@ -8,6 +9,7 @@ const mainStyles = StyleSheet.create ({
     alignItems: 'center',
     paddingLeft: 5,
     paddingRight: 5,
+    width: ScreenWidth,
   },
   tabContainer: {
     height: ScreenHeight-20,
