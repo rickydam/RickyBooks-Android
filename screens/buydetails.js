@@ -63,6 +63,7 @@ class BuyDetails extends React.Component {
               multiline={true}
               numberOfLines={2}
               textAlignVertical="top"
+              autoCapitalize="words"
               placeholder="Message..."
               onChangeText={(text) => this.setState({text})}
               value={this.state.text} />

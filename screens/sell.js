@@ -85,6 +85,7 @@ class SellScreen extends React.Component {
             placeholder="Title"
             placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
+            autoCapitalize="words"
           />
 
           <TextInput
@@ -92,6 +93,7 @@ class SellScreen extends React.Component {
             placeholder="Author"
             placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
+            autoCapitalize="words"
           />
 
           <TextInput
@@ -99,6 +101,8 @@ class SellScreen extends React.Component {
             placeholder="Edition"
             placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
+            maxLength={1}
+            keyboardType={'numeric'}
           />
 
           <View style={sellStyles.textbookCondition}>
@@ -139,6 +143,8 @@ class SellScreen extends React.Component {
             placeholder="Course Code"
             placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
+            autoCapitalize="characters"
+            maxLength={8}
           />
 
           <View style={sellStyles.submitContainer}>
