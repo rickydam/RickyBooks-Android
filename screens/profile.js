@@ -15,7 +15,6 @@ class ProfileScreen extends React.Component {
     ),
   };
   render() {
-    const {navigate} = this.props.navigation;
     return(
       <View style={mainStyles.container}>
         <Text>This is the profile screen.</Text>

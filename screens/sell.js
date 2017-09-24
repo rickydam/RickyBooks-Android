@@ -51,7 +51,6 @@ class SellScreen extends React.Component {
     ),
   };
   render() {
-    const {navigate} = this.props.navigation;
     const keyboardOffset = 25;
     return (
       <KeyboardAvoidingView
