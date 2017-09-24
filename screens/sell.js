@@ -101,8 +101,7 @@ class SellScreen extends React.Component {
             placeholder="Edition"
             placeholderTextColor="lightgray"
             underlineColorAndroid="transparent"
-            maxLength={1}
-            keyboardType={'numeric'}
+            autoCapitalize="words"
           />
 
           <View style={sellStyles.textbookCondition}>
