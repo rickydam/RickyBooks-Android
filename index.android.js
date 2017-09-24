@@ -5,8 +5,9 @@ import {TabNavigator, StackNavigator} from 'react-navigation';
 const mainStyles = require('./styles/mainStyles.js');
 const HomeScreen = require('./screens/home.js');
 const BuyScreen = require('./screens/buy.js');
-const BuyDetailsScreen = require('./screens/buydetails.js');
+const BuyDetailsScreen = require('./screens/buyDetails.js');
 const MessagesScreen = require('./screens/messages.js');
+const MessagesDetailsScreen = require('./screens/messagesDetails.js');
 const SellScreen = require('./screens/sell.js');
 const ProfileScreen = require('./screens/profile.js');
 
@@ -17,10 +18,17 @@ const TheBuyStackNavigator = StackNavigator ({
   headerMode: 'none',
 });
 
+const TheMessagesStackNavigator = StackNavigator ({
+  TheMessagesScreen: {screen: MessagesScreen},
+  TheMessagesDetailsScreen: {screen: MessagesDetailsScreen},
+}, {
+  headerMode: 'none',
+});
+
 const TheTabNavigator = TabNavigator ({
   TheHomeScreen: {screen: HomeScreen},
   Buy: {screen: TheBuyStackNavigator},
-  TheMessagesScreen: {screen: MessagesScreen},
+  Messages: {screen: TheMessagesStackNavigator},
   TheSellScreen: {screen: SellScreen},
   TheProfileScreen: {screen: ProfileScreen},
 }, {
