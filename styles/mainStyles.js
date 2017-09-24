@@ -18,6 +18,9 @@ const mainStyles = StyleSheet.create ({
     height: ScreenHeight,
     alignItems: 'center',
   },
+  modalContainer: {
+    justifyContent: 'flex-start',
+  },
   icon: {
     width: 20,
     height: 20,
@@ -31,7 +34,7 @@ const mainStyles = StyleSheet.create ({
     fontSize: 25,
     margin: 5,
   },
-  blueButton: {
+  blueButtonBig: {
     width: 200,
     height: 40,
     margin: 10,
@@ -40,7 +43,7 @@ const mainStyles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  blueButtonSmall: {
+  blueButtonMedium: {
     width: 100,
     height: 40,
     margin: 10,
@@ -48,6 +51,16 @@ const mainStyles = StyleSheet.create ({
     backgroundColor: '#0276FD',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  blueButtonSmall: {
+    width: 60,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   purpleButton: {
     width: 70,
@@ -61,6 +74,32 @@ const mainStyles = StyleSheet.create ({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  redCloseButton: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#FF4040',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
+  buttonTextLarge: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
+  textArea: {
+    width: 300,
+    height: 100,
+    fontSize: 16,
+    borderWidth: 1,
+    backgroundColor: 'white',
+  },
+  textAreaContainer: {
+    marginTop: 100,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 });
 

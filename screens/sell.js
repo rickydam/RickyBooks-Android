@@ -63,7 +63,7 @@ class SellScreen extends React.Component {
           <Text style={mainStyles.title}>Sell a textbook!</Text>
 
           <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
-            <View style={mainStyles.blueButton}>
+            <View style={mainStyles.blueButtonBig}>
               <Text style={mainStyles.buttonText}>UPLOAD TEXTBOOK IMAGE</Text>
             </View>
           </TouchableOpacity>

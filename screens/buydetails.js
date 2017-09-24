@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
+import Modal from 'react-native-modal';
 
 const mainStyles = require('../styles/mainStyles.js');
 const buyStyles = require('../styles/buyStyles.js');
@@ -7,6 +8,12 @@ const buyIcon = require('../images/icons/buy.png');
 const textbook = require('../images/textbook.jpg');
 
 class BuyDetails extends React.Component {
+  state = {
+    isModalVisible: false,
+  }
+  _showModal = () => this.setState({isModalVisible: true})
+  _hideModal = () => this.setState({isModalVisible: false})
+
   static navigationOptions = {
     tabBarLabel: 'Buy',
     tabBarIcon: ({tintColor}) => (
@@ -16,6 +23,7 @@ class BuyDetails extends React.Component {
       />
     ),
   };
+
   render() {
     const {navigate} = this.props.navigation;
     return (
@@ -36,11 +44,36 @@ class BuyDetails extends React.Component {
             <Text style={buyStyles.itemDate}>2 hours ago</Text>
           </View>
         </View>
-        <TouchableOpacity>
-          <View style={mainStyles.blueButtonSmall}>
+        <TouchableOpacity onPress={this._showModal}>
+          <View style={mainStyles.blueButtonMedium}>
             <Text style={mainStyles.buttonText}>MESSAGE</Text>
           </View>
         </TouchableOpacity>
+        <Modal
+          style={mainStyles.modalContainer}
+          isVisible={this.state.isModalVisible}
+          backdropOpacity={0.8}
+          >
+          <TouchableOpacity style={mainStyles.redCloseButton} onPress={this._hideModal}>
+            <Text style={mainStyles.buttonTextLarge}>X</Text>
+          </TouchableOpacity>
+          <View style={mainStyles.textAreaContainer}>
+            <TextInput
+              style={mainStyles.textArea}
+              multiline={true}
+              numberOfLines={2}
+              textAlignVertical="top"
+              placeholder="Message..."
+              onChangeText={(text) => this.setState({text})}
+              value={this.state.text} />
+            <TouchableOpacity
+              style={mainStyles.blueButtonSmall}
+              onPress={() => alert("Message has been sent successfully!")}
+              >
+              <Text style={mainStyles.buttonText}>SEND</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     );
   }
