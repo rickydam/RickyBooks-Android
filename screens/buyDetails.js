@@ -52,6 +52,7 @@ class BuyDetails extends React.Component {
           style={mainStyles.modalContainer}
           isVisible={this.state.isModalVisible}
           backdropOpacity={0.8}
+          onBackButtonPress={this._hideModal}
           >
           <TouchableOpacity style={mainStyles.redCloseButton} onPress={this._hideModal}>
             <Text style={mainStyles.buttonTextLarge}>X</Text>
