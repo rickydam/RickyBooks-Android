@@ -91,11 +91,7 @@ class SellScreen extends React.Component {
             textbook_price:       this.state.textbookPrice
           })
         });
-
         let res = await response.text();
-
-        alert(res);
-
         if(response.status>=200 && response.status<300) {
           alert("Success yayyy!!!!");
         }
