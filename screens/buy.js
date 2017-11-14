@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, ScrollView, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {Text, View, Image, ScrollView, FlatList, RefreshControl, TouchableHighlight} from 'react-native';
 
 const mainStyles = require('../styles/mainStyles.js');
 const buyStyles = require('../styles/buyStyles.js');
@@ -143,31 +143,34 @@ class BuyScreen extends React.Component {
           }
           renderItem={({item}) =>
             <View style={buyStyles.listItemMainContainer}>
-              <TouchableOpacity
+              <TouchableHighlight
                 style={buyStyles.listItem}
+                underlayColor="#E8E8E8"
                 onPress={() => navigate('TheBuyDetailsScreen')}>
-                <Image
-                  source = {textbook}
-                  style = {buyStyles.listItemImage}
-                />
-                <View style={buyStyles.listItemTextContainer}>
-                  <Text style={buyStyles.listItemTitle}>{item["textbook_title"]}</Text>
-                  <Text style={buyStyles.listItemAuthor}>{item["textbook_author"]}</Text>
-                  <View style={buyStyles.listItemColumns}>
-                    <View style={buyStyles.listItemLeft}>
-                      <Text style={buyStyles.listItemEdition}>{item["textbook_edition"]}</Text>
-                      <Text style={buyStyles.listItemCondition}>{item["textbook_condition"]}</Text>
-                      <Text style={buyStyles.listItemCourseCode}>{item["textbook_coursecode"]}</Text>
-                      <Text style={buyStyles.listItemType}>{item["textbook_type"]}</Text>
-                    </View>
-                    <View style={buyStyles.listItemRight}>
-                      <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                      <Text style={buyStyles.listItemDate}>{item["created_at"]}</Text>
-                      <Text style={buyStyles.listItemPrice}>${item["textbook_price"]}</Text>
+                <View style={buyStyles.listItemView}>
+                  <Image
+                    source = {textbook}
+                    style = {buyStyles.listItemImage}
+                  />
+                  <View style={buyStyles.listItemTextContainer}>
+                    <Text style={buyStyles.listItemTitle}>{item["textbook_title"]}</Text>
+                    <Text style={buyStyles.listItemAuthor}>{item["textbook_author"]}</Text>
+                    <View style={buyStyles.listItemColumns}>
+                      <View style={buyStyles.listItemLeft}>
+                        <Text style={buyStyles.listItemEdition}>{item["textbook_edition"]}</Text>
+                        <Text style={buyStyles.listItemCondition}>{item["textbook_condition"]}</Text>
+                        <Text style={buyStyles.listItemCourseCode}>{item["textbook_coursecode"]}</Text>
+                        <Text style={buyStyles.listItemType}>{item["textbook_type"]}</Text>
+                      </View>
+                      <View style={buyStyles.listItemRight}>
+                        <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
+                        <Text style={buyStyles.listItemDate}>{item["created_at"]}</Text>
+                        <Text style={buyStyles.listItemPrice}>${item["textbook_price"]}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </TouchableHighlight>
             </View>
           }
         />

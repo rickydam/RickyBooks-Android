@@ -15,7 +15,10 @@ const buyStyles = StyleSheet.create ({
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
-    marginTop: 8,
+    paddingTop: 8,
+  },
+  listItemView: {
+    flexDirection: 'row',
   },
   listItemImage: {
     width: ScreenWidth*0.27,
