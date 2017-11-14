@@ -6,12 +6,12 @@ const ScreenHeight = Dimensions.get('window').height;
 const buyStyles = StyleSheet.create ({
   listItemMainContainer: {
     width: ScreenWidth,
-    height: ScreenHeight*0.25,
+    height: ScreenHeight*0.23,
     borderTopWidth: 1,
   },
   listItem: {
     width: ScreenWidth,
-    height: ScreenHeight*0.25,
+    height: ScreenHeight*0.23,
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
@@ -53,31 +53,25 @@ const buyStyles = StyleSheet.create ({
   },
   listItemSeller: {
     fontSize: 14,
-    textAlign: 'center',
   },
   listItemDate: {
     fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
-    textAlign: 'center',
-  },
-  listItemTime: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'black',
-    textAlign: 'center',
   },
   listItemColumns: {
     flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    marginTop: 2,
   },
   listItemLeft: {
-    width: 90,
-    marginTop: 6,
+    width: 120,
+    marginTop: 2,
   },
   listItemRight: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 6,
+    width: 120,
+    marginTop: 2,
   },
   itemImage: {
     height: 250,

@@ -32,67 +32,88 @@ class BuyScreen extends React.Component {
     });
   }
 
+  getDifference(postedDate, currentDate) {
+    var seconds = parseInt((currentDate - postedDate)/1000);
+    var minutes = parseInt(seconds/60);
+    if(minutes < 60) {
+      var theString = minutes + " minutes ago";
+      return theString;
+    }
+    var hours = parseInt(minutes/60);
+    if(hours < 24) {
+      var theString
+      if(hours == 1) {
+        theString = hours + " hour ago";
+      }
+      else {
+        theString = hours + " hours ago";
+      }
+      return theString;
+    }
+    return null;
+  }
+
+  cleanTime(postedDate) {
+    var monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    var month = monthNames[postedDate.getMonth()];
+    var day = postedDate.getDate();
+    var hour = postedDate.getHours();
+    var afternoon = false;
+    if(hour == 12) {
+      afternoon = true;
+    }
+    if(hour > 12) {
+      afternoon = true;
+      hour = hour - 12;
+    }
+    if(hour == 0) {
+      hour = 12;
+    }
+    var minute;
+    if(postedDate.getMinutes() < 10) {
+      minute = "0" + postedDate.getMinutes();
+    }
+    else {
+      minute = postedDate.getMinutes();
+    }
+    var cleanDate;
+    if(afternoon) {
+      var cleanDate = month + " " + day + ", " + hour + ":" + minute + "pm";
+    }
+    else {
+      var cleanDate = month + " " + day + ", " + hour + ":" + minute + "am";
+    }
+    return cleanDate;
+  }
+
+
   async fetchData() {
     try {
       let response = await fetch('https://rickybooks.herokuapp.com/textbooks');
       let responseText = await response.text();
       this.state.res = JSON.parse(responseText).data;
-
-      var monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-      ];
-
       for(var item of this.state.res) {
-        var postedDate = item["created_at"];
-        var formattedDate = new Date(postedDate);
-
-        var month = monthNames[formattedDate.getMonth()];
-        var day = formattedDate.getDate();
-        var year = formattedDate.getFullYear();
-
-        var hour = formattedDate.getHours();
-        var afternoon = false;
-        if(hour == 12) {
-          afternoon = true;
-        }
-        if(hour > 12) {
-          afternoon = true;
-          hour = hour - 12;
-        }
-        if(hour == 0) {
-          hour = 12;
-        }
-        var minute;
-        if(formattedDate.getMinutes() < 10) {
-          minute = "0" + formattedDate.getMinutes();
-        }
-        else {
-          minute = formattedDate.getMinutes();
-        }
-
-        var cleanDate;
-        if(afternoon) {
-          var date = month + " " + day + ", " + year;
-          var time = hour + ":" + minute + "pm";
-          cleanDate = [date, time];
-        }
-        else {
-          var date = month + " " + day + ", " + year;
-          var time = hour + ":" + minute + "am";
-          cleanDate = [date, time];
-        }
+        var postedDate = new Date(item["created_at"]);
+        var cleanDate = this.cleanTime(postedDate);
         item["created_at"] = cleanDate;
+        var currentDate = new Date();
+        var specialTimeString = this.getDifference(postedDate, currentDate);
+        if(specialTimeString != null) {
+          item["created_at"] = specialTimeString;
+        }
       }
     } catch(error) {
       alert("error: " + error);
@@ -124,8 +145,7 @@ class BuyScreen extends React.Component {
             <View style={buyStyles.listItemMainContainer}>
               <TouchableOpacity
                 style={buyStyles.listItem}
-                onPress={() => navigate('TheBuyDetailsScreen')}
-                activeOpacity={100}>
+                onPress={() => navigate('TheBuyDetailsScreen')}>
                 <Image
                   source = {textbook}
                   style = {buyStyles.listItemImage}
@@ -142,8 +162,7 @@ class BuyScreen extends React.Component {
                     </View>
                     <View style={buyStyles.listItemRight}>
                       <Text style={buyStyles.listItemSeller}>Ricky Dam</Text>
-                      <Text style={buyStyles.listItemDate}>{item["created_at"][0]}</Text>
-                      <Text style={buyStyles.listItemTime}>{item["created_at"][1]}</Text>
+                      <Text style={buyStyles.listItemDate}>{item["created_at"]}</Text>
                       <Text style={buyStyles.listItemPrice}>${item["textbook_price"]}</Text>
                     </View>
                   </View>
