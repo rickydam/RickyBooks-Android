@@ -202,6 +202,7 @@ class SellScreen extends React.Component {
               onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}
               ref={input => {this.textbookConditionRef=input}}>
               <Picker.Item label="Condition" value="" />
+              <Picker.Item label="New" value="New" />
               <Picker.Item label="Like New" value="Like New" />
               <Picker.Item label="Good" value="Good" />
               <Picker.Item label="Okay" value="Okay" />
