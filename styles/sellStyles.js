@@ -5,7 +5,7 @@ const ScreenWidth = Dimensions.get('window').width;
 const sellStyles = StyleSheet.create ({
   input: {
     width: ScreenWidth*0.70,
-    height: 45,
+    height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
     borderTopColor: 'transparent',
@@ -14,45 +14,27 @@ const sellStyles = StyleSheet.create ({
   },
   inputFirst: {
     width: ScreenWidth*0.70,
-    height: 45,
+    height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
     paddingLeft: 10,
     fontSize: 16,
   },
-  textbookCondition: {
+  picker: {
     width: ScreenWidth*0.70,
-    height: 45,
+    height: 40,
     borderWidth: 1,
     borderColor: 'lightgray',
     borderTopColor: 'transparent',
     alignItems: 'center',
   },
-  textbookConditionPickerPlaceholder: {
-    width: ScreenWidth*0.68,
-    height: 40,
-    color: 'lightgray',
-  },
-  textbookConditionPickerSelected: {
-    width: ScreenWidth*0.68,
-    height: 40,
-    color: 'black',
-  },
-  textbookType: {
+  pickerPlaceholder: {
     width: ScreenWidth*0.70,
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    borderTopColor: 'transparent',
-    alignItems: 'center',
-  },
-  textbookTypePickerPlaceholder: {
-    width: ScreenWidth*0.68,
     height: 40,
-    color: 'lightgray',
+    color: '#B3B3B3',
   },
-  textbookTypePickerSelected: {
-    width: ScreenWidth*0.68,
+  pickerSelected: {
+    width: ScreenWidth*0.70,
     height: 40,
     color: 'black',
   },

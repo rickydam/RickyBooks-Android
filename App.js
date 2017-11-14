@@ -67,5 +67,3 @@ export default class RickyBooks extends Component {
     );
   }
 }
-
-AppRegistry.registerComponent('RickyBooks', () => RickyBooks);

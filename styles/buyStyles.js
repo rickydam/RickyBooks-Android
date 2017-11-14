@@ -6,7 +6,7 @@ const ScreenHeight = Dimensions.get('window').height;
 const buyStyles = StyleSheet.create ({
   listItemMainContainer: {
     width: ScreenWidth,
-    height: ScreenHeight*0.22,
+    height: ScreenHeight*0.25,
     borderTopWidth: 1,
   },
   listItem: {
@@ -15,16 +15,16 @@ const buyStyles = StyleSheet.create ({
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    marginTop: 8,
   },
   listItemImage: {
-    width: ScreenWidth*0.25,
-    height: ScreenHeight*0.2,
+    width: ScreenWidth*0.27,
+    height: ScreenHeight*0.20,
   },
   listItemTextContainer: {
     width: ScreenWidth*0.70,
     height: ScreenHeight*0.20,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   listItemCourseCode: {
     fontSize: 14,
@@ -38,6 +38,12 @@ const buyStyles = StyleSheet.create ({
     fontSize: 14,
   },
   listItemEdition: {
+    fontSize: 14,
+  },
+  listItemCondition: {
+    fontSize: 14,
+  },
+  listItemType: {
     fontSize: 14,
   },
   listItemPrice: {
@@ -55,13 +61,23 @@ const buyStyles = StyleSheet.create ({
     color: 'black',
     textAlign: 'center',
   },
+  listItemTime: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
+  },
   listItemColumns: {
     flexDirection: 'row',
   },
   listItemLeft: {
-    width: 70,
+    width: 90,
+    marginTop: 6,
   },
   listItemRight: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 6,
   },
   itemImage: {
     height: 250,
