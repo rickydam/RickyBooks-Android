@@ -36,7 +36,17 @@ class BuyScreen extends React.Component {
     var seconds = parseInt((currentDate - postedDate)/1000);
     var minutes = parseInt(seconds/60);
     if(minutes < 60) {
-      var theString = minutes + " minutes ago";
+      var theString
+      if(minutes < 1) {
+        theString = "Just now";
+      }
+      else if(minutes == 1) {
+        theString = minutes + " minute ago";
+      }
+      else {
+        theString = minutes + " minutes ago";
+      }
+
       return theString;
     }
     var hours = parseInt(minutes/60);
