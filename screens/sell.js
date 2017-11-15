@@ -26,11 +26,8 @@ class SellScreen extends React.Component {
       textbookAuthor: '',
       textbookAuthorRef: '',
       textbookEdition: '',
-      textbookEditionRef: '',
       textbookCondition: '',
-      textbookConditionRef: '',
       textbookType: '',
-      textbookTypeRef: '',
       textbookCourseCode: '',
       textbookCourseCodeRef: '',
       textbookPrice: '',
@@ -66,12 +63,20 @@ class SellScreen extends React.Component {
   };
 
   async onSubmit() {
-    // this.textbookTitleRef.clear();
-    // this.textbookAuthorRef.clear();
-    // this.textbookConditionRef.clear();
-    // this.textbookTypeRef.clear();
-    // this.textbookCourseCodeRef.clear();
-    // this.textbookPriceRef.clear();
+    this.setState({
+      textbookEdition: '',
+      textbookCondition: '',
+      textbookType: '',
+    });
+    this.textbookTitleRef.clear();
+    this.textbookTitleRef.blur();
+    this.textbookAuthorRef.clear();
+    this.textbookAuthorRef.blur();
+    this.textbookCourseCodeRef.clear();
+    this.textbookCourseCodeRef.blur();
+    this.textbookPriceRef.clear();
+    this.textbookPriceRef.blur();
+
     Keyboard.dismiss();
     try {
       let response = await fetch(
@@ -164,8 +169,7 @@ class SellScreen extends React.Component {
                 sellStyles.pickerPlaceholder :
                 sellStyles.pickerSelected}
               selectedValue={this.state.textbookEdition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition: itemValue})}
-              ref={input => {this.textbookEditionRef=input}}>
+              onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition: itemValue})}>
               <Picker.Item label="Edition" value="" />
               <Picker.Item label="Custom Edition" value="Custom Edition" />
               <Picker.Item label="Global Edition" value="Global Edition" />
@@ -195,8 +199,7 @@ class SellScreen extends React.Component {
                 sellStyles.pickerPlaceholder :
                 sellStyles.pickerSelected}
               selectedValue={this.state.textbookCondition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}
-              ref={input => {this.textbookConditionRef=input}}>
+              onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}>
               <Picker.Item label="Condition" value="" />
               <Picker.Item label="New" value="New" />
               <Picker.Item label="Like New" value="Like New" />
@@ -214,8 +217,7 @@ class SellScreen extends React.Component {
                 sellStyles.pickerSelected}
               itemStyle={sellStyles.testPickerItem}
               selectedValue={this.state.textbookType}
-              onValueChange={(itemValue) => this.setState({textbookType: itemValue})}
-              ref={input => {this.textbookTypeRef=input}}>
+              onValueChange={(itemValue) => this.setState({textbookType: itemValue})}>
               <Picker.Item label="Type" value="" />
               <Picker.Item label="Paperback" value="Paperback" />
               <Picker.Item label="Hardcover" value="Hardcover" />
