@@ -3,6 +3,16 @@ import {StyleSheet, Dimensions} from 'react-native';
 const ScreenWidth = Dimensions.get('window').width;
 
 const sellStyles = StyleSheet.create ({
+  inputFirst: {
+    width: ScreenWidth*0.70,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    paddingLeft: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontSize: 16,
+  },
   input: {
     width: ScreenWidth*0.70,
     height: 40,
@@ -10,6 +20,8 @@ const sellStyles = StyleSheet.create ({
     borderColor: 'lightgray',
     borderTopColor: 'transparent',
     paddingLeft: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
     fontSize: 16,
   },
   courseInput: {
@@ -19,15 +31,8 @@ const sellStyles = StyleSheet.create ({
     borderColor: 'lightgray',
     borderTopColor: 'transparent',
     paddingLeft: 10,
-    paddingBottom: 9,
-    fontSize: 16,
-  },
-  inputFirst: {
-    width: ScreenWidth*0.70,
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    paddingLeft: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
     fontSize: 16,
   },
   picker: {
