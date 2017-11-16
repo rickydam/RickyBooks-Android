@@ -85,10 +85,18 @@ class SellScreen extends React.Component {
 
   clearInputs() {
     this.setState({
+      textbookTitle: '',
+      textbookTitleRef: '',
+      textbookAuthor: '',
+      textbookAuthorRef: '',
       textbookEdition: '',
       textbookCondition: '',
       textbookType: '',
       textbookCoursePart1: '',
+      textbookCoursePart1Ref: '',
+      textbookCoursePart2: '',
+      textbookPrice: '',
+      textbookPriceRef: '',
     });
     this.textbookTitleRef.clear();
     this.textbookTitleRef.blur();
