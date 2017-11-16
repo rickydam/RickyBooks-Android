@@ -305,12 +305,12 @@ class SellScreen extends React.Component {
                   coursetypes.map((item, index) => {
                     if(item == "Course") {
                       return (
-                        <Picker.Item label={item} value="" />
+                        <Picker.Item key={item} label={item} value="" />
                       );
                     }
                     else {
                       return (
-                        <Picker.Item label={item} value={item} />
+                        <Picker.Item key={item} label={item} value={item} />
                       );
                     }
                   })
