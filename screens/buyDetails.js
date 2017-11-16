@@ -3,11 +3,18 @@ import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import Modal from 'react-native-modal';
 
 const mainStyles = require('../styles/mainStyles.js');
-const buyStyles = require('../styles/buyStyles.js');
+const buyDetailsStyles = require('../styles/buyDetailsStyles.js');
 const buyIcon = require('../images/icons/buy.png');
 const textbook = require('../images/textbook.jpg');
 
 class BuyDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      values: '',
+    }
+  }
+
   state = {
     isModalVisible: false,
   }
@@ -24,23 +31,32 @@ class BuyDetails extends React.Component {
     ),
   };
 
+  componentDidMount() {
+    this.setState({
+      values: this.props.navigation.state.params
+    });
+  }
+
   render() {
     return (
       <View style={mainStyles.detailsContainer}>
+        <Text style={buyDetailsStyles.itemTitle}>{this.state.values["title"]}</Text>
+        <Text style={buyDetailsStyles.itemText}>{this.state.values["author"]}</Text>
         <Image
           source={textbook}
-          style={buyStyles.itemImage}
+          style={buyDetailsStyles.itemImage}
         />
-        <Text style={buyStyles.itemTitle}>Fundamentals of Web Development</Text>
-        <Text style={buyStyles.itemAuthor}>Randy Connolly, Ricardo Hoar</Text>
-        <Text style={buyStyles.itemEdition}>2nd Edition</Text>
-        <View style={buyStyles.itemColumns}>
-          <View style={buyStyles.itemColumn}>
-            <Text style={buyStyles.itemPrice}>$150</Text>
+        <View style={buyDetailsStyles.itemColumns}>
+          <View style={buyDetailsStyles.itemColumnLeft}>
+            <Text style={buyDetailsStyles.itemText}>{this.state.values["edition"]}</Text>
+            <Text style={buyDetailsStyles.itemText}>{this.state.values["condition"]}</Text>
+            <Text style={buyDetailsStyles.itemText}>{this.state.values["type"]}</Text>
+            <Text style={buyDetailsStyles.itemText}>{this.state.values["coursecode"]}</Text>
           </View>
-          <View style={buyStyles.itemColumn}>
-            <Text style={buyStyles.itemSeller}>Ricky Dam</Text>
-            <Text style={buyStyles.itemDate}>2 hours ago</Text>
+          <View style={buyDetailsStyles.itemColumnRight}>
+            <Text style={buyDetailsStyles.itemSeller}>Ricky Dam</Text>
+            <Text style={buyDetailsStyles.itemDate}>{this.state.values["created_at"]}</Text>
+            <Text style={buyDetailsStyles.itemPrice}>${this.state.values["price"]}</Text>
           </View>
         </View>
         <TouchableOpacity onPress={this._showModal}>
@@ -63,7 +79,6 @@ class BuyDetails extends React.Component {
               multiline={true}
               numberOfLines={2}
               textAlignVertical="top"
-              autoCapitalize="words"
               placeholder="Message..."
               onChangeText={(text) => this.setState({text})}
               value={this.state.text} />
@@ -80,4 +95,4 @@ class BuyDetails extends React.Component {
   }
 }
 
-module.exports = BuyDetails
+module.exports = BuyDetails;

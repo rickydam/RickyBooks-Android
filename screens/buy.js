@@ -156,7 +156,18 @@ class BuyScreen extends React.Component {
               <TouchableHighlight
                 style={buyStyles.listItem}
                 underlayColor="#E8E8E8"
-                onPress={() => navigate('TheBuyDetailsScreen')}>
+                onPress={() =>
+                  navigate('TheBuyDetailsScreen', {
+                    title:      item["textbook_title"],
+                    author:     item["textbook_author"],
+                    edition:    item["textbook_edition"],
+                    condition:  item["textbook_condition"],
+                    coursecode: item["textbook_coursecode"],
+                    type:       item["textbook_type"],
+                    created_at: item["created_at"],
+                    price:      item["textbook_price"]
+                  })
+                }>
                 <View style={buyStyles.listItemView}>
                   <Image
                     source = {textbook}
