@@ -25,7 +25,7 @@ class BuyScreen extends React.Component {
     ),
   };
 
-  async componentWillMount() {
+  componentDidMount() {
     this.setState({refreshing:true});
     this.fetchData().then(() => {
       this.setState({refreshing: false});
