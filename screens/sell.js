@@ -8,14 +8,34 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert,
+  FlatList
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const mainStyles = require('../styles/mainStyles.js');
 const sellStyles = require('../styles/sellStyles.js');
 const sellIcon = require('../images//icons/sell.png');
-const placeholderImg = require('../images/placeholder.png')
+const placeholderImg = require('../images/placeholder.png');
+
+var coursetypes = [
+  "Course", "ACCT", "AERO", "AFRI", "ASLA", "ANTH", "ALDS", "ARAB", "ARCT",
+    "ARCS", "ARCC", "ARCN", "ARCH", "ARCU", "ARTH", "BIOC", "BIOL", "BIOM",
+    "BUSI", "CDNS", "CIED", "CHEM", "CHST", "CHIN", "CIVE", "CIVJ", "CLCV",
+    "COOP", "CGSC", "CCDP", "COMS", "COMP", "CRCJ", "CLMD", "CURA", "DATA",
+    "DIGH", "DIST", "DBST", "ESPW", "ERTH", "ECON", "EACJ", "ELEC", "ECOR",
+    "ENGL", "ESLA", "ENVJ", "ENVE", "ENSC", "ENST", "EPAF", "EURR", "FILM",
+    "FINA", "FYSM", "FOOD", "FREN", "FINS", "GEOG", "GEOM", "GERM", "GPOL",
+    "GINS", "GREK", "HLTH", "HIST", "HUMR", "HCIN", "HUMS", "INDG", "IDES",
+    "ISYS", "IRM",  "ITIS", "BIT",  "ITEC", "IPIS", "LANG", "LATN", "INSC",
+    "IMD",  "IPAF", "ISCI", "INAF", "IBUS", "IDMG", "ITAL", "JAPA", "JOUR",
+    "KORE", "LACS", "LAWS", "LING", "MGMT", "MKTG", "MATH", "MAAJ", "MECH",
+    "MAAE", "MEMS", "MGDS", "MUSI", "NSCI", "NET",  "NEUR", "NRTH", "PANL",
+    "PHIL", "PLT",  "PHYS", "PHYJ", "PECO", "POLM", "PSCI", "PORT", "PSYC",
+    "PADM", "PAPM", "RELI", "RUSS", "SXST", "SOWK", "SOCI", "SAST", "SPAN",
+    "STAT", "STGY", "SREE", "SERG", "SYSC", "TSES", "TIMG", "TOMS", "WGST"
+];
 
 class SellScreen extends React.Component {
   constructor(props) {
@@ -28,8 +48,9 @@ class SellScreen extends React.Component {
       textbookEdition: '',
       textbookCondition: '',
       textbookType: '',
-      textbookCourseCode: '',
-      textbookCourseCodeRef: '',
+      textbookCoursePart1: '',
+      textbookCoursePart1Ref: '',
+      textbookCoursePart2: '',
       textbookPrice: '',
       textbookPriceRef: '',
       // textbookImage: '',
@@ -62,21 +83,31 @@ class SellScreen extends React.Component {
     ),
   };
 
-  async onSubmit() {
+  clearInputs() {
     this.setState({
       textbookEdition: '',
       textbookCondition: '',
       textbookType: '',
+      textbookCoursePart1: '',
     });
     this.textbookTitleRef.clear();
     this.textbookTitleRef.blur();
     this.textbookAuthorRef.clear();
     this.textbookAuthorRef.blur();
-    this.textbookCourseCodeRef.clear();
-    this.textbookCourseCodeRef.blur();
+    this.textbookCoursePart2Ref.clear();
+    this.textbookCoursePart2Ref.blur();
     this.textbookPriceRef.clear();
     this.textbookPriceRef.blur();
+  }
 
+  async onSubmit() {
+    var coursecode;
+    if(this.state.textbookCoursePart1 == '' | this.state.textbookCoursePart2 == '') {
+      coursecode = '';
+    }
+    else {
+      coursecode = this.state.textbookCoursePart1 + this.state.textbookCoursePart2;
+    }
     Keyboard.dismiss();
     try {
       let response = await fetch(
@@ -92,16 +123,52 @@ class SellScreen extends React.Component {
             textbook_edition:     this.state.textbookEdition,
             textbook_condition:   this.state.textbookCondition,
             textbook_type:        this.state.textbookType,
-            textbook_coursecode:  this.state.textbookCourseCode,
+            textbook_coursecode:  coursecode,
             textbook_price:       this.state.textbookPrice
           })
         });
         let res = await response.text();
         if(response.status>=200 && response.status<300) {
-          alert("Success yayyy!!!!");
+          this.clearInputs();
+          alert("Successfully posted.");
         }
         else {
-          alert("Didn't work... awhhh..");
+          resdata = JSON.parse(res).data;
+          var thekeys = Object.keys(resdata);
+          var theString = "";
+          for(i=0; i<thekeys.length; i++) {
+            thekeys[i] = thekeys[i].replace("textbook_", "Textbook ");
+            if(thekeys[i] == "Textbook title") {
+              thekeys[i] = thekeys[i].replace("title", "Title");
+            }
+            if(thekeys[i] == "Textbook author") {
+              thekeys[i] = thekeys[i].replace("author", "Author");
+            }
+            if(thekeys[i] == "Textbook edition") {
+              thekeys[i] = thekeys[i].replace("edition", "Edition");
+            }
+            if(thekeys[i] == "Textbook condition") {
+              thekeys[i] = thekeys[i].replace("condition", "Condition");
+            }
+            if(thekeys[i] == "Textbook type") {
+              thekeys[i] = thekeys[i].replace("type", "Type");
+            }
+            if(thekeys[i] == "Textbook coursecode") {
+              thekeys[i] = thekeys[i].replace("coursecode", "Course Code");
+            }
+            if(thekeys[i] == "Textbook price") {
+              thekeys[i] = thekeys[i].replace("price", "Price");
+            }
+          }
+          for(i=0; i<thekeys.length; i++) {
+            if(i==thekeys.length-1) {
+              theString += "Missing: " + thekeys[i];
+            }
+            else {
+              theString += "Missing: " + thekeys[i] + "\n";
+            }
+          }
+          Alert.alert("All fields are required", theString);
         }
     } catch(error) {
       alert("error: " + error);
@@ -119,7 +186,6 @@ class SellScreen extends React.Component {
       //     contentContainerStyle={mainStyles.container}
       //     keyboardShouldPersistTaps='handled'>
         <View style={mainStyles.container}>
-
           <Text style={mainStyles.title}>Sell a textbook!</Text>
 
           {/* <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
@@ -169,7 +235,7 @@ class SellScreen extends React.Component {
                 sellStyles.pickerPlaceholder :
                 sellStyles.pickerSelected}
               selectedValue={this.state.textbookEdition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition:itemValue})}>
               <Picker.Item label="Edition" value="" />
               <Picker.Item label="Custom Edition" value="Custom Edition" />
               <Picker.Item label="Global Edition" value="Global Edition" />
@@ -199,7 +265,7 @@ class SellScreen extends React.Component {
                 sellStyles.pickerPlaceholder :
                 sellStyles.pickerSelected}
               selectedValue={this.state.textbookCondition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition:itemValue})}>
               <Picker.Item label="Condition" value="" />
               <Picker.Item label="New" value="New" />
               <Picker.Item label="Like New" value="Like New" />
@@ -215,9 +281,8 @@ class SellScreen extends React.Component {
                 this.state.textbookType == '' ?
                 sellStyles.pickerPlaceholder :
                 sellStyles.pickerSelected}
-              itemStyle={sellStyles.testPickerItem}
               selectedValue={this.state.textbookType}
-              onValueChange={(itemValue) => this.setState({textbookType: itemValue})}>
+              onValueChange={(itemValue) => this.setState({textbookType:itemValue})}>
               <Picker.Item label="Type" value="" />
               <Picker.Item label="Paperback" value="Paperback" />
               <Picker.Item label="Hardcover" value="Hardcover" />
@@ -225,16 +290,47 @@ class SellScreen extends React.Component {
             </Picker>
           </View>
 
-          <TextInput
-            style={sellStyles.input}
-            placeholder="Course Code (ABCD1234)"
-            placeholderTextColor="#B3B3B3"
-            underlineColorAndroid="transparent"
-            autoCapitalize="characters"
-            maxLength={8}
-            onChangeText={(text) => this.setState({textbookCourseCode:text})}
-            ref={input => {this.textbookCourseCodeRef=input}}
-          />
+          <View style={sellStyles.courseRow}>
+
+            <View style={sellStyles.coursePicker}>
+              <Picker
+                mode="dropdown"
+                style={
+                  this.state.textbookCoursePart1 == '' ?
+                  sellStyles.coursePickerPlaceholder :
+                  sellStyles.coursePickerSelected}
+                selectedValue={this.state.textbookCoursePart1}
+                onValueChange={(itemValue) => this.setState({textbookCoursePart1:itemValue})}>
+                {
+                  coursetypes.map((item, index) => {
+                    if(item == "Course") {
+                      return (
+                        <Picker.Item label={item} value="" />
+                      );
+                    }
+                    else {
+                      return (
+                        <Picker.Item label={item} value={item} />
+                      );
+                    }
+                  })
+                }
+              </Picker>
+            </View>
+
+            <TextInput
+              style={sellStyles.courseInput}
+              placeholder="Code (####)"
+              placeholderTextColor="#B3B3B3"
+              underlineColorAndroid="transparent"
+              autoCapitalize="characters"
+              keyboardType="numeric"
+              maxLength={4}
+              onChangeText={(text) => this.setState({textbookCoursePart2:text})}
+              ref={input => {this.textbookCoursePart2Ref=input}}
+            />
+
+          </View>
 
           <TextInput
             style={sellStyles.input}
@@ -242,7 +338,7 @@ class SellScreen extends React.Component {
             placeholderTextColor="#B3B3B3"
             underlineColorAndroid="transparent"
             keyboardType="numeric"
-            maxLength={6}
+            maxLength={3}
             onChangeText={(text) => this.setState({textbookPrice:text})}
             ref={input => {this.textbookPriceRef=input}}
           />

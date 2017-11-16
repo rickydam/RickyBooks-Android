@@ -12,6 +12,16 @@ const sellStyles = StyleSheet.create ({
     paddingLeft: 10,
     fontSize: 16,
   },
+  courseInput: {
+    width: ScreenWidth*0.40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderTopColor: 'transparent',
+    paddingLeft: 10,
+    paddingBottom: 9,
+    fontSize: 16,
+  },
   inputFirst: {
     width: ScreenWidth*0.70,
     height: 40,
@@ -35,6 +45,28 @@ const sellStyles = StyleSheet.create ({
   },
   pickerSelected: {
     width: ScreenWidth*0.70,
+    height: 40,
+    color: 'black',
+  },
+  courseRow: {
+    flexDirection: 'row',
+  },
+  coursePicker: {
+    width: ScreenWidth*0.30,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    alignItems: 'center',
+  },
+  coursePickerPlaceholder: {
+    width: ScreenWidth*0.30,
+    height: 40,
+    color: '#B3B3B3',
+  },
+  coursePickerSelected: {
+    width: ScreenWidth*0.30,
     height: 40,
     color: 'black',
   },
