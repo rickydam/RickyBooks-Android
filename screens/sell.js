@@ -279,6 +279,7 @@ class SellScreen extends React.Component {
               <Picker.Item label="Like New" value="Like New" />
               <Picker.Item label="Good" value="Good" />
               <Picker.Item label="Okay" value="Okay" />
+              <Picker.Item label="Bad" value="Bad" />
             </Picker>
           </View>
 
