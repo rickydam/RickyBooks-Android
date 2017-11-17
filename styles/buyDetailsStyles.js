@@ -4,6 +4,23 @@ const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 
 const buyDetailsStyles = StyleSheet.create ({
+  detailsContainer: {
+    backgroundColor: 'white',
+    height: ScreenHeight,
+    alignItems: 'center',
+  },
+  messageModalContainer: {
+    justifyContent: 'flex-start',
+  },
+  imageModalView: {
+    width: ScreenWidth,
+    height: ScreenHeight,
+    justifyContent: 'center',
+  },
+  modalImage: {
+    width: ScreenWidth*0.90,
+    height: ScreenHeight*0.70,
+  },
   itemImage: {
     height: 250,
     width: 200,

@@ -2,6 +2,7 @@ package com.rickybooks;
 
 import android.app.Application;
 import com.imagepicker.ImagePickerPackage;
+import com.reactnative.photoview.PhotoViewPackage;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -24,7 +25,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new ImagePickerPackage()
+          new ImagePickerPackage(),
+          new PhotoViewPackage()
       );
     }
 

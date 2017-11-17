@@ -16,14 +16,6 @@ const mainStyles = StyleSheet.create ({
     height: ScreenHeight-20,
     backgroundColor: 'white',
   },
-  detailsContainer: {
-    backgroundColor: 'white',
-    height: ScreenHeight,
-    alignItems: 'center',
-  },
-  modalContainer: {
-    justifyContent: 'flex-start',
-  },
   icon: {
     width: 20,
     height: 20,

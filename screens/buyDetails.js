@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import Modal from 'react-native-modal';
+import PhotoView from 'react-native-photo-view';
 
 const mainStyles = require('../styles/mainStyles.js');
 const buyDetailsStyles = require('../styles/buyDetailsStyles.js');
@@ -12,14 +13,16 @@ class BuyDetails extends React.Component {
     super(props);
     this.state = {
       values: '',
+      messageModal: false,
+      imageModal: false,
     }
   }
 
-  state = {
-    isModalVisible: false,
-  }
-  _showModal = () => this.setState({isModalVisible: true})
-  _hideModal = () => this.setState({isModalVisible: false})
+  _showMessageModal = () => this.setState({messageModal: true});
+  _hideMessageModal = () => this.setState({messageModal: false});
+
+  _showImageModal = () => this.setState({imageModal: true});
+  _hideImageModal = () => this.setState({imageModal: false});
 
   static navigationOptions = {
     tabBarLabel: 'Buy',
@@ -39,13 +42,36 @@ class BuyDetails extends React.Component {
 
   render() {
     return (
-      <View style={mainStyles.detailsContainer}>
+      <View style={buyDetailsStyles.detailsContainer}>
+
         <Text style={buyDetailsStyles.itemTitle}>{this.state.values["title"]}</Text>
         <Text style={buyDetailsStyles.itemText}>{this.state.values["author"]}</Text>
-        <Image
-          source={textbook}
-          style={buyDetailsStyles.itemImage}
-        />
+
+        <TouchableOpacity onPress={this._showImageModal}>
+          <Image
+            source={textbook}
+            style={buyDetailsStyles.itemImage}
+          />
+        </TouchableOpacity>
+
+        <Modal
+          isVisible={this.state.imageModal}
+          onBackButtonPress={this._hideImageModal}
+          onBackdropPress={this._hideImageModal}
+          backdropTransitionInTiming={1}
+          backdropTransitionOutTiming={1}
+          animationIn="fadeIn"
+          animationInTiming={1}
+          animationOut="fadeOut"
+          animationOutTiming={1}>
+          <View style={buyDetailsStyles.imageModalView}>
+            <PhotoView
+              source={textbook}
+              style={buyDetailsStyles.modalImage}>
+            </PhotoView>
+          </View>
+        </Modal>
+
         <View style={buyDetailsStyles.itemColumns}>
           <View style={buyDetailsStyles.itemColumnLeft}>
             <Text style={buyDetailsStyles.itemText}>{this.state.values["edition"]}</Text>
@@ -59,18 +85,20 @@ class BuyDetails extends React.Component {
             <Text style={buyDetailsStyles.itemPrice}>${this.state.values["price"]}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={this._showModal}>
+
+        <TouchableOpacity onPress={this._showMessageModal}>
           <View style={mainStyles.blueButtonMedium}>
             <Text style={mainStyles.buttonText}>MESSAGE</Text>
           </View>
         </TouchableOpacity>
+
         <Modal
-          style={mainStyles.modalContainer}
-          isVisible={this.state.isModalVisible}
-          backdropOpacity={0.8}
-          onBackButtonPress={this._hideModal}
+          style={buyDetailsStyles.messageModalContainer}
+          isVisible={this.state.messageModal}
+          backdropOpacity={0.70}
+          onBackButtonPress={this._hideMessageModal}
           >
-          <TouchableOpacity style={mainStyles.redCloseButton} onPress={this._hideModal}>
+          <TouchableOpacity style={mainStyles.redCloseButton} onPress={this._hideMessageModal}>
             <Text style={mainStyles.buttonTextLarge}>X</Text>
           </TouchableOpacity>
           <View style={mainStyles.textAreaContainer}>
@@ -90,6 +118,7 @@ class BuyDetails extends React.Component {
             </TouchableOpacity>
           </View>
         </Modal>
+
       </View>
     );
   }
