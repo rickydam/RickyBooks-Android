@@ -10,7 +10,7 @@ const mainStyles = StyleSheet.create ({
     paddingLeft: 5,
     paddingRight: 5,
     width: ScreenWidth,
-    height: ScreenHeight-90,
+    height: ScreenHeight-88,
   },
   tabContainer: {
     height: ScreenHeight-20,
