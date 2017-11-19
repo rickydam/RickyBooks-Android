@@ -18,11 +18,11 @@ class BuyDetails extends React.Component {
     }
   }
 
-  _showMessageModal = () => this.setState({messageModal: true});
-  _hideMessageModal = () => this.setState({messageModal: false});
+  showMessageModal = () => this.setState({messageModal:true});
+  hideMessageModal = () => this.setState({messageModal:false});
 
-  _showImageModal = () => this.setState({imageModal: true});
-  _hideImageModal = () => this.setState({imageModal: false});
+  showImageModal = () => this.setState({imageModal:true});
+  hideImageModal = () => this.setState({imageModal:false});
 
   static navigationOptions = {
     tabBarLabel: 'Buy',
@@ -47,7 +47,7 @@ class BuyDetails extends React.Component {
         <Text style={buyDetailsStyles.itemTitle}>{this.state.values["title"]}</Text>
         <Text style={buyDetailsStyles.itemText}>{this.state.values["author"]}</Text>
 
-        <TouchableOpacity onPress={this._showImageModal}>
+        <TouchableOpacity onPress={this.showImageModal}>
           <Image
             source={textbook}
             style={buyDetailsStyles.itemImage}
@@ -56,8 +56,8 @@ class BuyDetails extends React.Component {
 
         <Modal
           isVisible={this.state.imageModal}
-          onBackButtonPress={this._hideImageModal}
-          onBackdropPress={this._hideImageModal}
+          onBackButtonPress={this.hideImageModal}
+          onBackdropPress={this.hideImageModal}
           backdropTransitionInTiming={1}
           backdropTransitionOutTiming={1}
           animationIn="fadeIn"
@@ -86,7 +86,7 @@ class BuyDetails extends React.Component {
           </View>
         </View>
 
-        <TouchableOpacity onPress={this._showMessageModal}>
+        <TouchableOpacity onPress={this.showMessageModal}>
           <View style={mainStyles.blueButtonMedium}>
             <Text style={mainStyles.buttonText}>MESSAGE</Text>
           </View>
@@ -96,9 +96,9 @@ class BuyDetails extends React.Component {
           style={buyDetailsStyles.messageModalContainer}
           isVisible={this.state.messageModal}
           backdropOpacity={0.70}
-          onBackButtonPress={this._hideMessageModal}
+          onBackButtonPress={this.hideMessageModal}
           >
-          <TouchableOpacity style={mainStyles.redCloseButton} onPress={this._hideMessageModal}>
+          <TouchableOpacity style={mainStyles.redCloseButton} onPress={this.hideMessageModal}>
             <Text style={mainStyles.buttonTextLarge}>X</Text>
           </TouchableOpacity>
           <View style={mainStyles.textAreaContainer}>
