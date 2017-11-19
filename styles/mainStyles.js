@@ -28,6 +28,7 @@ const mainStyles = StyleSheet.create ({
     fontWeight: 'bold',
     fontSize: 25,
     margin: 5,
+    alignSelf: 'center',
   },
   blueButtonBig: {
     width: 200,
@@ -48,6 +49,16 @@ const mainStyles = StyleSheet.create ({
     justifyContent: 'center',
   },
   blueButtonSmall: {
+    width: 60,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  blueButtonSmallHC: {
     width: 60,
     height: 40,
     margin: 10,
@@ -96,6 +107,10 @@ const mainStyles = StyleSheet.create ({
     alignSelf: 'center',
     justifyContent: 'center',
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  }
 });
 
 module.exports = mainStyles;

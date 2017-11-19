@@ -1,5 +1,9 @@
 import React from 'react';
-import {Text, View, Image, ScrollView, FlatList, RefreshControl, TouchableHighlight} from 'react-native';
+import {
+  Text, View, Image, ScrollView, FlatList, CheckBox,
+  RefreshControl, TouchableHighlight, TouchableOpacity
+} from 'react-native';
+import Modal from 'react-native-modal';
 
 const mainStyles = require('../styles/mainStyles.js');
 const buyStyles = require('../styles/buyStyles.js');
@@ -11,7 +15,9 @@ class BuyScreen extends React.Component {
     super(props);
     this.state = {
       refreshing: true,
-      res: '',
+      data: '',
+      filters: ["SYSC", "ELEC"],
+      refFlatList: '',
     };
   }
 
@@ -65,18 +71,8 @@ class BuyScreen extends React.Component {
 
   cleanTime(postedDate) {
     var monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec"
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
     ];
     var month = monthNames[postedDate.getMonth()];
     var day = postedDate.getDate();
@@ -114,8 +110,8 @@ class BuyScreen extends React.Component {
     try {
       let response = await fetch('https://rickybooks.herokuapp.com/textbooks');
       let responseText = await response.text();
-      this.state.res = JSON.parse(responseText).data;
-      for(var item of this.state.res) {
+      this.state.data = JSON.parse(responseText).data;
+      for(var item of this.state.data) {
         var postedDate = new Date(item["created_at"]);
         var cleanDate = this.cleanTime(postedDate);
         item["created_at"] = cleanDate;
@@ -130,27 +126,61 @@ class BuyScreen extends React.Component {
     }
   }
 
-  _onRefresh() {
+  onRefresh() {
     this.setState({refreshing:true});
     this.fetchData().then(() => {
-      this.setState({refreshing: false});
+      this.setState({
+        refreshing: false,
+        filters: ["SYSC", "TABL"],
+      });
     });
+  }
+
+  filterItem(item) {
+    for(i=0; i<this.state.filters.length; i++) {
+      if(item["textbook_coursecode"].substring(0,4) == this.state.filters[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  filterData() {
+    this.setState({
+      data: this.state.data.filter(this.filterItem.bind(this))
+    });
+    this.refFlatList.scrollToOffset({x:0, y:0, animated:true});
+    this.refFlatList.scrollToOffset({x:0, y:0, animated:true}); // bug requires 2 of them
   }
 
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <ScrollView contentContainerStyle={mainStyles.container}>
-        <Text style={mainStyles.title}>Buy a textbook!</Text>
+      <ScrollView contentContainerStyle={mainStyles.container} ref='buyScrollView'>
+
+        <View style={buyStyles.buyTitleRow}>
+          <View style={buyStyles.buyTitle}>
+            <Text style={mainStyles.title}>Buy a textbook!</Text>
+          </View>
+          <TouchableOpacity
+            style={buyStyles.blueButtonRight}
+            onPress={this.filterData.bind(this)}>
+            <View style={buyStyles.blueButtonSmallShort}>
+              <Text style={mainStyles.buttonText}>FILTER</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
         <FlatList
-          data={this.state.res}
+          data={this.state.data}
           extraData={this.state}
           keyExtractor={(item, index) => index}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}/>
+              onRefresh={this.onRefresh.bind(this)}/>
           }
+          ref={ref => this.refFlatList=ref}
           renderItem={({item}) =>
             <View style={buyStyles.listItemMainContainer}>
               <TouchableHighlight
@@ -168,7 +198,7 @@ class BuyScreen extends React.Component {
                     price:      item["textbook_price"]
                   })
                 }>
-                <View style={buyStyles.listItemView}>
+                <View style={mainStyles.row}>
                   <Image
                     source = {textbook}
                     style = {buyStyles.listItemImage}

@@ -9,6 +9,33 @@ const buyStyles = StyleSheet.create ({
     height: ScreenHeight*0.23,
     borderTopWidth: 1,
   },
+  buyContainer: {
+    backgroundColor: 'white',
+    paddingLeft: 5,
+    paddingRight: 5,
+    width: ScreenWidth,
+    height: ScreenHeight-88,
+  },
+  buyTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  blueButtonSmallShort: {
+    width: 60,
+    height: 30,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#0276FD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  blueButtonRight: {
+    width: 80,
+  },
+  buyTitle: {
+    width: ScreenWidth-80,
+    justifyContent: 'center',
+  },
   listItem: {
     width: ScreenWidth,
     height: ScreenHeight*0.23,
@@ -16,9 +43,6 @@ const buyStyles = StyleSheet.create ({
     flex: 1,
     flexDirection: 'row',
     paddingTop: 8,
-  },
-  listItemView: {
-    flexDirection: 'row',
   },
   listItemImage: {
     width: ScreenWidth*0.27,
