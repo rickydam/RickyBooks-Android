@@ -20,21 +20,21 @@ const sellIcon = require('../images//icons/sell.png');
 const placeholderImg = require('../images/placeholder.png');
 
 var coursetypes = [
-  "Course", "ACCT", "AERO", "AFRI", "ASLA", "ANTH", "ALDS", "ARAB", "ARCT",
-    "ARCS", "ARCC", "ARCN", "ARCH", "ARCU", "ARTH", "BIOC", "BIOL", "BIOM",
-    "BUSI", "CDNS", "CIED", "CHEM", "CHST", "CHIN", "CIVE", "CIVJ", "CLCV",
-    "COOP", "CGSC", "CCDP", "COMS", "COMP", "CRCJ", "CLMD", "CURA", "DATA",
-    "DIGH", "DIST", "DBST", "ESPW", "ERTH", "ECON", "EACJ", "ELEC", "ECOR",
-    "ENGL", "ESLA", "ENVJ", "ENVE", "ENSC", "ENST", "EPAF", "EURR", "FILM",
-    "FINA", "FYSM", "FOOD", "FREN", "FINS", "GEOG", "GEOM", "GERM", "GPOL",
-    "GINS", "GREK", "HLTH", "HIST", "HUMR", "HCIN", "HUMS", "INDG", "IDES",
-    "ISYS", "IRM",  "ITIS", "BIT",  "ITEC", "IPIS", "LANG", "LATN", "INSC",
-    "IMD",  "IPAF", "ISCI", "INAF", "IBUS", "IDMG", "ITAL", "JAPA", "JOUR",
-    "KORE", "LACS", "LAWS", "LING", "MGMT", "MKTG", "MATH", "MAAJ", "MECH",
-    "MAAE", "MEMS", "MGDS", "MUSI", "NSCI", "NET",  "NEUR", "NRTH", "PANL",
-    "PHIL", "PLT",  "PHYS", "PHYJ", "PECO", "POLM", "PSCI", "PORT", "PSYC",
-    "PADM", "PAPM", "RELI", "RUSS", "SXST", "SOWK", "SOCI", "SAST", "SPAN",
-    "STAT", "STGY", "SREE", "SERG", "SYSC", "TSES", "TIMG", "TOMS", "WGST"
+  "Course", "ACCT", "AERO", "AFRI", "ALDS", "ANTH", "ARAB", "ARCC", "ARCH",
+    "ARCN", "ARCS", "ARCT", "ARCU", "ARTH", "ASLA", "BIT",  "BIOC", "BIOL",
+    "BIOM", "BUSI", "CCDP", "CDNS", "CGSC", "CIED", "CIVE", "CHEM", "CHIN",
+    "CHST", "CIVJ", "CLCV", "CLMD", "COMP", "COMS", "COOP", "CRCJ", "CURA",
+    "DATA", "DBST", "DIGH", "DIST", "EACJ", "ECON", "ELEC", "ERTH", "ESPW",
+    "ECOR", "ENGL", "ENSC", "ENST", "ENVE", "ENVJ", "EPAF", "ESLA", "EURR",
+    "FOOD", "FILM", "FINA", "FINS", "FREN", "FYSM", "GEOG", "GEOM", "GERM",
+    "GINS", "GPOL", "GREK", "HCIN", "HIST", "HLTH", "HUMR", "HUMS", "IBUS",
+    "IDES", "IMD",  "INAF", "INDG", "INSC", "IPAF", "IPIS", "IRM",  "ISCI",
+    "ISYS", "ITEC", "ITIS", "IDMG", "LANG", "LATN", "ITAL", "JAPA", "JOUR",
+    "KORE", "LACS", "LAWS", "LING", "MAAE", "MAAJ", "MATH", "MECH", "MEMS",
+    "MGDS", "MGMT", "MKTG", "MUSI", "NET",  "NEUR", "NRTH", "NSCI", "PANL",
+    "PADM", "PAPM", "PECO", "PHIL", "PHYJ", "PHYS", "PLT",  "POLM", "PORT",
+    "PSCI", "PSYC", "RELI", "RUSS", "SAST", "SERG", "SOCI", "SOWK", "SPAN",
+    "SREE", "STAT", "STGY", "SXST", "SYSC", "TIMG", "TOMS", "TSES", "WGST"
 ];
 
 class SellScreen extends React.Component {
