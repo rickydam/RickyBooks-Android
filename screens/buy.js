@@ -16,8 +16,9 @@ class BuyScreen extends React.Component {
     this.state = {
       refreshing: true,
       data: '',
-      filters: ["SYSC", "ELEC"],
+      filters: [],
       refFlatList: '',
+      filterModal: false,
     };
   }
 
@@ -52,7 +53,6 @@ class BuyScreen extends React.Component {
       else {
         theString = minutes + " minutes ago";
       }
-
       return theString;
     }
     var hours = parseInt(minutes/60);
@@ -120,6 +120,17 @@ class BuyScreen extends React.Component {
         if(specialTimeString != null) {
           item["created_at"] = specialTimeString;
         }
+        thecoursecode = item["textbook_coursecode"].substring(0,4);
+        if(this.state.filters.indexOf(thecoursecode) == -1) {
+          // This is a unique entry, add it
+          this.state.filters.push(thecoursecode);
+        }
+      }
+      for(i=0; i<this.state.filters.length; i++) {
+        item = this.state.filters[i];
+        this.setState({
+          [item]: false
+        });
       }
     } catch(error) {
       alert("error: " + error);
@@ -131,18 +142,20 @@ class BuyScreen extends React.Component {
     this.fetchData().then(() => {
       this.setState({
         refreshing: false,
-        filters: ["SYSC", "TABL"],
       });
     });
   }
 
-  filterItem(item) {
-    for(i=0; i<this.state.filters.length; i++) {
-      if(item["textbook_coursecode"].substring(0,4) == this.state.filters[i]) {
-        return true;
-      }
-    }
-    return false;
+  showFilterModal = () => this.setState({
+    filterModal: true
+  });
+  hideFilterModal = () => this.setState({
+    filterModal: false
+  });
+
+  applyFilters() {
+    this.filterData();
+    this.hideFilterModal();
   }
 
   filterData() {
@@ -151,6 +164,18 @@ class BuyScreen extends React.Component {
     });
     this.refFlatList.scrollToOffset({x:0, y:0, animated:true});
     this.refFlatList.scrollToOffset({x:0, y:0, animated:true}); // bug requires 2 of them
+  }
+
+  filterItem(item) {
+    theItem = item["textbook_coursecode"].substring(0,4);
+    if(this.state[theItem] == true) {
+      // Checkbox checked
+      if(this.state.filters.indexOf(theItem) != -1) {
+        // We found a match, keep it
+        return true;
+      }
+    }
+    return false;
   }
 
   render() {
@@ -164,12 +189,53 @@ class BuyScreen extends React.Component {
           </View>
           <TouchableOpacity
             style={buyStyles.blueButtonRight}
-            onPress={this.filterData.bind(this)}>
+            onPress={this.showFilterModal}>
             <View style={buyStyles.blueButtonSmallShort}>
               <Text style={mainStyles.buttonText}>FILTER</Text>
             </View>
           </TouchableOpacity>
         </View>
+
+        <Modal
+          isVisible={this.state.filterModal}
+          onBackButtonPress={this.hideFilterModal}
+          backdropOpacity={0.7}>
+          <View style={buyStyles.filterModalView}>
+
+            <FlatList
+              data={this.state.filters}
+              extraData={this.state}
+              keyExtractor={(item, index) => index}
+              renderItem={({item}) =>
+              <View style={mainStyles.row}>
+                <View style={buyStyles.filterItemText}>
+                  <Text>{item}</Text>
+                </View>
+                <CheckBox
+                  value={this.state[item]}
+                  onChange={() => {
+                    if(!this.state[item]) {
+                      this.setState({
+                        [item]: true
+                      });
+                    }
+                    else {
+                      this.setState({
+                        [item]: false,
+                      });
+                    }
+                  }}>
+                </CheckBox>
+              </View>
+              }
+            />
+          </View>
+          <TouchableOpacity
+            style={mainStyles.blueButtonSmall}
+            onPress={this.applyFilters.bind(this)}>
+            <Text style={mainStyles.buttonText}>APPLY</Text>
+          </TouchableOpacity>
+        </Modal>
 
         <FlatList
           data={this.state.data}

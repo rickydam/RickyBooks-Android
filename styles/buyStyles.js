@@ -36,6 +36,17 @@ const buyStyles = StyleSheet.create ({
     width: ScreenWidth-80,
     justifyContent: 'center',
   },
+  filterModalView: {
+    width: 120,
+    height: 300,
+    padding: 10,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  filterItemText: {
+    width: 45,
+  },
   listItem: {
     width: ScreenWidth,
     height: ScreenHeight*0.23,
