@@ -14,8 +14,9 @@ class BuyScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      refreshing: true,
+      refreshing: false,
       data: '',
+      dataOriginal: '',
       filters: [],
       refFlatList: '',
       filterModal: false,
@@ -33,9 +34,13 @@ class BuyScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({refreshing:true});
+    this.setState({
+      refreshing: true
+    });
     this.fetchData().then(() => {
-      this.setState({refreshing: false});
+      this.setState({
+        refreshing: false
+      });
     });
   }
 
@@ -43,7 +48,7 @@ class BuyScreen extends React.Component {
     var seconds = parseInt((currentDate - postedDate)/1000);
     var minutes = parseInt(seconds/60);
     if(minutes < 60) {
-      var theString
+      var theString;
       if(minutes < 1) {
         theString = "Just now";
       }
@@ -57,7 +62,7 @@ class BuyScreen extends React.Component {
     }
     var hours = parseInt(minutes/60);
     if(hours < 24) {
-      var theString
+      var theString;
       if(hours == 1) {
         theString = hours + " hour ago";
       }
@@ -127,18 +132,23 @@ class BuyScreen extends React.Component {
         }
       }
       for(i=0; i<this.state.filters.length; i++) {
-        item = this.state.filters[i];
+        var item = this.state.filters[i];
         this.setState({
           [item]: false
         });
       }
+      this.setState({
+        dataOriginal: this.state.data
+      });
     } catch(error) {
       alert("error: " + error);
     }
   }
 
   onRefresh() {
-    this.setState({refreshing:true});
+    this.setState({
+      refreshing: true
+    });
     this.fetchData().then(() => {
       this.setState({
         refreshing: false,
@@ -159,15 +169,30 @@ class BuyScreen extends React.Component {
   }
 
   filterData() {
-    this.setState({
-      data: this.state.data.filter(this.filterItem.bind(this))
-    });
+    var filterSelected = false;
+    for(i=0; i<this.state.filters.length; i++) {
+      var item = this.state.filters[i];
+      if(this.state[item] == true) {
+        filterSelected = true;
+        break;
+      }
+    }
+    if(filterSelected) {
+      this.setState({
+        data: this.state.dataOriginal.filter(this.filterItem.bind(this))
+      });
+    }
+    else {
+      this.setState({
+        data: this.state.dataOriginal
+      });
+    }
     this.refFlatList.scrollToOffset({x:0, y:0, animated:true});
     this.refFlatList.scrollToOffset({x:0, y:0, animated:true}); // bug requires 2 of them
   }
 
   filterItem(item) {
-    theItem = item["textbook_coursecode"].substring(0,4);
+    var theItem = item["textbook_coursecode"].substring(0,4);
     if(this.state[theItem] == true) {
       // Checkbox checked
       if(this.state.filters.indexOf(theItem) != -1) {
@@ -266,8 +291,8 @@ class BuyScreen extends React.Component {
                 }>
                 <View style={mainStyles.row}>
                   <Image
-                    source = {textbook}
-                    style = {buyStyles.listItemImage}
+                    source={textbook}
+                    style={buyStyles.listItemImage}
                   />
                   <View style={buyStyles.listItemTextContainer}>
                     <Text style={buyStyles.listItemTitle}>{item["textbook_title"]}</Text>
