@@ -4,17 +4,22 @@ const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 
 const buyStyles = StyleSheet.create ({
+  buyTitleText: {
+    width: ScreenWidth-80,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 25,
+    margin: 5,
+    alignSelf: 'center',
+  },
+  buyTitleView: {
+    width: ScreenWidth-80,
+    justifyContent: 'center',
+  },
   listItemMainContainer: {
     width: ScreenWidth,
-    height: ScreenHeight*0.23,
+    height: 150,
     borderTopWidth: 1,
-  },
-  buyContainer: {
-    backgroundColor: 'white',
-    paddingLeft: 5,
-    paddingRight: 5,
-    width: ScreenWidth,
-    height: ScreenHeight-88,
   },
   buyTitleRow: {
     flexDirection: 'row',
@@ -32,10 +37,6 @@ const buyStyles = StyleSheet.create ({
   blueButtonRight: {
     width: 80,
   },
-  buyTitle: {
-    width: ScreenWidth-80,
-    justifyContent: 'center',
-  },
   filterModalView: {
     width: 120,
     height: 300,
@@ -49,19 +50,18 @@ const buyStyles = StyleSheet.create ({
   },
   listItem: {
     width: ScreenWidth,
-    height: ScreenHeight*0.23,
+    height: 150,
     paddingLeft: 5,
     flex: 1,
     flexDirection: 'row',
-    paddingTop: 8,
   },
   listItemImage: {
     width: ScreenWidth*0.27,
-    height: ScreenHeight*0.20,
+    height: 130,
   },
   listItemTextContainer: {
     width: ScreenWidth*0.70,
-    height: ScreenHeight*0.20,
+    height: 125,
     paddingLeft: 10,
   },
   listItemCourseCode: {

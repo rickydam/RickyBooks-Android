@@ -34,7 +34,7 @@ class ProfileScreen extends React.Component {
           style = {profileStyles.profileImage}
         />
         <TouchableOpacity style={mainStyles.blueButtonMedium}>
-          <Text style={mainStyles.buttonText}>EDIT IMAGE</Text>
+          <Text style={profileStyles.editButtonText}>EDIT IMAGE</Text>
         </TouchableOpacity>
         <Text style={profileStyles.name}>Ricky Dam</Text>
         <Text style={profileStyles.normalText}>4th Year Computer Engineering Student</Text>

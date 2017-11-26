@@ -88,7 +88,7 @@ class BuyDetails extends React.Component {
 
         <TouchableOpacity onPress={this.showMessageModal}>
           <View style={mainStyles.blueButtonMedium}>
-            <Text style={mainStyles.buttonText}>MESSAGE</Text>
+            <Text style={buyDetailsStyles.messageButtonText}>MESSAGE</Text>
           </View>
         </TouchableOpacity>
 
@@ -114,7 +114,7 @@ class BuyDetails extends React.Component {
               style={mainStyles.blueButtonSmall}
               onPress={() => alert("Message has been sent successfully!")}
               >
-              <Text style={mainStyles.buttonText}>SEND</Text>
+              <Text style={buyDetailsStyles.sendButtonText}>SEND</Text>
             </TouchableOpacity>
           </View>
         </Modal>

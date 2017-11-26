@@ -25,6 +25,8 @@ const mainStyles = StyleSheet.create ({
     height: 200,
   },
   title: {
+    width: ScreenWidth,
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 25,
     margin: 5,

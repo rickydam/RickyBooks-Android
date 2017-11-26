@@ -40,6 +40,7 @@ const TheTabNavigator = TabNavigator ({
     },
     labelStyle: {
       fontWeight: 'bold',
+      width: 80,
     },
     style: {
       backgroundColor: 'transparent',

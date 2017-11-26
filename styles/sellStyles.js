@@ -86,6 +86,12 @@ const sellStyles = StyleSheet.create ({
   textbookImageContainer: {
     marginBottom: 10,
   },
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    width: 70,
+    textAlign: 'center',
+  },
 });
 
 module.exports = sellStyles;

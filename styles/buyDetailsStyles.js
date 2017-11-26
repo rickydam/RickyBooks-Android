@@ -27,6 +27,8 @@ const buyDetailsStyles = StyleSheet.create ({
     margin: 10,
   },
   itemTitle: {
+    width: ScreenWidth,
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'black',
@@ -66,6 +68,18 @@ const buyDetailsStyles = StyleSheet.create ({
     justifyContent: 'center',
     paddingLeft: 20,
     width: ScreenWidth*0.5,
+  },
+  messageButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    width: 100,
+    textAlign: 'center',
+  },
+  sendButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    width: 60,
+    textAlign: 'center',
   },
 });
 

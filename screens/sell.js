@@ -186,183 +186,176 @@ class SellScreen extends React.Component {
   render() {
     const keyboardOffset = 25;
     return (
-      // <KeyboardAvoidingView
-      //   behavior='position'
-      //   keyboardVerticalOffset={keyboardOffset}>
-      //
-      //   <ScrollView
-      //     contentContainerStyle={mainStyles.container}
-      //     keyboardShouldPersistTaps='handled'>
-        <View style={mainStyles.container}>
-          <Text style={mainStyles.title}>Sell a textbook!</Text>
+      <ScrollView
+        contentContainerStyle={mainStyles.container}
+        keyboardShouldPersistTaps='never'>
+        <Text style={mainStyles.title}>Sell a textbook!</Text>
 
-          {/* <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
-            <View style={mainStyles.blueButtonBig}>
-              <Text style={mainStyles.buttonText}>UPLOAD TEXTBOOK IMAGE</Text>
-            </View>
-          </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
+          <View style={mainStyles.blueButtonBig}>
+            <Text style={mainStyles.buttonText}>UPLOAD TEXTBOOK IMAGE</Text>
+          </View>
+        </TouchableOpacity>
 
-          <View style={sellStyles.textbookImageContainer}>
-            <Image
-              source={
-                this.state.textbookImage != '' ?
-                this.state.textbookImage :
-                placeholderImg}
-              style={
-                this.state.textbookImage != '' ?
-                sellStyles.textbookImage :
-                sellStyles.textbookImageBlank} />
-          </View> */}
+        <View style={sellStyles.textbookImageContainer}>
+          <Image
+            source={
+              this.state.textbookImage != '' ?
+              this.state.textbookImage :
+              placeholderImg}
+            style={
+              this.state.textbookImage != '' ?
+              sellStyles.textbookImage :
+              sellStyles.textbookImageBlank} />
+        </View> */}
 
-          <TextInput
-            style={sellStyles.inputFirst}
-            placeholder="Title"
-            placeholderTextColor="#B3B3B3"
-            underlineColorAndroid="transparent"
-            autoCapitalize="words"
-            onChangeText={(text) => this.setState({textbookTitle:text})}
-            ref={input => {this.textbookTitleRef=input}}
-            maxLength={100}
-          />
+        <TextInput
+          style={sellStyles.inputFirst}
+          placeholder="Title"
+          placeholderTextColor="#B3B3B3"
+          underlineColorAndroid="transparent"
+          autoCapitalize="words"
+          onChangeText={(text) => this.setState({textbookTitle:text})}
+          ref={input => {this.textbookTitleRef=input}}
+          maxLength={100}
+        />
 
-          <TextInput
-            style={sellStyles.input}
-            placeholder="Author"
-            placeholderTextColor="#B3B3B3"
-            underlineColorAndroid="transparent"
-            autoCapitalize="words"
-            onChangeText={(text) => this.setState({textbookAuthor:text})}
-            ref={input => {this.textbookAuthorRef=input}}
-          />
+        <TextInput
+          style={sellStyles.input}
+          placeholder="Author"
+          placeholderTextColor="#B3B3B3"
+          underlineColorAndroid="transparent"
+          autoCapitalize="words"
+          onChangeText={(text) => this.setState({textbookAuthor:text})}
+          ref={input => {this.textbookAuthorRef=input}}
+        />
 
-          <View style={sellStyles.picker}>
+        <View style={sellStyles.picker}>
+          <Picker
+            mode="dropdown"
+            style={
+              this.state.textbookEdition == '' ?
+              sellStyles.pickerPlaceholder :
+              sellStyles.pickerSelected}
+            selectedValue={this.state.textbookEdition}
+            onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition:itemValue})}>
+            <Picker.Item label="Edition" value="" />
+            <Picker.Item label="Custom Edition" value="Custom Edition" />
+            <Picker.Item label="Global Edition" value="Global Edition" />
+            <Picker.Item label="1st Edition" value="1st Edition" />
+            <Picker.Item label="2nd Edition" value="2nd Edition" />
+            <Picker.Item label="3rd Edition" value="3rd Edition" />
+            <Picker.Item label="4th Edition" value="4th Edition" />
+            <Picker.Item label="5th Edition" value="5th Edition" />
+            <Picker.Item label="6th Edition" value="6th Edition" />
+            <Picker.Item label="7th Edition" value="7th Edition" />
+            <Picker.Item label="8th Edition" value="8th Edition" />
+            <Picker.Item label="9th Edition" value="9th Edition" />
+            <Picker.Item label="10th Edition" value="10th Edition" />
+            <Picker.Item label="11th Edition" value="11th Edition" />
+            <Picker.Item label="12th Edition" value="12th Edition" />
+            <Picker.Item label="13th Edition" value="13th Edition" />
+            <Picker.Item label="14th Edition" value="14th Edition" />
+            <Picker.Item label="15th Edition" value="15th Edition" />
+          </Picker>
+        </View>
+
+        <View style={sellStyles.picker}>
+          <Picker
+            mode="dropdown"
+            style={
+              this.state.textbookCondition == '' ?
+              sellStyles.pickerPlaceholder :
+              sellStyles.pickerSelected}
+            selectedValue={this.state.textbookCondition}
+            onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition:itemValue})}>
+            <Picker.Item label="Condition" value="" />
+            <Picker.Item label="New" value="New" />
+            <Picker.Item label="Like New" value="Like New" />
+            <Picker.Item label="Good" value="Good" />
+            <Picker.Item label="Okay" value="Okay" />
+            <Picker.Item label="Bad" value="Bad" />
+          </Picker>
+        </View>
+
+        <View style={sellStyles.picker}>
+          <Picker
+            mode="dropdown"
+            style={
+              this.state.textbookType == '' ?
+              sellStyles.pickerPlaceholder :
+              sellStyles.pickerSelected}
+            selectedValue={this.state.textbookType}
+            onValueChange={(itemValue) => this.setState({textbookType:itemValue})}>
+            <Picker.Item label="Type" value="" />
+            <Picker.Item label="Paperback" value="Paperback" />
+            <Picker.Item label="Hardcover" value="Hardcover" />
+            <Picker.Item label="Looseleaf" value="Looseleaf" />
+          </Picker>
+        </View>
+
+        <View style={sellStyles.courseRow}>
+
+          <View style={sellStyles.coursePicker}>
             <Picker
               mode="dropdown"
               style={
-                this.state.textbookEdition == '' ?
-                sellStyles.pickerPlaceholder :
-                sellStyles.pickerSelected}
-              selectedValue={this.state.textbookEdition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookEdition:itemValue})}>
-              <Picker.Item label="Edition" value="" />
-              <Picker.Item label="Custom Edition" value="Custom Edition" />
-              <Picker.Item label="Global Edition" value="Global Edition" />
-              <Picker.Item label="1st Edition" value="1st Edition" />
-              <Picker.Item label="2nd Edition" value="2nd Edition" />
-              <Picker.Item label="3rd Edition" value="3rd Edition" />
-              <Picker.Item label="4th Edition" value="4th Edition" />
-              <Picker.Item label="5th Edition" value="5th Edition" />
-              <Picker.Item label="6th Edition" value="6th Edition" />
-              <Picker.Item label="7th Edition" value="7th Edition" />
-              <Picker.Item label="8th Edition" value="8th Edition" />
-              <Picker.Item label="9th Edition" value="9th Edition" />
-              <Picker.Item label="10th Edition" value="10th Edition" />
-              <Picker.Item label="11th Edition" value="11th Edition" />
-              <Picker.Item label="12th Edition" value="12th Edition" />
-              <Picker.Item label="13th Edition" value="13th Edition" />
-              <Picker.Item label="14th Edition" value="14th Edition" />
-              <Picker.Item label="15th Edition" value="15th Edition" />
+                this.state.textbookCoursePart1 == '' ?
+                sellStyles.coursePickerPlaceholder :
+                sellStyles.coursePickerSelected}
+              selectedValue={this.state.textbookCoursePart1}
+              onValueChange={(itemValue) => this.setState({textbookCoursePart1:itemValue})}>
+              {
+                coursetypes.map((item, index) => {
+                  if(item == "Course") {
+                    return (
+                      <Picker.Item key={item} label={item} value="" />
+                    );
+                  }
+                  else {
+                    return (
+                      <Picker.Item key={item} label={item} value={item} />
+                    );
+                  }
+                })
+              }
             </Picker>
-          </View>
-
-          <View style={sellStyles.picker}>
-            <Picker
-              mode="dropdown"
-              style={
-                this.state.textbookCondition == '' ?
-                sellStyles.pickerPlaceholder :
-                sellStyles.pickerSelected}
-              selectedValue={this.state.textbookCondition}
-              onValueChange={(itemValue, itemIndex) => this.setState({textbookCondition:itemValue})}>
-              <Picker.Item label="Condition" value="" />
-              <Picker.Item label="New" value="New" />
-              <Picker.Item label="Like New" value="Like New" />
-              <Picker.Item label="Good" value="Good" />
-              <Picker.Item label="Okay" value="Okay" />
-              <Picker.Item label="Bad" value="Bad" />
-            </Picker>
-          </View>
-
-          <View style={sellStyles.picker}>
-            <Picker
-              mode="dropdown"
-              style={
-                this.state.textbookType == '' ?
-                sellStyles.pickerPlaceholder :
-                sellStyles.pickerSelected}
-              selectedValue={this.state.textbookType}
-              onValueChange={(itemValue) => this.setState({textbookType:itemValue})}>
-              <Picker.Item label="Type" value="" />
-              <Picker.Item label="Paperback" value="Paperback" />
-              <Picker.Item label="Hardcover" value="Hardcover" />
-              <Picker.Item label="Looseleaf" value="Looseleaf" />
-            </Picker>
-          </View>
-
-          <View style={sellStyles.courseRow}>
-
-            <View style={sellStyles.coursePicker}>
-              <Picker
-                mode="dropdown"
-                style={
-                  this.state.textbookCoursePart1 == '' ?
-                  sellStyles.coursePickerPlaceholder :
-                  sellStyles.coursePickerSelected}
-                selectedValue={this.state.textbookCoursePart1}
-                onValueChange={(itemValue) => this.setState({textbookCoursePart1:itemValue})}>
-                {
-                  coursetypes.map((item, index) => {
-                    if(item == "Course") {
-                      return (
-                        <Picker.Item key={item} label={item} value="" />
-                      );
-                    }
-                    else {
-                      return (
-                        <Picker.Item key={item} label={item} value={item} />
-                      );
-                    }
-                  })
-                }
-              </Picker>
-            </View>
-
-            <TextInput
-              style={sellStyles.courseInput}
-              placeholder="Code (####)"
-              placeholderTextColor="#B3B3B3"
-              underlineColorAndroid="transparent"
-              autoCapitalize="characters"
-              keyboardType="numeric"
-              maxLength={4}
-              onChangeText={(text) => this.setState({textbookCoursePart2:text})}
-              ref={input => {this.textbookCoursePart2Ref=input}}
-            />
-
           </View>
 
           <TextInput
-            style={sellStyles.input}
-            placeholder="$ Price"
+            style={sellStyles.courseInput}
+            placeholder="Code (####)"
             placeholderTextColor="#B3B3B3"
             underlineColorAndroid="transparent"
+            autoCapitalize="characters"
             keyboardType="numeric"
-            maxLength={3}
-            onChangeText={(text) => this.setState({textbookPrice:text})}
-            ref={input => {this.textbookPriceRef=input}}
+            maxLength={4}
+            onChangeText={(text) => this.setState({textbookCoursePart2:text})}
+            ref={input => {this.textbookCoursePart2Ref=input}}
           />
-
-          <View style={sellStyles.submitContainer}>
-            <TouchableOpacity onPress={this.onSubmit.bind(this)}>
-              <View style={mainStyles.purpleButton}>
-                <Text style={mainStyles.buttonText}>SUBMIT</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
 
         </View>
-        /* </ScrollView>
-      </KeyboardAvoidingView> */
+
+        <TextInput
+          style={sellStyles.input}
+          placeholder="$ Price"
+          placeholderTextColor="#B3B3B3"
+          underlineColorAndroid="transparent"
+          keyboardType="numeric"
+          maxLength={3}
+          onChangeText={(text) => this.setState({textbookPrice:text})}
+          ref={input => {this.textbookPriceRef=input}}
+        />
+
+        <View style={sellStyles.submitContainer}>
+          <TouchableOpacity onPress={this.onSubmit.bind(this)}>
+            <View style={mainStyles.purpleButton}>
+              <Text style={sellStyles.submitButtonText}>SUBMIT</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+      </ScrollView>
     );
   }
 }

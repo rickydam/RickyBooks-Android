@@ -20,6 +20,12 @@ const profileStyles = StyleSheet.create ({
     marginLeft: 'auto',
     padding: 5,
   },
+  editButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    width: 100,
+    textAlign: 'center',
+  },
 });
 
 module.exports = profileStyles;
