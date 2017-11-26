@@ -208,7 +208,7 @@ class BuyScreen extends React.Component {
     return (
       <ScrollView contentContainerStyle={mainStyles.container} ref='buyScrollView'>
 
-        <View style={buyStyles.buyTitleRow}>
+        <View style={mainStyles.row}>
           <View style={buyStyles.buyTitleView}>
             <Text style={buyStyles.buyTitleText}>Buy a textbook!</Text>
           </View>

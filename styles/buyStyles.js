@@ -21,10 +21,6 @@ const buyStyles = StyleSheet.create ({
     height: 150,
     borderTopWidth: 1,
   },
-  buyTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   blueButtonSmallShort: {
     width: 60,
     height: 30,
