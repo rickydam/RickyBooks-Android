@@ -1,5 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+const ScreenWidth = Dimensions.get('window').width;
+
 const profileStyles = StyleSheet.create ({
   profileImage: {
     width: 150,
@@ -7,6 +9,8 @@ const profileStyles = StyleSheet.create ({
     margin: 5,
   },
   name: {
+    width: ScreenWidth,
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'black',
