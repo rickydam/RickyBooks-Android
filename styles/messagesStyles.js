@@ -30,6 +30,7 @@ const messagesStyles = StyleSheet.create ({
     height: 50,
   },
   listName: {
+    width: (ScreenWidth*0.60)-50,
     fontSize: 15,
     fontWeight: 'bold',
     color: 'black',
@@ -42,6 +43,7 @@ const messagesStyles = StyleSheet.create ({
     flexDirection: 'row',
   },
   listDate: {
+    width: (ScreenWidth*0.40)-50,
     fontSize: 15,
     fontWeight: 'bold',
     color: 'black',
