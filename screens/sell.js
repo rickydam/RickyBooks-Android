@@ -1,16 +1,7 @@
 import React from 'react';
 import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  Picker,
-  TouchableOpacity,
-  ScrollView,
-  Keyboard,
-  KeyboardAvoidingView,
-  Alert,
-  FlatList
+  Text, View, Image, TextInput, Picker, TouchableOpacity,
+  ScrollView, Keyboard, KeyboardAvoidingView, Alert, FlatList
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
@@ -189,7 +180,19 @@ class SellScreen extends React.Component {
       <ScrollView
         contentContainerStyle={mainStyles.container}
         keyboardShouldPersistTaps='never'>
-        <Text style={mainStyles.title}>Sell a textbook!</Text>
+
+        <View style={mainStyles.row}>
+          <TouchableOpacity
+            style={sellStyles.redButtonLeft}
+            onPress={this.clearInputs.bind(this)}>
+            <View style={sellStyles.redButtonContainer}>
+              <Text style={mainStyles.buttonText}>CLEAR ALL</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={sellStyles.sellTitleView}>
+            <Text style={sellStyles.sellTitleText}>Sell a textbook!</Text>
+          </View>
+        </View>
 
         {/* <TouchableOpacity onPress={() => this.uploadTextbookImage()}>
           <View style={mainStyles.blueButtonBig}>

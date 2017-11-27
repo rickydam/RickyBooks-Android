@@ -92,6 +92,28 @@ const sellStyles = StyleSheet.create ({
     width: 70,
     textAlign: 'center',
   },
+  redButtonLeft: {
+    width: 80,
+    height: 30,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#B22222',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  redButtonContainer: {
+    width: 80,
+  },
+  sellTitleView: {
+    width: ScreenWidth-100,
+  },
+  sellTitleText: {
+    width: ScreenWidth-80,
+    fontWeight: 'bold',
+    fontSize: 25,
+    margin: 5,
+    paddingLeft: 5,
+  },
 });
 
 module.exports = sellStyles;

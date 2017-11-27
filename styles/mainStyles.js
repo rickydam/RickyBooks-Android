@@ -82,6 +82,7 @@ const mainStyles = StyleSheet.create ({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   redCloseButton: {
     width: 40,
