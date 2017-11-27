@@ -131,6 +131,7 @@ class BuyScreen extends React.Component {
           this.state.filters.push(thecoursecode);
         }
       }
+      this.state.filters.sort();
       for(i=0; i<this.state.filters.length; i++) {
         var item = this.state.filters[i];
         this.setState({
@@ -222,19 +223,21 @@ class BuyScreen extends React.Component {
         </View>
 
         <Modal
+          style={mainStyles.alignItemsCenter}
           isVisible={this.state.filterModal}
           onBackButtonPress={this.hideFilterModal}
+          onBackdropPress={this.hideFilterModal}
           backdropOpacity={0.7}>
           <View style={buyStyles.filterModalView}>
-
             <FlatList
+              contentContainerStyle={buyStyles.filterModalFlatlist}
               data={this.state.filters}
               extraData={this.state}
               keyExtractor={(item, index) => index}
               renderItem={({item}) =>
               <View style={mainStyles.row}>
                 <View style={buyStyles.filterItemText}>
-                  <Text>{item}</Text>
+                  <Text style={mainStyles.bold}>{item}</Text>
                 </View>
                 <CheckBox
                   value={this.state[item]}
@@ -256,7 +259,7 @@ class BuyScreen extends React.Component {
             />
           </View>
           <TouchableOpacity
-            style={mainStyles.blueButtonSmall}
+            style={mainStyles.purpleButtonSmall}
             onPress={this.applyFilters.bind(this)}>
             <Text style={mainStyles.buttonText}>APPLY</Text>
           </TouchableOpacity>

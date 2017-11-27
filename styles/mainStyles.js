@@ -79,6 +79,16 @@ const mainStyles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  purpleButtonSmall: {
+    width: 60,
+    height: 40,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: '#9932CD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
@@ -113,7 +123,13 @@ const mainStyles = StyleSheet.create ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  alignItemsCenter: {
+    alignItems: 'center',
+  },
 });
 
 module.exports = mainStyles;
