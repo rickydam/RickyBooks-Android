@@ -113,6 +113,9 @@ class BuyScreen extends React.Component {
 
   async fetchData() {
     try {
+      this.setState({
+        filters: []
+      });
       let response = await fetch('https://rickybooks.herokuapp.com/textbooks');
       let responseText = await response.text();
       this.state.data = JSON.parse(responseText).data;
