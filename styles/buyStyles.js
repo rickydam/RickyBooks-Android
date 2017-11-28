@@ -35,7 +35,7 @@ const buyStyles = StyleSheet.create ({
   },
   filterModalView: {
     width: 100,
-    height: ScreenHeight*0.70,
+    maxHeight: ScreenHeight*0.70,
   },
   filterModalFlatlist: {
     padding: 10,
