@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RickyBooks</string>
+    <string name="title_home">Home</string>
+    <string name="title_buy">Buy</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_sell">Sell</string>
+    <string name="title_profile">Profile</string>
+</resources>
