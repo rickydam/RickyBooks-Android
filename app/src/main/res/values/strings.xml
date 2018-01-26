@@ -5,4 +5,13 @@
     <string name="title_messages">Messages</string>
     <string name="title_sell">Sell</string>
     <string name="title_profile">Profile</string>
+    <string name="logo_description">RickyBooks logo</string>
+    <string name="bio_text">
+        Hi, my name is Ricky Dam. I am 4th year computer engineering student here at Carleton
+        University.
+        \n\nCarleton University needed a better way for students to buy and sell textbooks. So here
+        it is. Enjoy!
+        \n\nThis app is open-source. Feel free to contribute!
+    </string>
+    <string name="bio_description">Introduction text about RickyBooks</string>
 </resources>
