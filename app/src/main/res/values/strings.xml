@@ -7,11 +7,50 @@
     <string name="title_profile">Profile</string>
     <string name="logo_description">RickyBooks logo</string>
     <string name="bio_text">
-        Hi, my name is Ricky Dam. I am 4th year computer engineering student here at Carleton
+        Hi, my name is Ricky Dam. I\'m a 4th year Computer Engineering student here at Carleton
         University.
         \n\nCarleton University needed a better way for students to buy and sell textbooks. So here
         it is. Enjoy!
         \n\nThis app is open-source. Feel free to contribute!
     </string>
     <string name="bio_description">Introduction text about RickyBooks</string>
+    <string name="title_hint">Title</string>
+    <string name="author_hint">Author</string>
+    <string-array name="edition">
+        <item>Edition</item>
+        <item>Custom Edition</item>
+        <item>Global Edition</item>
+        <item>1st Edition</item>
+        <item>2nd Edition</item>
+        <item>3rd Edition</item>
+        <item>4th Edition</item>
+        <item>5th Edition</item>
+        <item>6th Edition</item>
+        <item>7th Edition</item>
+        <item>8th Edition</item>
+        <item>9th Edition</item>
+        <item>10th Edition</item>
+        <item>11th Edition</item>
+        <item>12th Edition</item>
+        <item>13th Edition</item>
+        <item>14th Edition</item>
+        <item>15th Edition</item>
+    </string-array>
+    <string-array name="condition">
+        <item>Condition</item>
+        <item>New</item>
+        <item>Like New</item>
+        <item>Good</item>
+        <item>Okay</item>
+        <item>Bad</item>
+    </string-array>
+    <string name="course_hint">Course (Ex: SYSC4504)</string>
+    <string-array name="type">
+        <item>Type</item>
+        <item>Paperback</item>
+        <item>Hardcover</item>
+        <item>Looseleaf</item>
+    </string-array>
+    <string name="price_hint">$ Price (Ex: 100)</string>
+    <string name="submit">SUBMIT</string>
 </resources>

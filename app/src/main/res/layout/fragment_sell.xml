@@ -1,12 +1,157 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/sellLayout"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     tools:context="com.example.rickydam.rickybooks.SellFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is the sell fragment." />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/title_hint"
+            android:id="@+id/textbook_title"
+            android:inputType="textCapSentences"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightgray"
+            android:textSize="16sp" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/author_hint"
+            android:id="@+id/textbook_author"
+            android:inputType="textCapSentences"
+            android:layout_below="@id/textbook_title"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightgray"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:background="@drawable/border"
+            android:id="@+id/textbook_edition"
+            android:layout_alignEnd="@id/textbook_title"
+            android:layout_alignLeft="@id/textbook_title"
+            android:layout_alignRight="@id/textbook_title"
+            android:layout_alignStart="@id/textbook_title"
+            android:layout_below="@id/textbook_author"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
+            <Spinner
+                android:id="@+id/textbook_edition_spinner"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:spinnerMode="dropdown" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/border"
+            android:id="@+id/textbook_condition"
+            android:layout_alignEnd="@id/textbook_title"
+            android:layout_alignLeft="@+id/textbook_title"
+            android:layout_alignRight="@+id/textbook_title"
+            android:layout_alignStart="@+id/textbook_title"
+            android:layout_below="@id/textbook_edition"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
+            <Spinner
+                android:id="@+id/textbook_condition_spinner"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:spinnerMode="dropdown" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/border"
+            android:id="@+id/textbook_type"
+            android:layout_alignEnd="@id/textbook_title"
+            android:layout_alignLeft="@+id/textbook_title"
+            android:layout_alignRight="@+id/textbook_title"
+            android:layout_alignStart="@+id/textbook_title"
+            android:layout_below="@id/textbook_condition"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
+            <Spinner
+                android:id="@+id/textbook_type_spinner"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:spinnerMode="dropdown" />
+        </RelativeLayout>
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/course_hint"
+            android:id="@+id/textbook_coursecode"
+            android:inputType="textCapSentences"
+            android:layout_below="@id/textbook_type"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:maxLength="8"
+            android:padding="10dp"
+            android:textColorHint="@color/lightgray"
+            android:textSize="16sp" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/price_hint"
+            android:id="@+id/textbook_price"
+            android:inputType="number"
+            android:layout_below="@id/textbook_coursecode"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:maxLength="3"
+            android:padding="10dp"
+            android:textColorHint="@color/lightgray"
+            android:textSize="16sp" />
+
+        <Button
+            android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/submitButton"
+            android:layout_below="@id/textbook_price"
+            android:layout_centerHorizontal="true"
+            android:layout_height="40dp"
+            android:layout_width="90dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
