@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:maxLength="60"
             android:padding="10dp"
-            android:textColorHint="@color/lightgray"
+            android:textColorHint="@color/lightGray"
             android:textSize="16sp" />
 
         <EditText
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:maxLength="60"
             android:padding="10dp"
-            android:textColorHint="@color/lightgray"
+            android:textColorHint="@color/lightGray"
             android:textSize="16sp" />
 
         <RelativeLayout
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:maxLength="8"
             android:padding="10dp"
-            android:textColorHint="@color/lightgray"
+            android:textColorHint="@color/lightGray"
             android:textSize="16sp" />
 
         <EditText
@@ -135,7 +135,7 @@
             android:layout_width="wrap_content"
             android:maxLength="3"
             android:padding="10dp"
-            android:textColorHint="@color/lightgray"
+            android:textColorHint="@color/lightGray"
             android:textSize="16sp" />
 
         <Button
