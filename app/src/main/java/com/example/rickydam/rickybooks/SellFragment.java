@@ -175,6 +175,7 @@ public class SellFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(v);
                 final Context context = getActivity().getApplicationContext();
                 RequestQueue queue = Volley.newRequestQueue(context);
                 String url = "http://rickybooks.herokuapp.com/textbooks";
