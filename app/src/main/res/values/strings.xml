@@ -53,4 +53,6 @@
     </string-array>
     <string name="price_hint">$ Price (Ex: 100)</string>
     <string name="submit">SUBMIT</string>
+    <string name="textbook_image_description">Textbook image</string>
+    <string name="hardcoded_seller">Ricky Dam</string>
 </resources>
