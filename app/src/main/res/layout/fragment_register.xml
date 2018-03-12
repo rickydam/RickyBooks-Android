@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/registerLayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:id="@+id/register_name"
+            android:inputType="textCapWords"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:hint="@string/name_hint"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/register_email"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/email_hint"
+            android:id="@+id/register_email"
+            android:inputType="textEmailAddress"
+            android:layout_below="@+id/register_name"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/register_password"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_name" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/password_hint"
+            android:id="@+id/register_password"
+            android:inputType="textPassword"
+            android:layout_below="@+id/register_email"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/register_passwordC"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_email" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/passwordC_hint"
+            android:id="@+id/register_passwordC"
+            android:inputType="textPassword"
+            android:layout_below="@+id/register_password"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_password" />
+
+        <Button
+            android:background="@drawable/button_blue"
+            android:id="@+id/register_button"
+            android:layout_below="@+id/register_passwordC"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="@string/register_button"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_passwordC" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
