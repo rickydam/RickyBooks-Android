@@ -2,25 +2,25 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_item"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:background="@drawable/border"
     android:layout_marginBottom="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
+    android:layout_width="match_parent"
     android:padding="5dp">
 
     <ImageView
+        android:contentDescription="@string/textbook_image_description"
         android:id="@+id/textbook_image"
-        android:layout_height="match_parent"
-        android:layout_width="100dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:contentDescription="@string/textbook_image_description"
+        android:layout_width="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -28,12 +28,12 @@
     <RelativeLayout
         android:id="@+id/item_text_layout"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textbook_image"
         app:layout_constraintTop_toTopOf="parent">
@@ -89,9 +89,9 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_gravity="center"
                 android:gravity="center"
                 android:id="@+id/item_right"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
                 <TextView
