@@ -1,6 +1,9 @@
 package com.example.rickydam.rickybooks;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,11 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,9 +43,8 @@ public class BuyFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_buy, container, false);
 
         final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
@@ -122,13 +122,15 @@ public class BuyFragment extends Fragment {
                         loadInitialTextbookData();
                     }
                 } catch(JSONException e) {
+                    // Incorrect JSON format
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ERROR", String.valueOf(error));
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
             }
         });
         queue.add(stringRequest);
@@ -164,15 +166,32 @@ public class BuyFragment extends Fragment {
                         mTextbookAdapter.notifyDataSetChanged();
                     }
                 } catch(JSONException e) {
+                    // Incorrect JSON format
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ERROR", String.valueOf(error));
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
             }
         });
         queue.add(stringRequest);
+    }
+
+    public void createAlert(String title, String message) {
+        Activity activity = getActivity();
+        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }
