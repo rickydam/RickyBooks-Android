@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,10 +45,8 @@ public class SellFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_sell, container, false);
 
         // Create the Edition spinner
@@ -203,34 +203,36 @@ public class SellFragment extends Fragment {
                             byte[] errorData = error.networkResponse.data;
                             VolleyError volleyError = new VolleyError(new String(errorData));
                             String volleyErrorMessage = volleyError.getMessage();
-                            JSONObject resObj = new JSONObject(String.valueOf(volleyErrorMessage));
+                            JSONObject resObj = new JSONObject(volleyErrorMessage);
                             JSONObject resData = resObj.getJSONObject("data");
                             StringBuilder errorMessage = new StringBuilder();
-                            for(int i = 0; i < resData.length(); i++) {
-                                try {
-                                    String name = resData.names().getString(i);
-                                    String value = resData.get(name).toString();
-                                    value = value.replace("[\"can't be blank\"]", "Missing: ");
-                                    name = name.replace(name.substring(0, 9), "Textbook ");
-                                    name = name.substring(0, 9)
-                                            + name.substring(9, 10).toUpperCase()
-                                            + name.substring(10);
-                                    if(i == resData.length() - 1) {
-                                        errorMessage.append(value).append(name);
-                                    }
-                                    else {
-                                        errorMessage.append(value).append(name).append("\n");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                            for(int i=0; i<resData.length(); i++) {
+                                String name = resData.names().getString(i);
+                                String value = resData.get(name).toString();
+                                value = value.replace("[\"can't be blank\"]", "Missing: ");
+                                name = name.replace(name.substring(0, 9), "Textbook ");
+                                name = name.substring(0, 9)
+                                        + name.substring(9, 10).toUpperCase()
+                                        + name.substring(10);
+                                if(i == resData.length()-1) {
+                                    errorMessage.append(value).append(name);
+                                }
+                                else {
+                                    errorMessage.append(value).append(name).append("\n");
                                 }
                             }
-                            createAlert("All fields are required", String.valueOf(errorMessage));
-                        } catch (JSONException e) {
+                            createAlert("Hmm.. you forgot something!", String.valueOf(errorMessage));
+                        } catch(JSONException e) {
+                            // Incorrect JSON format
                             e.printStackTrace();
+                        } catch(NullPointerException e) {
+                            // Unable to reach server-side backend
+                            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                                    "reach the server at the moment.\n\nPlease try again later.");
                         }
                     }
-                }){
+                })
+                {
                     @SuppressLint("NewApi")
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
