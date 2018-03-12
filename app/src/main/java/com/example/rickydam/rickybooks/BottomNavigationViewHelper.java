@@ -8,9 +8,9 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-public class BottomNavigationViewHelper {
+class BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")
-    public static void disableShiftMode(BottomNavigationView view) {
+    static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
@@ -27,7 +27,7 @@ public class BottomNavigationViewHelper {
             }
         } catch(NoSuchFieldException e) {
             Log.e("BNVHelper", "Unable to get shift mode field", e);
-        } catch (IllegalAccessException e) {
+        } catch(IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
     }
