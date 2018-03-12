@@ -56,4 +56,19 @@
     <string name="submit">SUBMIT</string>
     <string name="textbook_image_description">Textbook image</string>
     <string name="hardcoded_seller">Ricky Dam</string>
+    <string name="name_hint">Name</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="passwordC_hint">Confirm Password</string>
+    <string name="register_button">REGISTER</string>
+    <string name="login_button">LOG IN</string>
+    <string name="account_intro_message">
+        Want to sell a textbook?
+        \nCustomers need to contact you!
+        \n\nWant to buy a textbook?\nYou need to send messages!
+        \n\nYou also need notifications!
+        \n\nWhich is why you need to register for an account!
+        \n\nOr, if you already joined the club, welcome back!\n
+    </string>
+    <string name="logout_button">LOG OUT</string>
 </resources>

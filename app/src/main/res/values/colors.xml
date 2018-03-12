@@ -11,4 +11,6 @@
     <color name="money">#228B22</color>
     <color name="veryLightGray">#F0F0F0</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#BE2625</color>
+    <color name="redDarker">#8C1717</color>
 </resources>
