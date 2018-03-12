@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/loginLayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:id="@+id/login_email"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:hint="@string/email_hint"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/login_password"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:background="@drawable/border"
+            android:ems="16"
+            android:id="@+id/login_password"
+            android:inputType="textPassword"
+            android:layout_below="@+id/login_email"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:hint="@string/password_hint"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_email" />
+
+        <Button
+            android:background="@drawable/button_blue"
+            android:id="@+id/login_button"
+            android:layout_below="@+id/login_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="@string/login_button"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_password" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
