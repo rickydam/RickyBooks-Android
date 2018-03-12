@@ -1,13 +1,16 @@
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rickydam.rickybooks.ProfileFragment">
+    android:layout_width="match_parent"
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is the profile fragment." />
+    <Button
+        android:background="@drawable/button_red"
+        android:id="@+id/logout_button"
+        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:text="@string/logout_button"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
