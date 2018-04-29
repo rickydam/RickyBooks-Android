@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ public class LoginFragment extends Fragment {
 
                 Context context = getActivity().getApplicationContext();
                 RequestQueue queue = Volley.newRequestQueue(context);
-                String URL = "http://192.168.0.110:3000/login";
+                String URL = "http://rickybooks.herokuapp.com/login";
 
                 JSONObject paramsObj = new JSONObject();
                 try {
@@ -72,8 +71,13 @@ public class LoginFragment extends Fragment {
                         password_field.getText().clear();
 
                         String token = null;
+                        String userId = null;
+                        String name = null;
                         try {
                             token = response.getString("token");
+                            userId = response.getString("user_id");
+                            name = response.getString("name");
+
                         } catch (JSONException e) {
                             // Incorrect JSON format
                             e.printStackTrace();
@@ -83,6 +87,8 @@ public class LoginFragment extends Fragment {
                                 "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("token", token);
+                        editor.putString("user_id", userId);
+                        editor.putString("name", name);
                         editor.apply();
 
                         String previousFragmentName = ((MainActivity) getActivity())
@@ -104,7 +110,6 @@ public class LoginFragment extends Fragment {
                         } catch(JSONException e) {
                             // Incorrect JSON format
                             e.printStackTrace();
-                            Log.d("Ricky", String.valueOf(e));
                         } catch(NullPointerException e) {
                             // Unable to reach server-side backend
                             createAlert("Oh no! Server problem!", "Seems like we are unable to " +

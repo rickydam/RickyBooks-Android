@@ -80,8 +80,7 @@ public class BuyFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject resObj = new JSONObject(response);
-                    JSONArray resData = resObj.getJSONArray("data");
+                    JSONArray resData = new JSONArray(response);
 
                     int resDataLength = resData.length();
                     int currentDataLength = textbookList.size();
@@ -99,8 +98,10 @@ public class BuyFragment extends Fragment {
                             String type = obj.getString("textbook_type");
                             String coursecode = obj.getString("textbook_coursecode");
                             String price = "$ " + obj.getString("textbook_price");
+                            JSONObject user = obj.getJSONObject("user");
+                            String seller = user.getString("name");
                             Textbook textbook = new Textbook(title, author, edition, condition,
-                                    type, coursecode, price);
+                                    type, coursecode, price, seller);
                             textbookList.add(i, textbook);
                             mTextbookAdapter.notifyDataSetChanged();
                         }
@@ -148,8 +149,8 @@ public class BuyFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject resObj = new JSONObject(response);
-                    JSONArray resData = resObj.getJSONArray("data");
+                    JSONArray resData = new JSONArray(response);
+
                     int resDataLength = resData.length();
                     for(int i=0; i<resDataLength; i++) {
                         JSONObject obj = resData.getJSONObject(i);
@@ -160,8 +161,10 @@ public class BuyFragment extends Fragment {
                         String type = obj.getString("textbook_type");
                         String coursecode = obj.getString("textbook_coursecode");
                         String price = "$ " + obj.getString("textbook_price");
+                        JSONObject user = obj.getJSONObject("user");
+                        String seller = user.getString("name");
                         Textbook textbook = new Textbook(title, author, edition, condition, type,
-                                coursecode, price);
+                                coursecode, price, seller);
                         textbookList.add(textbook);
                         mTextbookAdapter.notifyDataSetChanged();
                     }

@@ -27,6 +27,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         private TextView item_type;
         private TextView item_coursecode;
         private TextView item_price;
+        private TextView item_seller;
         private ImageView imageView;
 
         TextbookViewHolder(View view) {
@@ -38,6 +39,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
             item_type = view.findViewById(R.id.item_type);
             item_coursecode = view.findViewById(R.id.item_coursecode);
             item_price = view.findViewById(R.id.item_price);
+            item_seller = view.findViewById(R.id.item_seller);
             imageView = view.findViewById(R.id.textbook_image);
         }
     }
@@ -68,6 +70,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         holder.item_type.setText(textbook.getType());
         holder.item_coursecode.setText(textbook.getCoursecode());
         holder.item_price.setText(textbook.getPrice());
+        holder.item_seller.setText(textbook.getSeller());
 
         ImageView imageView = holder.imageView;
         Glide.with(context).load(R.drawable.textbook).into(imageView);

@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 final Context context= getActivity().getApplicationContext();
                 RequestQueue queue = Volley.newRequestQueue(context);
-                String url = "http://192.168.0.110:3000/logout";
+                String url = "http://rickybooks.herokuapp.com/logout";
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         new Response.Listener<String>() {
                     @Override

@@ -8,11 +8,12 @@ public class Textbook {
     private String type;
     private String coursecode;
     private String price;
+    private String seller;
 
     public Textbook() {}
 
     public Textbook(String title, String author, String edition, String condition, String type,
-                    String coursecode, String price) {
+                    String coursecode, String price, String seller) {
         this.title = title;
         this.author = author;
         this.edition = edition;
@@ -20,6 +21,7 @@ public class Textbook {
         this.type = type;
         this.coursecode = coursecode;
         this.price = price;
+        this.seller = seller;
     }
 
     public String getTitle() {
@@ -76,5 +78,13 @@ public class Textbook {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
     }
 }

@@ -48,7 +48,7 @@ public class RegisterFragment extends Fragment {
 
                 final Context context = getActivity().getApplicationContext();
                 RequestQueue queue = Volley.newRequestQueue(context);
-                String URL = "http://192.168.0.110:3000/users";
+                String URL = "http://rickybooks.herokuapp.com/users";
 
                 JSONObject paramsObj = new JSONObject();
                 try {
@@ -98,8 +98,12 @@ public class RegisterFragment extends Fragment {
                                 "You have been automatically logged in.");
 
                         String token = null;
+                        String userId = null;
+                        String name = null;
                         try {
                             token = response.getString("token");
+                            userId = response.getString("user_id");
+                            name = response.getString("name");
                         } catch (JSONException e) {
                             // Incorrect JSON format
                             e.printStackTrace();
@@ -109,6 +113,8 @@ public class RegisterFragment extends Fragment {
                                 "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("token", token);
+                        editor.putString("user_id", userId);
+                        editor.putString("name", name);
                         editor.apply();
 
                         String previousFragmentName = ((MainActivity) getActivity())

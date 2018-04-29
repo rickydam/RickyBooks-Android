@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -206,7 +207,7 @@ public class SellFragment extends Fragment {
                             JSONObject resObj = new JSONObject(volleyErrorMessage);
                             JSONObject resData = resObj.getJSONObject("data");
                             StringBuilder errorMessage = new StringBuilder();
-                            for(int i=0; i<resData.length(); i++) {
+                            for(int i=1; i<resData.length(); i++) {
                                 String name = resData.names().getString(i);
                                 String value = resData.get(name).toString();
                                 value = value.replace("[\"can't be blank\"]", "Missing: ");
@@ -237,6 +238,10 @@ public class SellFragment extends Fragment {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
+
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                        params.put("user_id", sharedPref.getString("user_id", null));
 
                         EditText title_field = view.findViewById(R.id.textbook_title);
                         String textbook_title = title_field.getText().toString();

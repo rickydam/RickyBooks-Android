@@ -105,8 +105,7 @@
                     android:id="@+id/item_seller"
                     android:layout_below="@id/item_price"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/hardcoded_seller" />
+                    android:layout_width="wrap_content" />
             </RelativeLayout>
 
         </LinearLayout>
