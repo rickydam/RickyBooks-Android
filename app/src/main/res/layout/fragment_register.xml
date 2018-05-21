@@ -24,7 +24,7 @@
             android:background="@drawable/border"
             android:ems="16"
             android:id="@+id/register_name"
-            android:inputType="textCapWords"
+            android:inputType="textCapSentences"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
