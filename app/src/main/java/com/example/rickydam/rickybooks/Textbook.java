@@ -10,8 +10,6 @@ public class Textbook {
     private String price;
     private String seller;
 
-    public Textbook() {}
-
     public Textbook(String title, String author, String edition, String condition, String type,
                     String coursecode, String price, String seller) {
         this.title = title;
