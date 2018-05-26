@@ -33,9 +33,6 @@ public class BuyFragment extends Fragment {
     private List<Textbook> textbookList = new ArrayList<>();
     private TextbookAdapter mTextbookAdapter;
 
-    // Required empty public constructor
-    public BuyFragment() {}
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

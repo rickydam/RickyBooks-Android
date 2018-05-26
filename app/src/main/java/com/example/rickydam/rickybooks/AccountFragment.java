@@ -10,10 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class AccountFragment extends Fragment {
-    public AccountFragment() {
-        // Required empty public constructor
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

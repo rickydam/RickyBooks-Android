@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 public class MessagesFragment extends Fragment {
 
-    public MessagesFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
