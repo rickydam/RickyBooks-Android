@@ -1,13 +1,77 @@
-<RelativeLayout
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:padding="10dp">
+    android:layout_width="match_parent">
 
-    <TextView
-        android:layout_height="match_parent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="This is the messages fragment."
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_navigation_height"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/messages_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/messages_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/messages_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"/>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/send_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/messages_message_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="@string/type_message_hint"
+                android:inputType="textCapSentences"
+                android:maxLines="6"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_default="wrap" />
+
+            <Button
+                android:id="@+id/messages_send_button"
+                android:layout_width="65dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_blue"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/send_message_hint"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/messages_message_input" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

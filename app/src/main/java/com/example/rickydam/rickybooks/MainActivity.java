@@ -10,12 +10,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     BuyFragment buyFragment;
+    ConversationsFragment conversationsFragment;
     MessagesFragment messagesFragment;
     SellFragment sellFragment;
     ProfileFragment profileFragment;
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     String currentFragmentName = "";
     String previousFragmentName = "";
     String token = null;
+    String textbookTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         buyFragment = new BuyFragment();
+        conversationsFragment = new ConversationsFragment();
         messagesFragment = new MessagesFragment();
         sellFragment = new SellFragment();
         profileFragment = new ProfileFragment();
@@ -56,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.fragment_container, buyFragment);
         fragmentTransaction.hide(buyFragment);
+
+        fragmentTransaction.add(R.id.fragment_container, conversationsFragment);
+        fragmentTransaction.hide(conversationsFragment);
 
         fragmentTransaction.add(R.id.fragment_container, messagesFragment);
         fragmentTransaction.hide(messagesFragment);
@@ -93,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment("BuyFragment");
                     return true;
                 case R.id.navigation_messages:
-                    replaceFragment("MessagesFragment");
+                    loadConversations();
+                    replaceFragment("ConversationsFragment");
                     return true;
                 case R.id.navigation_sell:
                     replaceFragment("SellFragment");
@@ -118,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("token", null);
         editor.apply();
         token = null;
+        conversationsFragment.clearConversations();
     }
 
     public void checkToken() {
@@ -205,26 +217,39 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = buyFragment;
             }
         }
-        if(Objects.equals(fragmentName, "MessagesFragment")) {
+        if(Objects.equals(fragmentName, "ConversationsFragment")) {
             previousFragmentName = currentFragmentName;
-            currentFragmentName = "MessagesFragment";
-            setTitle("Messages");
+            currentFragmentName = "ConversationsFragment";
+            setTitle("Conversations");
             if(token != null) {
-                if(currentFragment != messagesFragment) {
+                if(currentFragment != conversationsFragment) {
                     FragmentTransaction fragmentTransaction;
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.hide(currentFragment);
-                    fragmentTransaction.show(messagesFragment);
+                    fragmentTransaction.show(conversationsFragment);
                     fragmentTransaction.commit();
-                    currentFragment = messagesFragment;
+                    currentFragment = conversationsFragment;
                 }
             }
             else {
                 previousFragmentName = currentFragmentName;
-                currentFragmentName = "AccountFragment";
+                currentFragmentName = "ConversationsFragment";
                 if(currentFragment != accountFragment) {
                     replaceFragment("AccountFragment");
                 }
+            }
+        }
+        if(Objects.equals(fragmentName, "MessagesFragment")) {
+            previousFragmentName = currentFragmentName;
+            currentFragmentName = "MessagesFragment";
+            if(currentFragment != messagesFragment) {
+                setTitle("Messages");
+                FragmentTransaction fragmentTransaction;
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.hide(currentFragment);
+                fragmentTransaction.show(messagesFragment);
+                fragmentTransaction.commit();
+                currentFragment = messagesFragment;
             }
         }
         if(Objects.equals(fragmentName, "SellFragment")) {
@@ -252,9 +277,12 @@ public class MainActivity extends AppCompatActivity {
         if(Objects.equals(fragmentName, "ProfileFragment")) {
             previousFragmentName = currentFragmentName;
             currentFragmentName = "ProfileFragment";
-            setTitle("Profile");
+
             if(token != null) {
                 if(currentFragment != profileFragment) {
+                    SharedPreferences sharedPref = this.getSharedPreferences(
+                            "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                    setTitle(sharedPref.getString("name", null));
                     FragmentTransaction fragmentTransaction;
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.hide(currentFragment);
@@ -264,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
+                setTitle("Profile");
                 previousFragmentName = currentFragmentName;
                 currentFragmentName = "AccountFragment";
                 if(currentFragment != accountFragment) {

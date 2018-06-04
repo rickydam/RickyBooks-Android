@@ -1,6 +1,7 @@
 package com.example.rickydam.rickybooks;
 
 public class Textbook {
+    private String id;
     private String title;
     private String author;
     private String edition;
@@ -8,10 +9,12 @@ public class Textbook {
     private String type;
     private String coursecode;
     private String price;
-    private String seller;
+    private String sellerId;
+    private String sellerName;
 
-    public Textbook(String title, String author, String edition, String condition, String type,
-                    String coursecode, String price, String seller) {
+    Textbook(String id, String title, String author, String edition, String condition, String type,
+             String coursecode, String price, String sellerId, String sellerName) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.edition = edition;
@@ -19,7 +22,16 @@ public class Textbook {
         this.type = type;
         this.coursecode = coursecode;
         this.price = price;
-        this.seller = seller;
+        this.sellerId = sellerId;
+        this.sellerName = sellerName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -32,10 +44,6 @@ public class Textbook {
 
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getEdition() {
@@ -66,23 +74,15 @@ public class Textbook {
         return coursecode;
     }
 
-    public void setCoursecode(String course) {
-        this.coursecode = coursecode;
-    }
-
     public String getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public String getSellerId() {
+        return sellerId;
     }
 
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
+    public String getSellerName() {
+        return sellerName;
     }
 }

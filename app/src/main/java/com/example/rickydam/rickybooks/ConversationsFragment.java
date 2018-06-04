@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,82 +28,72 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class BuyFragment extends Fragment {
-    private List<Textbook> textbookList = new ArrayList<>();
-    private TextbookAdapter textbookAdapter;
+public class ConversationsFragment extends Fragment {
+    private List<Conversation> conversationsList = new ArrayList<>();
+    private ConversationAdapter conversationAdapter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadTextbookData();
-    }
-
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_buy, container, false);
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_conversations, container, false);
 
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.textbooks_refresh);
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.conversations_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                textbookList.clear();
-                loadTextbookData();
+                clearConversations();
+                loadConversations();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        RecyclerView recyclerView = view.findViewById(R.id.textbook_list);
+        RecyclerView recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
 
-        Context context = getActivity().getApplicationContext();
-
+        Context context = getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
 
-        textbookAdapter = new TextbookAdapter(context, textbookList);
-        recyclerView.setAdapter(textbookAdapter);
+        conversationAdapter = new ConversationAdapter(conversationsList);
+        recyclerView.setAdapter(conversationAdapter);
 
         return view;
     }
 
-    private void loadTextbookData() {
-        Context context = getActivity().getApplicationContext();
-        String url = "http://rickybooks.herokuapp.com/textbooks";
+    public void loadConversations() {
+        clearConversations();
+
+        Context context = getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences("com.rickydam.RickyBooks",
+                Context.MODE_PRIVATE);
+        String userId = sharedPref.getString("user_id", null);
+        String url = "http://rickybooks.herokuapp.com/conversations/" + userId;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONArray resData = new JSONArray(response);
+                    JSONArray res = new JSONArray(response);
 
-                    int resDataLength = resData.length();
-                    for(int i=0; i<resDataLength; i++) {
-                        JSONObject obj = resData.getJSONObject(i);
-                        String id = obj.getString("id");
-                        String title = obj.getString("textbook_title");
-                        String author = obj.getString("textbook_author");
-                        String edition = obj.getString("textbook_edition");
-                        String condition = obj.getString("textbook_condition");
-                        String type = obj.getString("textbook_type");
-                        String coursecode = obj.getString("textbook_coursecode");
-                        String price = "$ " + obj.getString("textbook_price");
+                    for(int i=0; i<res.length(); i++) {
+                        JSONObject obj = res.getJSONObject(i);
+                        String conversationId = obj.getString("id");
+                        JSONObject recipient = obj.getJSONObject("recipient");
+                        String recipientName = (String) recipient.get("name");
 
-                        JSONObject user = obj.getJSONObject("user");
-                        String sellerId = obj.getString("user_id");
-                        String sellerName = user.getString("name");
-
-                        Textbook textbook = new Textbook(id, title, author, edition, condition,
-                                type, coursecode, price, sellerId, sellerName);
-                        textbookList.add(textbook);
-                        textbookAdapter.notifyDataSetChanged();
+                        Conversation conversation = new Conversation(conversationId, recipientName);
+                        conversationsList.add(conversation);
                     }
-                } catch(JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                conversationAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -110,9 +101,24 @@ public class BuyFragment extends Fragment {
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+
+                String token = ((MainActivity) getActivity()).getToken();
+                headers.put("Authorization", "Token token=" + token);
+
+                return headers;
+            }
+        };
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+    }
+
+    public void clearConversations() {
+        conversationsList.clear();
     }
 
     public void createAlert(String title, String message) {
@@ -127,6 +133,5 @@ public class BuyFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-        alertDialog.show();
     }
 }
