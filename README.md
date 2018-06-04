@@ -1,2 +1,12 @@
 # RickyBooks-Android
-A mobile app for University students to buy or list&amp;sell textbooks and message each other to arrange a meetup time and place.
+An Android mobile app for University students to buy and/or list and sell textbooks.
+
+## Trello
+Implementing the messaging feature <br>
+https://trello.com/b/sURkgAis/messaging
+
+Merging the backends <br>
+https://trello.com/b/eA8rG8tt/merge-backends
+
+Implementing user accounts <br>
+https://trello.com/b/7EsquVjk/user-accounts
