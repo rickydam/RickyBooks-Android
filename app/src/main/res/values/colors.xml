@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimaryDarker">#2C387E</color>
     <color name="colorPrimaryLight">#5262BC</color>
+    <color name="colorPrimaryLighter">#CCD1EB</color>
     <color name="colorAccent">#3F51B5</color>
     <color name="gray">#808080</color>
     <color name="lightGray">#B0B0B0</color>
@@ -13,4 +14,6 @@
     <color name="white">#FFFFFF</color>
     <color name="red">#BE2625</color>
     <color name="redDarker">#8C1717</color>
+    <color name="purple">#9400D3</color>
+    <color name="blue">#436EEE</color>
 </resources>

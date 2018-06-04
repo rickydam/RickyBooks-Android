@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,10 +39,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SellFragment extends Fragment {
-
-    // Required empty public constructor
-    public SellFragment() {}
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -177,9 +172,10 @@ public class SellFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 hideKeyboard(v);
+
                 final Context context = getActivity().getApplicationContext();
-                RequestQueue queue = Volley.newRequestQueue(context);
                 String url = "http://rickybooks.herokuapp.com/textbooks";
+
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                     @Override
@@ -204,10 +200,11 @@ public class SellFragment extends Fragment {
                             byte[] errorData = error.networkResponse.data;
                             VolleyError volleyError = new VolleyError(new String(errorData));
                             String volleyErrorMessage = volleyError.getMessage();
+
                             JSONObject resObj = new JSONObject(volleyErrorMessage);
                             JSONObject resData = resObj.getJSONObject("data");
                             StringBuilder errorMessage = new StringBuilder();
-                            for(int i=1; i<resData.length(); i++) {
+                            for(int i=0; i<resData.length(); i++) {
                                 String name = resData.names().getString(i);
                                 String value = resData.get(name).toString();
                                 value = value.replace("[\"can't be blank\"]", "Missing: ");
@@ -224,10 +221,8 @@ public class SellFragment extends Fragment {
                             }
                             createAlert("Hmm.. you forgot something!", String.valueOf(errorMessage));
                         } catch(JSONException e) {
-                            // Incorrect JSON format
                             e.printStackTrace();
                         } catch(NullPointerException e) {
-                            // Unable to reach server-side backend
                             createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                                     "reach the server at the moment.\n\nPlease try again later.");
                         }
@@ -236,7 +231,7 @@ public class SellFragment extends Fragment {
                 {
                     @SuppressLint("NewApi")
                     @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
+                    protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
 
                         SharedPreferences sharedPref = getActivity().getSharedPreferences(
@@ -290,12 +285,13 @@ public class SellFragment extends Fragment {
                     }
 
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
+                    public Map<String, String> getHeaders() {
                         Map<String, String> headers = new HashMap<>();
                         headers.put("Content-Type", "application/x-www-form-urlencoded");
                         return headers;
                     }
                 };
+                RequestQueue queue = Volley.newRequestQueue(context);
                 queue.add(stringRequest);
             }
         });
@@ -316,7 +312,7 @@ public class SellFragment extends Fragment {
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

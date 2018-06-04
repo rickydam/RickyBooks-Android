@@ -32,6 +32,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         final Button button = view.findViewById(R.id.login_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +40,6 @@ public class LoginFragment extends Fragment {
                 hideKeyboard(view);
                 unfocus(view);
 
-                Context context = getActivity().getApplicationContext();
-                RequestQueue queue = Volley.newRequestQueue(context);
                 String URL = "http://rickybooks.herokuapp.com/login";
 
                 JSONObject paramsObj = new JSONObject();
@@ -53,7 +52,6 @@ public class LoginFragment extends Fragment {
                     String password = password_field.getText().toString();
                     paramsObj.put("password", password);
                 } catch(JSONException e) {
-                    // Incorrect JSON format
                     e.printStackTrace();
                 }
 
@@ -75,7 +73,6 @@ public class LoginFragment extends Fragment {
                             name = response.getString("name");
 
                         } catch (JSONException e) {
-                            // Incorrect JSON format
                             e.printStackTrace();
                         }
 
@@ -87,9 +84,11 @@ public class LoginFragment extends Fragment {
                         editor.putString("name", name);
                         editor.apply();
 
-                        String previousFragmentName = ((MainActivity) getActivity())
-                                .getPreviousFragmentName();
-                        ((MainActivity) getActivity()).replaceFragment(previousFragmentName);
+                        MainActivity activity = (MainActivity) getActivity();
+                        activity.loadConversations();
+
+                        String previousFragmentName = activity.getPreviousFragmentName();
+                        activity.replaceFragment(previousFragmentName);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -104,15 +103,15 @@ public class LoginFragment extends Fragment {
                             String errorMessage = String.valueOf(errorObj.get("detail"));
                             createAlert("Typo! Try again!", errorMessage);
                         } catch(JSONException e) {
-                            // Incorrect JSON format
                             e.printStackTrace();
                         } catch(NullPointerException e) {
-                            // Unable to reach server-side backend
                             createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                                     "reach the server at the moment.\n\nPlease try again later.");
                         }
                     }
                 });
+                Context context = getActivity().getApplicationContext();
+                RequestQueue queue = Volley.newRequestQueue(context);
                 queue.add(req);
             }
         });
@@ -124,7 +123,7 @@ public class LoginFragment extends Fragment {
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

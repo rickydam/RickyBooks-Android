@@ -56,7 +56,7 @@
     <string name="submit">SUBMIT</string>
     <string name="textbook_image_description">Textbook image</string>
     <string name="hardcoded_seller">Ricky Dam</string>
-    <string name="name_hint">Name</string>
+    <string name="name_hint">First and Last Name</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="passwordC_hint">Confirm Password</string>
@@ -71,4 +71,7 @@
         \n\nOr, if you already joined the club, welcome back!\n
     </string>
     <string name="logout_button">LOG OUT</string>
+    <string name="type_message_hint">Type a message&#8230;</string>
+    <string name="send_message_hint">SEND</string>
+    <string name="message_button">MESSAGE</string>
 </resources>

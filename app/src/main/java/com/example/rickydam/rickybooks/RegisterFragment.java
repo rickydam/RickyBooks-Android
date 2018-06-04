@@ -43,7 +43,6 @@ public class RegisterFragment extends Fragment {
                 unfocus(v);
 
                 final Context context = getActivity().getApplicationContext();
-                RequestQueue queue = Volley.newRequestQueue(context);
                 String URL = "http://rickybooks.herokuapp.com/users";
 
                 JSONObject paramsObj = new JSONObject();
@@ -91,7 +90,7 @@ public class RegisterFragment extends Fragment {
 
                         createAlert("Success!",
                                 "You have been successfully registered.\n" +
-                                "You have been automatically logged in.");
+                                "You are now logged in.");
 
                         String token = null;
                         String userId = null;
@@ -113,9 +112,9 @@ public class RegisterFragment extends Fragment {
                         editor.putString("name", name);
                         editor.apply();
 
-                        String previousFragmentName = ((MainActivity) getActivity())
-                                .getPreviousFragmentName();
-                        ((MainActivity) getActivity()).replaceFragment(previousFragmentName);
+                        MainActivity activity = (MainActivity) getActivity();
+                        String previousFragmentName = activity.getPreviousFragmentName();
+                        activity.replaceFragment(previousFragmentName);
                     }
                 }, new Response.ErrorListener() {
                     @SuppressLint("NewApi")
@@ -187,6 +186,7 @@ public class RegisterFragment extends Fragment {
                         }
                     }
                 });
+                RequestQueue queue = Volley.newRequestQueue(context);
                 queue.add(req);
             }
         });
@@ -198,7 +198,7 @@ public class RegisterFragment extends Fragment {
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -20,8 +20,9 @@ public class AccountFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() != null) {
-                    ((MainActivity) getActivity()).replaceFragment("RegisterFragment");
+                MainActivity activity = (MainActivity) getActivity();
+                if(activity != null) {
+                    activity.replaceFragment("RegisterFragment");
                 }
             }
         });
@@ -30,8 +31,9 @@ public class AccountFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() != null) {
-                    ((MainActivity) getActivity()).replaceFragment("LoginFragment");
+                MainActivity activity = (MainActivity) getActivity();
+                if(activity != null) {
+                    activity.replaceFragment("LoginFragment");
                 }
             }
         });
