@@ -1,6 +1,8 @@
 package com.example.rickydam.rickybooks;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,70 +18,85 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
     private List<Textbook> textbookList;
     private Context context;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     class TextbookViewHolder extends RecyclerView.ViewHolder {
-        private TextView item_title;
-        private TextView item_author;
-        private TextView item_edition;
-        private TextView item_condition;
-        private TextView item_type;
-        private TextView item_coursecode;
-        private TextView item_price;
-        private TextView item_seller;
+        private TextView textbook_title;
+        private TextView textbook_author;
+        private TextView textbook_edition;
+        private TextView textbook_condition;
+        private TextView textbook_type;
+        private TextView textbook_coursecode;
+        private TextView textbook_price;
+        private TextView textbook_seller;
         private ImageView imageView;
 
         TextbookViewHolder(View view) {
             super(view);
-            item_title = view.findViewById(R.id.item_title);
-            item_author = view.findViewById(R.id.item_author);
-            item_edition = view.findViewById(R.id.item_edition);
-            item_condition = view.findViewById(R.id.item_condition);
-            item_type = view.findViewById(R.id.item_type);
-            item_coursecode = view.findViewById(R.id.item_coursecode);
-            item_price = view.findViewById(R.id.item_price);
-            item_seller = view.findViewById(R.id.item_seller);
+            textbook_title = view.findViewById(R.id.textbook_title);
+            textbook_author = view.findViewById(R.id.textbook_author);
+            textbook_edition = view.findViewById(R.id.textbook_edition);
+            textbook_condition = view.findViewById(R.id.textbook_condition);
+            textbook_type = view.findViewById(R.id.textbook_type);
+            textbook_coursecode = view.findViewById(R.id.textbook_coursecode);
+            textbook_price = view.findViewById(R.id.textbook_price);
+            textbook_seller = view.findViewById(R.id.textbook_seller);
             imageView = view.findViewById(R.id.textbook_image);
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     TextbookAdapter(Context context, List<Textbook> textbookList) {
         this.context = context;
         this.textbookList = textbookList;
     }
 
-    // Create new views (invoke by the layout manager)
+    @NonNull
     @Override
-    public TextbookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+    public TextbookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textbook, parent,
+                false);
         return new TextbookViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by layout manager)
     @Override
-    public void onBindViewHolder(TextbookAdapter.TextbookViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        Textbook textbook = textbookList.get(position);
-        holder.item_title.setText(textbook.getTitle());
-        holder.item_author.setText(textbook.getAuthor());
-        holder.item_edition.setText(textbook.getEdition());
-        holder.item_condition.setText(textbook.getCondition());
-        holder.item_type.setText(textbook.getType());
-        holder.item_coursecode.setText(textbook.getCoursecode());
-        holder.item_price.setText(textbook.getPrice());
-        holder.item_seller.setText(textbook.getSeller());
+    public void onBindViewHolder(@NonNull final TextbookAdapter.TextbookViewHolder holder,
+                                 final int position) {
+        final Textbook textbook = textbookList.get(position);
+
+        holder.textbook_title.setText(textbook.getTitle());
+        holder.textbook_author.setText(textbook.getAuthor());
+        holder.textbook_edition.setText(textbook.getEdition());
+        holder.textbook_condition.setText(textbook.getCondition());
+        holder.textbook_type.setText(textbook.getType());
+        holder.textbook_coursecode.setText(textbook.getCoursecode());
+        holder.textbook_price.setText(textbook.getPrice());
+        holder.textbook_seller.setText(textbook.getSellerName());
 
         ImageView imageView = holder.imageView;
-        Glide.with(context).load(R.drawable.textbook).into(imageView);
+        Glide.with(context).load(R.drawable.placeholder_img).into(imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("Id", textbook.getId());
+                bundle.putString("Title", textbook.getTitle());
+                bundle.putString("Author", textbook.getAuthor());
+                bundle.putString("Edition", textbook.getEdition());
+                bundle.putString("Condition", textbook.getCondition());
+                bundle.putString("Type", textbook.getType());
+                bundle.putString("Coursecode", textbook.getCoursecode());
+                bundle.putString("Price", textbook.getPrice());
+                bundle.putString("SellerName", textbook.getSellerName());
+                bundle.putString("SellerId", textbook.getSellerId());
+
+                MainActivity activity = (MainActivity) v.getContext();
+                activity.setDetails(bundle);
+                activity.replaceFragment("DetailsFragment");
+            }
+        });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return textbookList.size();
     }
-
 }
