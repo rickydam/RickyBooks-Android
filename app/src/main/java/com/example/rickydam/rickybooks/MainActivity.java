@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     RegisterFragment registerFragment;
     LoginFragment loginFragment;
     AccountFragment accountFragment;
+    DetailsFragment detailsFragment;
     Fragment currentFragment;
     String currentFragmentName = "";
     String previousFragmentName = "";
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         registerFragment = new RegisterFragment();
         loginFragment = new LoginFragment();
         accountFragment = new AccountFragment();
+        detailsFragment = new DetailsFragment();
 
         FragmentTransaction fragmentTransaction;
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -72,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.fragment_container, accountFragment);
         fragmentTransaction.hide(accountFragment);
+
+        fragmentTransaction.add(R.id.fragment_container, detailsFragment);
+        fragmentTransaction.hide(detailsFragment);
 
         fragmentTransaction.commit();
     }
@@ -119,6 +124,52 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
                 Context.MODE_PRIVATE);
         token = sharedPref.getString("token", null);
+    }
+
+    public void setDetails(Bundle bundle) {
+        textbookTitle = bundle.getString("Title");
+
+        detailsFragment.setArguments(bundle);
+        TextView detailsTitle = detailsFragment.getView().findViewById(R.id.details_title);
+        TextView detailsAuthor = detailsFragment.getView().findViewById(R.id.details_author);
+        TextView detailsEdition = detailsFragment.getView().findViewById(R.id.details_edition);
+        TextView detailsCondition = detailsFragment.getView().findViewById(R.id.details_condition);
+        TextView detailsType = detailsFragment.getView().findViewById(R.id.details_type);
+        TextView detailsCoursecode = detailsFragment.getView().findViewById(R.id.details_coursecode);
+        TextView detailsPrice = detailsFragment.getView().findViewById(R.id.details_price);
+        TextView detailsSeller = detailsFragment.getView().findViewById(R.id.details_seller);
+
+        detailsTitle.setText(bundle.getString("Title"));
+        detailsAuthor.setText(bundle.getString("Author"));
+        detailsEdition.setText(bundle.getString("Edition"));
+        detailsCondition.setText(bundle.getString("Condition"));
+        detailsType.setText(bundle.getString("Type"));
+        detailsCoursecode.setText(bundle.getString("Coursecode"));
+        detailsPrice.setText(bundle.getString("Price"));
+        detailsSeller.setText(bundle.getString("SellerName"));
+
+        ImageView detailsImage = detailsFragment.getView().findViewById(R.id.details_image);
+        Glide.with(this).load(R.drawable.placeholder_img).into(detailsImage);
+    }
+
+    public void initializeConversation(String conversationId) {
+        SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("conversation_id", conversationId);
+        editor.apply();
+    }
+
+    public void loadConversations() {
+        conversationsFragment.loadConversations();
+    }
+
+    public void clearMessages() {
+        messagesFragment.clearMessages();
+    }
+
+    public void loadMessages() {
+        messagesFragment.loadMessages();
     }
 
     public String getPreviousFragmentName() {
@@ -239,12 +290,27 @@ public class MainActivity extends AppCompatActivity {
             currentFragment = loginFragment;
         }
         if(Objects.equals(fragmentName, "AccountFragment")) {
+            if(currentFragmentName.equals("DetailsFragment")) {
+                previousFragmentName = currentFragmentName;
+                currentFragmentName = "AccountFragment";
+            }
             FragmentTransaction fragmentTransaction;
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.hide(currentFragment);
             fragmentTransaction.show(accountFragment);
             fragmentTransaction.commit();
             currentFragment = accountFragment;
+        }
+        if(Objects.equals(fragmentName, "DetailsFragment")) {
+            previousFragmentName = currentFragmentName;
+            currentFragmentName = "DetailsFragment";
+            setTitle("Buy " + textbookTitle + "!");
+            FragmentTransaction fragmentTransaction;
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.hide(currentFragment);
+            fragmentTransaction.show(detailsFragment);
+            fragmentTransaction.commit();
+            currentFragment = detailsFragment;
         }
     }
 }
