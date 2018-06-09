@@ -46,7 +46,6 @@ public class ConversationsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                clearConversations();
                 loadConversations();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -61,6 +60,8 @@ public class ConversationsFragment extends Fragment {
 
         conversationAdapter = new ConversationAdapter(conversationsList);
         recyclerView.setAdapter(conversationAdapter);
+
+        loadConversations();
 
         return view;
     }

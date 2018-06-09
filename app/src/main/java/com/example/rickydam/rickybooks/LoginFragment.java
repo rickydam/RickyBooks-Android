@@ -85,10 +85,18 @@ public class LoginFragment extends Fragment {
                         editor.apply();
 
                         MainActivity activity = (MainActivity) getActivity();
-                        activity.loadConversations();
 
-                        String previousFragmentName = activity.getPreviousFragmentName();
-                        activity.replaceFragment(previousFragmentName);
+                        // LoginFragment -> AccountFragment
+                        activity.getSupportFragmentManager().popBackStack();
+
+                        // AccountFragment -> The fragment the user was at
+                        activity.getSupportFragmentManager().popBackStack();
+
+                        // Get the fragment the user wanted
+                        String wantedFragmentName = activity.getWantedFragmentName();
+
+                        // Redirect to the fragment the user wants
+                        activity.replaceFragment(wantedFragmentName);
                     }
                 }, new Response.ErrorListener() {
                     @Override

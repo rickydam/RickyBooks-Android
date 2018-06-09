@@ -70,14 +70,13 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         holder.textbook_price.setText(textbook.getPrice());
         holder.textbook_seller.setText(textbook.getSellerName());
 
-        ImageView imageView = holder.imageView;
+        final ImageView imageView = holder.imageView;
         Glide.with(context).load(R.drawable.placeholder_img).into(imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("Id", textbook.getId());
                 bundle.putString("Title", textbook.getTitle());
                 bundle.putString("Author", textbook.getAuthor());
                 bundle.putString("Edition", textbook.getEdition());
@@ -86,10 +85,9 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                 bundle.putString("Coursecode", textbook.getCoursecode());
                 bundle.putString("Price", textbook.getPrice());
                 bundle.putString("SellerName", textbook.getSellerName());
-                bundle.putString("SellerId", textbook.getSellerId());
 
                 MainActivity activity = (MainActivity) v.getContext();
-                activity.setDetails(bundle);
+                activity.setDetailsBundle(bundle);
                 activity.replaceFragment("DetailsFragment");
             }
         });

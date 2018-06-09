@@ -1,5 +1,7 @@
 package com.example.rickydam.rickybooks;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,9 +45,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             @Override
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) v.getContext();
-                activity.initializeConversation(conversation.getConversationId());
-                activity.clearMessages();
-                activity.loadMessages();
+                SharedPreferences sharedPref = activity.getSharedPreferences("com.rickydam.RickyBooks",
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("conversation_id", conversation.getConversationId());
+                editor.apply();
                 activity.replaceFragment("MessagesFragment");
             }
         });

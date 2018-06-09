@@ -39,6 +39,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SellFragment extends Fragment {
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,8 +70,10 @@ public class SellFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 TextView selectedText = (TextView) parent.getChildAt(0);
-                if(!text.equals("Edition")) {
-                    selectedText.setTextColor(Color.BLACK);
+                if(selectedText != null) {
+                    if(!text.equals("Edition")) {
+                        selectedText.setTextColor(Color.BLACK);
+                    }
                 }
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -86,8 +98,10 @@ public class SellFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 TextView selectedText = (TextView) parent.getChildAt(0);
-                if(!text.equals("Condition")) {
-                    selectedText.setTextColor(Color.BLACK);
+                if(selectedText != null) {
+                    if(!text.equals("Condition")) {
+                        selectedText.setTextColor(Color.BLACK);
+                    }
                 }
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -122,8 +136,10 @@ public class SellFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 TextView selectedText = (TextView) parent.getChildAt(0);
-                if(!text.equals("Type")) {
-                    selectedText.setTextColor(Color.BLACK);
+                if(selectedText != null) {
+                    if(!text.equals("Type")) {
+                        selectedText.setTextColor(Color.BLACK);
+                    }
                 }
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}

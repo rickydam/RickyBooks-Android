@@ -13,10 +13,11 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,19 +44,44 @@ public class DetailsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageButtonPressed(v);
+                messageButtonPressed();
             }
         });
+
+        TextView detailsTitle = view.findViewById(R.id.details_title);
+        TextView detailsAuthor = view.findViewById(R.id.details_author);
+        TextView detailsEdition = view.findViewById(R.id.details_edition);
+        TextView detailsCondition = view.findViewById(R.id.details_condition);
+        TextView detailsType = view.findViewById(R.id.details_type);
+        TextView detailsCoursecode = view.findViewById(R.id.details_coursecode);
+        TextView detailsPrice = view.findViewById(R.id.details_price);
+        TextView detailsSellerName = view.findViewById(R.id.details_seller);
+
+        Bundle bundle = getArguments();
+
+        detailsTitle.setText((String) bundle.get("Title"));
+        detailsAuthor.setText((String) bundle.get("Author"));
+        detailsEdition.setText((String) bundle.get("Edition"));
+        detailsCondition.setText((String) bundle.get("Condition"));
+        detailsType.setText((String) bundle.get("Type"));
+        detailsCoursecode.setText((String) bundle.get("Coursecode"));
+        detailsPrice.setText((String) bundle.get("Price"));
+        detailsSellerName.setText((String) bundle.get("SellerName"));
+
+        ImageView detailsImage = view.findViewById(R.id.details_image);
+        Glide.with(this).load(R.drawable.placeholder_img).into(detailsImage);
+
         return view;
     }
 
-    public void messageButtonPressed(View v) {
-        String token = ((MainActivity) getActivity()).getToken();
+    public void messageButtonPressed() {
+        MainActivity activity = (MainActivity) getActivity();
+        String token = activity.getToken();
         if(token != null) {
             createSendDialog();
         }
         else {
-            ((MainActivity) v.getContext()).replaceFragment("AccountFragment");
+            activity.replaceFragment("AccountFragment");
         }
     }
 
