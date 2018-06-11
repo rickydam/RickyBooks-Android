@@ -77,6 +77,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
+                bundle.putString("Id", textbook.getId());
                 bundle.putString("Title", textbook.getTitle());
                 bundle.putString("Author", textbook.getAuthor());
                 bundle.putString("Edition", textbook.getEdition());
@@ -85,6 +86,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                 bundle.putString("Coursecode", textbook.getCoursecode());
                 bundle.putString("Price", textbook.getPrice());
                 bundle.putString("SellerName", textbook.getSellerName());
+                bundle.putString("SellerId", textbook.getSellerId());
 
                 MainActivity activity = (MainActivity) v.getContext();
                 activity.setDetailsBundle(bundle);
