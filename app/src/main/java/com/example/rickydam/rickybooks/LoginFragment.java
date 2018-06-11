@@ -92,6 +92,9 @@ public class LoginFragment extends Fragment {
                         // AccountFragment -> The fragment the user was at
                         activity.getSupportFragmentManager().popBackStack();
 
+                        // Set justLoggedIn boolean to true
+                        activity.loggedIn();
+
                         // Get the fragment the user wanted
                         String wantedFragmentName = activity.getWantedFragmentName();
 

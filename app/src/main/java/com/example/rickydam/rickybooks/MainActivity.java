@@ -24,9 +24,13 @@ public class MainActivity extends AppCompatActivity {
     Bundle detailsBundle;
     boolean popped = false;
     int poppedIndex = 0;
+    int peekIndex = 0;
     String poppedTitle;
     String currentFragmentName;
-    boolean fragmentChanges = true;
+    Stack<String> fragmentNames;
+    boolean hasFragmentChanges = true;
+    String poppedFragmentName;
+    boolean justLoggedIn = false;
 
     static final int HOME = 0;
     static final int BUY = 1;
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomNavigationPosition = new Stack<>();
         titles = new Stack<>();
+        fragmentNames = new Stack<>();
 
         BottomNavigationView bnv = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bnv);
@@ -50,11 +55,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragment_container, homeFragment, "HomeFragment");
         transaction.commit();
-        bottomNavigationPosition.push(prevNavPosition);
+
         String title = "RickyBooks";
         titles.push(title);
         prevTitle = title;
         currentFragmentName = "HomeFragment";
+        fragmentNames.push(currentFragmentName);
 
         fm.addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
@@ -63,15 +69,29 @@ public class MainActivity extends AppCompatActivity {
                 if(backStackCount > fm.getBackStackEntryCount()) {
                     backStackCount--;
                     poppedTitle = titles.pop();
-                    setTitle(poppedTitle);
+                    if(!justLoggedIn) {
+                        setTitle(poppedTitle);
+                    }
+                    if(poppedTitle.equals("Profile") && justLoggedIn) {
+                        justLoggedIn = false;
+                    }
                     poppedIndex = bottomNavigationPosition.pop();
+                    prevNavPosition = poppedIndex;
+                    if(bottomNavigationPosition.size() >= 1) {
+                        peekIndex = bottomNavigationPosition.peek();
+                    }
+                    else {
+                        peekIndex = poppedIndex;
+                    }
                     setBottomNavigationItem(poppedIndex);
                     popped = true;
+                    poppedFragmentName = fragmentNames.pop();
+                    currentFragmentName = poppedFragmentName;
                 }
                 else {
                     if(popped) {
-                        bottomNavigationPosition.push(poppedIndex);
                         titles.push(poppedTitle);
+                        fragmentNames.push(poppedFragmentName);
                     }
                     backStackCount++;
                     popped = false;
@@ -125,52 +145,67 @@ public class MainActivity extends AppCompatActivity {
 
         if(fragmentName.equals("HomeFragment")) {
             setAppTitle("RickyBooks");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = HOME;
             Fragment fragment = fm.findFragmentByTag("HomeFragment");
             if(fragment == null) {
                 fragment = new HomeFragment();
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
             if(!currentFragmentName.equals("HomeFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "HomeFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "HomeFragment";
         }
         if(fragmentName.equals("BuyFragment")) {
             setAppTitle("Buy a textbook!");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = BUY;
             Fragment fragment = fm.findFragmentByTag("BuyFragment");
             if(fragment == null) {
                 fragment = new BuyFragment();
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
             if(!currentFragmentName.equals("BuyFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "BuyFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "BuyFragment";
         }
         if(fragmentName.equals("DetailsFragment")) {
             setAppTitle("Buy " + detailsBundle.get("Title"));
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = BUY;
             Fragment fragment = fm.findFragmentByTag("DetailsFragment");
             if(fragment == null) {
                 fragment = new DetailsFragment();
-                fragment.setArguments(detailsBundle);
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
+            fragment.setArguments(detailsBundle);
             if(!currentFragmentName.equals("DetailsFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "DetailsFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "DetailsFragment";
         }
         if(fragmentName.equals("ConversationsFragment")) {
             setAppTitle("Conversations");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = MESSAGES;
             if(token == null) {
@@ -179,28 +214,35 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment == null) {
                     fragment = new AccountFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("ConversationsFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "AccountFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "ConversationsFragment";
             }
             else {
                 Fragment fragment = fm.findFragmentByTag("ConversationsFragment");
                 if(fragment == null) {
                     fragment = new ConversationsFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("ConversationsFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "ConversationsFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "ConversationsFragment";
             }
+            currentFragmentName = "ConversationsFragment";
         }
         if(fragmentName.equals("MessagesFragment")) {
-            setAppTitle("Messages with ...");
+            SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
+                    Context.MODE_PRIVATE);
+            String recipientName = sharedPref.getString("recipient_name", null);
+            setAppTitle("Messages with " + recipientName);
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = MESSAGES;
             if(token == null) {
@@ -209,28 +251,32 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment == null) {
                     fragment = new AccountFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("MessagesFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "AccountFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "MessagesFragment";
             }
             else {
                 Fragment fragment = fm.findFragmentByTag("MessagesFragment");
                 if(fragment == null) {
                     fragment = new MessagesFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("MessagesFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "MessagesFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "MessagesFragment";
             }
+            currentFragmentName = "MessagesFragment";
         }
         if(fragmentName.equals("SellFragment")) {
             setAppTitle("Sell a textbook!");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = SELL;
             if(token == null) {
@@ -239,27 +285,31 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment == null) {
                     fragment = new AccountFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("SellFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "AccountFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "SellFragment";
             }
             else {
                 Fragment fragment = fm.findFragmentByTag("SellFragment");
                 if(fragment == null) {
                     fragment = new SellFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("SellFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "SellFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "SellFragment";
             }
+            currentFragmentName = "SellFragment";
         }
         if(fragmentName.equals("ProfileFragment")) {
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             prevNavPosition = PROFILE;
             if(token == null) {
@@ -269,12 +319,12 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment == null) {
                     fragment = new AccountFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("ProfileFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "AccountFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "ProfileFragment";
             }
             else {
                 SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
@@ -285,59 +335,72 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment == null) {
                     fragment = new ProfileFragment();
                 }
-                fragmentChanges = false;
+                hasFragmentChanges = false;
                 if(!currentFragmentName.equals("ProfileFragment")) {
                     transaction.replace(R.id.fragment_container, fragment, "ProfileFragment");
-                    fragmentChanges = true;
+                    hasFragmentChanges = true;
+                    fragmentNames.push(currentFragmentName);
                 }
-                currentFragmentName = "ProfileFragment";
             }
+            currentFragmentName = "ProfileFragment";
         }
         if(fragmentName.equals("AccountFragment")) {
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             backStackCount++;
             Fragment fragment = fm.findFragmentByTag("AccountFragment");
             if(fragment == null) {
                 fragment = new AccountFragment();
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
             if(!currentFragmentName.equals("AccountFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "AccountFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "AccountFragment";
         }
         if(fragmentName.equals("RegisterFragment")) {
             setAppTitle("Create an account!");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             backStackCount++;
             Fragment fragment = fm.findFragmentByTag("RegisterFragment");
             if(fragment == null) {
                 fragment = new RegisterFragment();
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
             if(!currentFragmentName.equals("RegisterFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "RegisterFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "RegisterFragment";
         }
         if(fragmentName.equals("LoginFragment")) {
             setAppTitle("Log in to your account!");
+            if(popped) {
+                bottomNavigationPosition.push(peekIndex);
+            }
             bottomNavigationPosition.push(prevNavPosition);
             backStackCount++;
             Fragment fragment = fm.findFragmentByTag("LoginFragment");
             if(fragment == null) {
                 fragment = new LoginFragment();
             }
-            fragmentChanges = false;
+            hasFragmentChanges = false;
             if(!currentFragmentName.equals("LoginFragment")) {
                 transaction.replace(R.id.fragment_container, fragment, "LoginFragment");
-                fragmentChanges = true;
+                hasFragmentChanges = true;
+                fragmentNames.push(currentFragmentName);
             }
             currentFragmentName = "LoginFragment";
         }
-        if(fragmentChanges) {
+        if(hasFragmentChanges) {
             transaction.addToBackStack(null);
             transaction.commit();
         }
@@ -368,10 +431,21 @@ public class MainActivity extends AppCompatActivity {
             ((ConversationsFragment) fragment).clearConversations();
         }
         bottomNavigationPosition.clear();
+        titles.clear();
+        fragmentNames.clear();
+        prevTitle = "RickyBooks";
         prevNavPosition = 0;
         backStackCount = 0;
+        poppedIndex = 0;
+        peekIndex = 0;
         replaceFragment("HomeFragment");
+        fragmentNames.push(currentFragmentName);
+        justLoggedIn = false;
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    public void loggedIn() {
+        justLoggedIn = true;
     }
 
     public void checkToken() {

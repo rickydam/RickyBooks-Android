@@ -88,6 +88,13 @@ public class ConversationsFragment extends Fragment {
                         JSONObject recipient = obj.getJSONObject("recipient");
                         String recipientName = (String) recipient.get("name");
 
+                        MainActivity activity = (MainActivity) getActivity();
+                        SharedPreferences sharedPref = activity.getSharedPreferences(
+                                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("recipient_name", recipientName);
+                        editor.apply();
+
                         Conversation conversation = new Conversation(conversationId, recipientName);
                         conversationsList.add(conversation);
                     }
