@@ -48,6 +48,12 @@ public class DetailsFragment extends Fragment {
             }
         });
 
+        loadDetails(view);
+
+        return view;
+    }
+
+    public void loadDetails(View view) {
         TextView detailsTitle = view.findViewById(R.id.details_title);
         TextView detailsAuthor = view.findViewById(R.id.details_author);
         TextView detailsEdition = view.findViewById(R.id.details_edition);
@@ -70,8 +76,6 @@ public class DetailsFragment extends Fragment {
 
         ImageView detailsImage = view.findViewById(R.id.details_image);
         Glide.with(this).load(R.drawable.placeholder_img).into(detailsImage);
-
-        return view;
     }
 
     public void messageButtonPressed() {
