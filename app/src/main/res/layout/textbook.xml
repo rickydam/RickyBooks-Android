@@ -4,12 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/textbook"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
     android:layout_width="match_parent"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:paddingEnd="10dp"
+    android:paddingLeft="10dp"
+    android:paddingStart="10dp">
 
     <ImageView
         android:contentDescription="@string/textbook_image_description"
@@ -41,7 +40,6 @@
         <RelativeLayout
             android:id="@+id/textbook_text_top"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content">
 
             <TextView
