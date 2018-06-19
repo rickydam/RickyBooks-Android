@@ -14,29 +14,29 @@ import android.view.MenuItem;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
-    String wantedFragmentName;
-    String token = null;
-    int backStackCount = 0;
-    Stack<Integer> bottomNavigationPosition;
-    int prevNavPosition = 0;
-    Stack<String> titles;
-    String prevTitle;
-    Bundle detailsBundle;
-    boolean popped = false;
-    int poppedIndex = 0;
-    int peekIndex = 0;
-    String poppedTitle;
-    String currentFragmentName;
-    Stack<String> fragmentNames;
-    boolean hasFragmentChanges = true;
-    String poppedFragmentName;
+    private String wantedFragmentName;
+    private String token = null;
+    private int backStackCount = 0;
+    private Stack<Integer> bottomNavigationPosition;
+    private int prevNavPosition = 0;
+    private Stack<String> titles;
+    private String prevTitle;
+    private Bundle detailsBundle;
+    private boolean popped = false;
+    private int poppedIndex = 0;
+    private int peekIndex = 0;
+    private String poppedTitle;
+    private String currentFragmentName;
+    private Stack<String> fragmentNames;
+    private boolean hasFragmentChanges = true;
+    private String poppedFragmentName;
     boolean justLoggedIn = false;
 
-    static final int HOME = 0;
-    static final int BUY = 1;
-    static final int MESSAGES = 2;
-    static final int SELL = 3;
-    static final int PROFILE = 4;
+    private static final int HOME = 0;
+    private static final int BUY = 1;
+    private static final int MESSAGES = 2;
+    private static final int SELL = 3;
+    private static final int PROFILE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
