@@ -149,7 +149,19 @@ public class ProfileFragment extends Fragment {
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+
+                MainActivity activity = (MainActivity) getActivity();
+                String token = activity.getToken();
+                headers.put("Authorization", "Token token=" + token);
+
+                return headers;
+            }
+        };
         MainActivity activity = (MainActivity) getActivity();
         RequestQueue queue = Volley.newRequestQueue(activity);
         queue.add(stringRequest);

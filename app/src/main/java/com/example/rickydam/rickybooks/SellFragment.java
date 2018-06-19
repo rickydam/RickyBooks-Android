@@ -304,6 +304,11 @@ public class SellFragment extends Fragment {
                     public Map<String, String> getHeaders() {
                         Map<String, String> headers = new HashMap<>();
                         headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+                        MainActivity activity = (MainActivity) getActivity();
+                        String token = activity.getToken();
+                        headers.put("Authorization", "Token token=" + token);
+
                         return headers;
                     }
                 };
