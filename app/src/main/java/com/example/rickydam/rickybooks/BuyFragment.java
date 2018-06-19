@@ -60,12 +60,12 @@ public class BuyFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
 
-        Context context = getActivity().getApplicationContext();
+        MainActivity activity = (MainActivity) getActivity();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
 
-        textbookAdapter = new TextbookAdapter(context, textbookList);
+        textbookAdapter = new TextbookAdapter(activity, textbookList);
         recyclerView.setAdapter(textbookAdapter);
 
         return view;

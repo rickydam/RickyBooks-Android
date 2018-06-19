@@ -1,8 +1,8 @@
 package com.example.rickydam.rickybooks;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.TextbookViewHolder> {
     private List<Textbook> textbookList;
-    private Context context;
+    private MainActivity activity;
 
     class TextbookViewHolder extends RecyclerView.ViewHolder {
         private TextView textbook_title;
@@ -43,8 +43,8 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         }
     }
 
-    TextbookAdapter(Context context, List<Textbook> textbookList) {
-        this.context = context;
+    TextbookAdapter(MainActivity activity, List<Textbook> textbookList) {
+        this.activity = activity;
         this.textbookList = textbookList;
     }
 
@@ -59,7 +59,8 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
     @Override
     public void onBindViewHolder(@NonNull final TextbookAdapter.TextbookViewHolder holder,
                                  final int position) {
-        final Textbook textbook = textbookList.get(position);
+        final Textbook textbook = textbookList.get(holder.getAdapterPosition());
+        holder.itemView.setBackgroundResource(R.color.white);
 
         holder.textbook_title.setText(textbook.getTitle());
         holder.textbook_author.setText(textbook.getAuthor());
@@ -71,28 +72,77 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         holder.textbook_seller.setText(textbook.getSellerName());
 
         final ImageView imageView = holder.imageView;
-        Glide.with(context).load(R.drawable.placeholder_img).into(imageView);
+        Glide.with(activity).load(R.drawable.placeholder_img).into(imageView);
+
+        final ProfileFragment profileFragment = getProfileFragment(activity);
+        if(profileFragment != null) {
+            boolean actionMode = profileFragment.getActionMode();
+            if(actionMode) {
+                boolean textbookExists = profileFragment.textbookExists(textbook);
+                if(textbookExists) {
+                    holder.itemView.setBackgroundResource(R.color.lightGray);
+                }
+            }
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("Id", textbook.getId());
-                bundle.putString("Title", textbook.getTitle());
-                bundle.putString("Author", textbook.getAuthor());
-                bundle.putString("Edition", textbook.getEdition());
-                bundle.putString("Condition", textbook.getCondition());
-                bundle.putString("Type", textbook.getType());
-                bundle.putString("Coursecode", textbook.getCoursecode());
-                bundle.putString("Price", textbook.getPrice());
-                bundle.putString("SellerName", textbook.getSellerName());
-                bundle.putString("SellerId", textbook.getSellerId());
-
                 MainActivity activity = (MainActivity) v.getContext();
-                activity.setDetailsBundle(bundle);
-                activity.replaceFragment("DetailsFragment");
+                String currentFragmentName = activity.getCurrentFragmentName();
+
+                if(currentFragmentName.equals("ProfileFragment")) {
+                    if(profileFragment != null) {
+                        boolean actionMode = profileFragment.getActionMode();
+                        if(actionMode) {
+                            profileFragment.selectTextbook(textbook);
+                            notifyItemChanged(holder.getAdapterPosition());
+                        }
+                    }
+                }
+                else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Id", textbook.getId());
+                    bundle.putString("Title", textbook.getTitle());
+                    bundle.putString("Author", textbook.getAuthor());
+                    bundle.putString("Edition", textbook.getEdition());
+                    bundle.putString("Condition", textbook.getCondition());
+                    bundle.putString("Type", textbook.getType());
+                    bundle.putString("Coursecode", textbook.getCoursecode());
+                    bundle.putString("Price", textbook.getPrice());
+                    bundle.putString("SellerName", textbook.getSellerName());
+                    bundle.putString("SellerId", textbook.getSellerId());
+
+                    activity.setDetailsBundle(bundle);
+                    activity.replaceFragment("DetailsFragment");
+                }
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                String currentFragmentName = activity.getCurrentFragmentName();
+                if(currentFragmentName.equals("ProfileFragment")) {
+                    if(profileFragment != null) {
+                        boolean actionMode = profileFragment.getActionMode();
+                        if(!actionMode) {
+                            profileFragment.prepareSelection(textbook);
+                            notifyItemChanged(holder.getAdapterPosition());
+                        }
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
+    private ProfileFragment getProfileFragment(MainActivity activity) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        if(fm.findFragmentByTag("ProfileFragment") != null) {
+            return (ProfileFragment) fm.findFragmentByTag("ProfileFragment");
+        }
+        return null;
     }
 
     @Override

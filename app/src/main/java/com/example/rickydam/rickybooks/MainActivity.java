@@ -406,6 +406,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public String getCurrentFragmentName() {
+        return currentFragmentName;
+    }
+
     public String getWantedFragmentName() {
         return wantedFragmentName;
     }
