@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import java.util.Date;
 

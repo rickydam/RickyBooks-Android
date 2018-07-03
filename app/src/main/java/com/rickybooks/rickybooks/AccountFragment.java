@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

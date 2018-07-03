@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

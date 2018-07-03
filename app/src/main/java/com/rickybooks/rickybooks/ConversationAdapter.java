@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -45,7 +45,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             @Override
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) v.getContext();
-                SharedPreferences sharedPref = activity.getSharedPreferences("com.rickydam.RickyBooks",
+                SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("conversation_id", conversation.getConversationId());

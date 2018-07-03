@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             currentFragmentName = "ConversationsFragment";
         }
         if(fragmentName.equals("MessagesFragment")) {
-            SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
+            SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                     Context.MODE_PRIVATE);
             String recipientName = sharedPref.getString("recipient_name", null);
             setAppTitle("Messages with " + recipientName);
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
-                SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
+                SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                         Context.MODE_PRIVATE);
                 String name = sharedPref.getString("name", null);
                 setAppTitle(name);
@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout() {
         SharedPreferences sharedPref = this.getSharedPreferences(
-                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("token", null);
         editor.apply();
@@ -453,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkToken() {
-        SharedPreferences sharedPref = getSharedPreferences("com.rickydam.RickyBooks",
+        SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         token = sharedPref.getString("token", null);
     }

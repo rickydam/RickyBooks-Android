@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,7 +35,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         Message message = messageList.get(position);
-        SharedPreferences sharedPref = context.getSharedPreferences("com.rickydam.RickyBooks",
+        SharedPreferences sharedPref = context.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         if(message.getSender().equals(sharedPref.getString("name", null))) {
             return VIEW_TYPE_MESSAGE_SENT;

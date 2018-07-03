@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -234,7 +234,7 @@ public class SellFragment extends Fragment {
 
     public void getData(View view) {
         SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
         String token = sharedPref.getString("token", null);
         tokenString = "Token token=" + token;
         userId = sharedPref.getString("user_id", null);

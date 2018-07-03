@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;

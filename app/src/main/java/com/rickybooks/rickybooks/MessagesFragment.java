@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -70,7 +70,7 @@ public class MessagesFragment extends Fragment {
             public void onClick(final View v) {
                 final MainActivity activity = (MainActivity) v.getContext();
                 final SharedPreferences sharedPref = activity.getSharedPreferences(
-                        "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                        "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
                 final String conversationId = sharedPref.getString("conversation_id", null);
                 String url = "https://rickybooks.herokuapp.com/conversations/" + conversationId +
                         "/messages";
@@ -140,7 +140,7 @@ public class MessagesFragment extends Fragment {
     public void loadMessages() {
         clearMessages();
         final MainActivity activity = (MainActivity) getActivity();
-        SharedPreferences sharedPref = activity.getSharedPreferences("com.rickydam.RickyBooks",
+        SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         String conversationId = sharedPref.getString("conversation_id", null);
         String url = "https://rickybooks.herokuapp.com/conversations/" + conversationId + "/messages";

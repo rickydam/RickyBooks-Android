@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -187,7 +187,7 @@ public class ProfileFragment extends Fragment {
     public void reqUserTextbookData() {
         MainActivity activity = (MainActivity) getActivity();
 
-        SharedPreferences sharedPref = activity.getSharedPreferences("com.rickydam.RickyBooks",
+        SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         String userId = sharedPref.getString("user_id", null);
 

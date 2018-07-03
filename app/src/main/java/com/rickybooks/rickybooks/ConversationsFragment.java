@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,7 +71,7 @@ public class ConversationsFragment extends Fragment {
         clearConversations();
 
         Context context = getActivity();
-        SharedPreferences sharedPref = context.getSharedPreferences("com.rickydam.RickyBooks",
+        SharedPreferences sharedPref = context.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         String userId = sharedPref.getString("user_id", null);
         String url = "https://rickybooks.herokuapp.com/conversations/" + userId;
@@ -91,7 +91,7 @@ public class ConversationsFragment extends Fragment {
 
                         MainActivity activity = (MainActivity) getActivity();
                         SharedPreferences sharedPref = activity.getSharedPreferences(
-                                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("recipient_name", recipientName);
                         editor.apply();

@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,7 @@ public class BuyFragment extends Fragment {
                         for(int j=0; j<imagesJSONarr.length(); j++) {
                             JSONObject imageObj = imagesJSONarr.getJSONObject(j);
                             String url = imageObj.getString("url");
+                            Log.e("Ricky", url);
                             imageUrls.add(url);
                         }
 

@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -77,7 +77,7 @@ public class LoginFragment extends Fragment {
                         }
 
                         SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("token", token);
                         editor.putString("user_id", userId);

@@ -1,4 +1,4 @@
-package com.example.rickydam.rickybooks;
+package com.rickybooks.rickybooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -100,7 +100,7 @@ public class DetailsFragment extends Fragment {
         String sellerName = (String) bundle.get("SellerName");
         Context context = getActivity();
         SharedPreferences sharedPref = context.getSharedPreferences(
-                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
         String currentPersonName = sharedPref.getString("name", null);
 
         if(!sellerName.equals(currentPersonName)) {
@@ -187,7 +187,7 @@ public class DetailsFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
 
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                        "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+                        "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
                 String userId = sharedPref.getString("user_id", null);
                 params.put("sender_id", userId);
 
@@ -238,7 +238,7 @@ public class DetailsFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("body", message);
 
-                SharedPreferences sharedPref = context.getSharedPreferences("com.rickydam.RickyBooks",
+                SharedPreferences sharedPref = context.getSharedPreferences("com.rickybooks.rickybooks",
                         Context.MODE_PRIVATE);
                 String user_id = sharedPref.getString("user_id", null);
                 params.put("user_id", user_id);
