@@ -43,7 +43,7 @@ public class RegisterFragment extends Fragment {
                 unfocus(v);
 
                 final Context context = getActivity().getApplicationContext();
-                String URL = "http://rickybooks.herokuapp.com/users";
+                String URL = "https://rickybooks.herokuapp.com/users";
 
                 JSONObject paramsObj = new JSONObject();
                 try {

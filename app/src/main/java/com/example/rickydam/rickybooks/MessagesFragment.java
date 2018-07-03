@@ -72,7 +72,7 @@ public class MessagesFragment extends Fragment {
                 final SharedPreferences sharedPref = activity.getSharedPreferences(
                         "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
                 final String conversationId = sharedPref.getString("conversation_id", null);
-                String url = "http://rickybooks.herokuapp.com/conversations/" + conversationId +
+                String url = "https://rickybooks.herokuapp.com/conversations/" + conversationId +
                         "/messages";
 
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -143,7 +143,7 @@ public class MessagesFragment extends Fragment {
         SharedPreferences sharedPref = activity.getSharedPreferences("com.rickydam.RickyBooks",
                 Context.MODE_PRIVATE);
         String conversationId = sharedPref.getString("conversation_id", null);
-        String url = "http://rickybooks.herokuapp.com/conversations/" + conversationId + "/messages";
+        String url = "https://rickybooks.herokuapp.com/conversations/" + conversationId + "/messages";
 
         StringRequest getMessagesReq = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

@@ -40,7 +40,7 @@ public class LoginFragment extends Fragment {
                 hideKeyboard(view);
                 unfocus(view);
 
-                String URL = "http://rickybooks.herokuapp.com/login";
+                String URL = "https://rickybooks.herokuapp.com/login";
 
                 JSONObject paramsObj = new JSONObject();
                 try {

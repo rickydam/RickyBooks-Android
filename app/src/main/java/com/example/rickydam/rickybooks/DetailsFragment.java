@@ -146,7 +146,7 @@ public class DetailsFragment extends Fragment {
 
     public void conversationReq(final String message) {
         final Context context = getActivity();
-        String url = "http://rickybooks.herokuapp.com/conversations";
+        String url = "https://rickybooks.herokuapp.com/conversations";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -202,7 +202,7 @@ public class DetailsFragment extends Fragment {
 
     public void messageReq(final String message, String conversation_id) {
         final Context context = getActivity();
-        String url = "http://rickybooks.herokuapp.com/conversations/" + conversation_id + "/messages";
+        String url = "https://rickybooks.herokuapp.com/conversations/" + conversation_id + "/messages";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

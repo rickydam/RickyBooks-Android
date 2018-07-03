@@ -73,7 +73,7 @@ public class BuyFragment extends Fragment {
 
     private void loadTextbookData() {
         Context context = getActivity().getApplicationContext();
-        String url = "http://rickybooks.herokuapp.com/textbooks";
+        String url = "https://rickybooks.herokuapp.com/textbooks";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

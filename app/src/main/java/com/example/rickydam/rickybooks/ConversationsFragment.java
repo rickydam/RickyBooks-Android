@@ -74,7 +74,7 @@ public class ConversationsFragment extends Fragment {
         SharedPreferences sharedPref = context.getSharedPreferences("com.rickydam.RickyBooks",
                 Context.MODE_PRIVATE);
         String userId = sharedPref.getString("user_id", null);
-        String url = "http://rickybooks.herokuapp.com/conversations/" + userId;
+        String url = "https://rickybooks.herokuapp.com/conversations/" + userId;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

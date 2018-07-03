@@ -136,7 +136,7 @@ public class ProfileFragment extends Fragment {
 
     public void deleteTextbookReq(Textbook textbook) {
         final String textbookId = textbook.getId();
-        String url = "http://rickybooks.herokuapp.com/textbooks/" + textbookId;
+        String url = "https://rickybooks.herokuapp.com/textbooks/" + textbookId;
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                 new Response.Listener<String>() {
             @Override
@@ -191,7 +191,7 @@ public class ProfileFragment extends Fragment {
                 Context.MODE_PRIVATE);
         String userId = sharedPref.getString("user_id", null);
 
-        String url = "http://rickybooks.herokuapp.com/users/" + userId + "/textbooks";
+        String url = "https://rickybooks.herokuapp.com/users/" + userId + "/textbooks";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -241,7 +241,7 @@ public class ProfileFragment extends Fragment {
 
     public void logout() {
         final Context context = getActivity().getApplicationContext();
-        String url = "http://rickybooks.herokuapp.com/logout";
+        String url = "https://rickybooks.herokuapp.com/logout";
 
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                 new Response.Listener<String>() {
