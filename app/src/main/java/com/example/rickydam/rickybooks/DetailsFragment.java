@@ -74,8 +74,14 @@ public class DetailsFragment extends Fragment {
         detailsPrice.setText((String) bundle.get("Price"));
         detailsSellerName.setText((String) bundle.get("SellerName"));
 
+        String imageUrl = bundle.getString("ImageUrl");
         ImageView detailsImage = view.findViewById(R.id.details_image);
-        Glide.with(this).load(R.drawable.placeholder_img).into(detailsImage);
+        if(!imageUrl.equals("")) {
+            Glide.with(this).load(imageUrl).into(detailsImage);
+        }
+        else {
+            Glide.with(this).load(R.drawable.textbook_placeholder).into(detailsImage);
+        }
     }
 
     public void messageButtonPressed() {

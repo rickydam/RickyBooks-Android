@@ -74,4 +74,6 @@
     <string name="type_message_hint">Type a message&#8230;</string>
     <string name="send_message_hint">SEND</string>
     <string name="message_button">MESSAGE</string>
+    <string name="choose_image_button_text">CHOOSE IMAGE</string>
+    <string name="delete_image_button_text">DELETE IMAGE</string>
 </resources>

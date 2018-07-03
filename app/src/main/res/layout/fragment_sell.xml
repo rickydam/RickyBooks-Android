@@ -18,14 +18,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/chosen_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/textbook_image_description"
+            android:layout_centerHorizontal="true"
+            android:maxHeight="300dp"
+            android:maxWidth="150dp" />
+
+        <Button
+            android:id="@+id/choose_textbook_image_button"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_below="@id/chosen_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/choose_image_button_text"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="visible" />
+
         <EditText
             android:background="@drawable/border"
             android:ems="16"
             android:hint="@string/title_hint"
             android:id="@+id/textbook_title"
             android:inputType="textCapSentences"
+            android:layout_below="@+id/choose_textbook_image_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
             android:maxLength="60"
             android:padding="10dp"
             android:textColorHint="@color/lightGray"

@@ -215,22 +215,31 @@ public class ProfileFragment extends Fragment {
             JSONArray res = new JSONArray(response);
 
             for(int i=0; i<res.length(); i++) {
-                JSONObject obj = res.getJSONObject(i);
-                String id = obj.getString("id");
-                String title = obj.getString("textbook_title");
-                String author = obj.getString("textbook_author");
-                String edition = obj.getString("textbook_edition");
-                String condition = obj.getString("textbook_condition");
-                String type = obj.getString("textbook_type");
-                String coursecode = obj.getString("textbook_coursecode");
-                String price = "$ " + obj.getString("textbook_price");
-                String sellerId = obj.getString("user_id");
+                JSONObject textbookObj = res.getJSONObject(i);
+                String id         = textbookObj.getString("id");
+                String title      = textbookObj.getString("textbook_title");
+                String author     = textbookObj.getString("textbook_author");
+                String edition    = textbookObj.getString("textbook_edition");
+                String condition  = textbookObj.getString("textbook_condition");
+                String type       = textbookObj.getString("textbook_type");
+                String coursecode = textbookObj.getString("textbook_coursecode");
+                String price      = "$ " + textbookObj.getString("textbook_price");
+                String sellerId   = textbookObj.getString("user_id");
 
-                JSONObject user = obj.getJSONObject("user");
+                JSONObject user = textbookObj.getJSONObject("user");
                 String sellerName = user.getString("name");
 
+                List<String> imageUrls = new ArrayList<>();
+                JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
+
+                for(int j=0; j<imagesJSONarr.length(); j++) {
+                    JSONObject imageObj = imagesJSONarr.getJSONObject(j);
+                    String url = imageObj.getString("url");
+                    imageUrls.add(url);
+                }
+
                 Textbook textbook = new Textbook(id, title, author, edition, condition, type,
-                        coursecode, price, sellerId, sellerName);
+                        coursecode, price, sellerId, sellerName, imageUrls);
                 textbookList.add(textbook);
             }
             textbookAdapter.notifyDataSetChanged();

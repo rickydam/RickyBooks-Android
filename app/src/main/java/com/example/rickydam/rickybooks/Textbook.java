@@ -1,5 +1,7 @@
 package com.example.rickydam.rickybooks;
 
+import java.util.List;
+
 public class Textbook {
     private String id;
     private String title;
@@ -11,9 +13,11 @@ public class Textbook {
     private String price;
     private String sellerId;
     private String sellerName;
+    private List<String> imageUrls;
 
     Textbook(String id, String title, String author, String edition, String condition, String type,
-             String coursecode, String price, String sellerId, String sellerName) {
+             String coursecode, String price, String sellerId, String sellerName,
+             List<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -24,6 +28,7 @@ public class Textbook {
         this.price = price;
         this.sellerId = sellerId;
         this.sellerName = sellerName;
+        this.imageUrls = imageUrls;
     }
 
     public String getId() {
@@ -84,5 +89,9 @@ public class Textbook {
 
     public String getSellerName() {
         return sellerName;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 }

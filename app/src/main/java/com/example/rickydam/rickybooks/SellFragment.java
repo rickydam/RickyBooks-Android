@@ -5,12 +5,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,24 +26,46 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.app.Activity.RESULT_OK;
 
 public class SellFragment extends Fragment {
+    private static final int PICK_IMAGE_REQUEST = 71;
+    private ImageView chosenImage = null;
+    private Bitmap chosenImageBitmap = null;
+    private String chosenImageExtension = null;
+    private Button chooseImageButton = null;
+    private File imageFile = null;
+    private String tokenString = "";
+    private String userId = "";
+    private String textbookTitle = "";
+    private String textbookAuthor = "";
+    private String textbookEdition = "";
+    private String textbookCondition = "";
+    private String textbookType = "";
+    private String textbookCoursecode = "";
+    private String textbookPrice = "";
+    private Retrofit retrofit;
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -47,6 +74,10 @@ public class SellFragment extends Fragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        if(chosenImageBitmap != null) {
+            chosenImage.setImageBitmap(chosenImageBitmap);
+            setChooseImageButtonText("DELETE");
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -55,10 +86,10 @@ public class SellFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_sell, container, false);
 
-        // Create the Edition spinner
+        chosenImage = view.findViewById(R.id.chosen_image);
+
         final Spinner editionSpinner = view.findViewById(R.id.textbook_edition_spinner);
         editionSpinner.setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 hideKeyboard(v);
@@ -86,7 +117,6 @@ public class SellFragment extends Fragment {
         // Create the Condition spinner
         final Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
         conditionSpinner.setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 hideKeyboard(v);
@@ -111,7 +141,6 @@ public class SellFragment extends Fragment {
         conditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         conditionSpinner.setAdapter(conditionAdapter);
 
-        // Hide keyboard when focus is lost for the title EditText
         EditText title = view.findViewById(R.id.textbook_title);
         title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -122,7 +151,6 @@ public class SellFragment extends Fragment {
             }
         });
 
-        // Create the Type spinner
         final Spinner typeSpinner = view.findViewById(R.id.textbook_type_spinner);
         typeSpinner.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -149,7 +177,6 @@ public class SellFragment extends Fragment {
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
 
-        // Hide keyboard when focus is lost for the author EditText
         EditText author = view.findViewById(R.id.textbook_author);
         author.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -160,7 +187,6 @@ public class SellFragment extends Fragment {
             }
         });
 
-        // Hide keyboard when focus is lost for the course EditText
         EditText course = view.findViewById(R.id.textbook_coursecode);
         course.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -171,7 +197,6 @@ public class SellFragment extends Fragment {
             }
         });
 
-        // Hide keyboard when focus is lost for the price EditText
         EditText price = view.findViewById(R.id.textbook_price);
         price.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -182,141 +207,240 @@ public class SellFragment extends Fragment {
             }
         });
 
-        // Initialize the Submit button
-        final Button button = view.findViewById(R.id.submitButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button submitButton = view.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard(v);
-
-                final Context context = getActivity().getApplicationContext();
-                String url = "http://rickybooks.herokuapp.com/textbooks";
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        createAlert("Success!", "Your textbook has been successfully posted!");
-                        EditText title_field = view.findViewById(R.id.textbook_title);
-                        title_field.getText().clear();
-                        EditText author_field = view.findViewById(R.id.textbook_author);
-                        author_field.getText().clear();
-                        editionSpinner.setSelection(0);
-                        conditionSpinner.setSelection(0);
-                        typeSpinner.setSelection(0);
-                        EditText coursecode_field = view.findViewById(R.id.textbook_coursecode);
-                        coursecode_field.getText().clear();
-                        EditText price_field = view.findViewById(R.id.textbook_price);
-                        price_field.getText().clear();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            byte[] errorData = error.networkResponse.data;
-                            VolleyError volleyError = new VolleyError(new String(errorData));
-                            String volleyErrorMessage = volleyError.getMessage();
-
-                            JSONObject resObj = new JSONObject(volleyErrorMessage);
-                            JSONObject resData = resObj.getJSONObject("data");
-                            StringBuilder errorMessage = new StringBuilder();
-                            for(int i=0; i<resData.length(); i++) {
-                                String name = resData.names().getString(i);
-                                String value = resData.get(name).toString();
-                                value = value.replace("[\"can't be blank\"]", "Missing: ");
-                                name = name.replace(name.substring(0, 9), "Textbook ");
-                                name = name.substring(0, 9)
-                                        + name.substring(9, 10).toUpperCase()
-                                        + name.substring(10);
-                                if(i == resData.length()-1) {
-                                    errorMessage.append(value).append(name);
-                                }
-                                else {
-                                    errorMessage.append(value).append(name).append("\n");
-                                }
-                            }
-                            createAlert("Hmm.. you forgot something!", String.valueOf(errorMessage));
-                        } catch(JSONException e) {
-                            e.printStackTrace();
-                        } catch(NullPointerException e) {
-                            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                                    "reach the server at the moment.\n\nPlease try again later.");
-                        }
-                    }
-                })
-                {
-                    @SuppressLint("NewApi")
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
-                        params.put("user_id", sharedPref.getString("user_id", null));
-
-                        EditText title_field = view.findViewById(R.id.textbook_title);
-                        String textbook_title = title_field.getText().toString();
-                        params.put("textbook_title", textbook_title);
-
-                        EditText author_field = view.findViewById(R.id.textbook_author);
-                        String textbook_author = author_field.getText().toString();
-                        params.put("textbook_author", textbook_author);
-
-                        Spinner edition_field = view.findViewById(R.id.textbook_edition_spinner);
-                        String textbook_edition = edition_field.getSelectedItem().toString();
-                        if(!Objects.equals(textbook_edition, "Edition")) {
-                            params.put("textbook_edition", textbook_edition);
-                        }
-                        else {
-                            params.put("textbook_edition", "");
-                        }
-
-                        Spinner condition_field = view.findViewById(R.id.textbook_condition_spinner);
-                        String textbook_condition = condition_field.getSelectedItem().toString();
-                        if(!Objects.equals(textbook_condition, "Condition")) {
-                            params.put("textbook_condition", textbook_condition);
-                        }
-                        else {
-                            params.put("textbook_condition", "");
-                        }
-
-                        Spinner type_field = view.findViewById(R.id.textbook_type_spinner);
-                        String textbook_type = type_field.getSelectedItem().toString();
-                        if(!Objects.equals(textbook_type, "Type")) {
-                            params.put("textbook_type", textbook_type);
-                        }
-                        else {
-                            params.put("textbook_type", "");
-                        }
-
-                        EditText coursecode_field = view.findViewById(R.id.textbook_coursecode);
-                        String textbook_coursecode = coursecode_field.getText().toString();
-                        params.put("textbook_coursecode", textbook_coursecode);
-
-                        EditText price_field = view.findViewById(R.id.textbook_price);
-                        String textbook_price = price_field.getText().toString();
-                        params.put("textbook_price", textbook_price);
-
-                        return params;
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> headers = new HashMap<>();
-                        headers.put("Content-Type", "application/x-www-form-urlencoded");
-
-                        MainActivity activity = (MainActivity) getActivity();
-                        String token = activity.getToken();
-                        headers.put("Authorization", "Token token=" + token);
-
-                        return headers;
-                    }
-                };
-                RequestQueue queue = Volley.newRequestQueue(context);
-                queue.add(stringRequest);
+                submitButtonPressed(view);
             }
         });
+
+        chooseImageButton = view.findViewById(R.id.choose_textbook_image_button);
+        chooseImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImageButtonPressed();
+            }
+        });
+
         return view;
+    }
+
+    public void submitButtonPressed(View view) {
+        hideKeyboard(view);
+        getData(view);
+        textbookPostReq(view);
+    }
+
+    public void getData(View view) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                "com.rickydam.RickyBooks", Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", null);
+        tokenString = "Token token=" + token;
+        userId = sharedPref.getString("user_id", null);
+
+        EditText titleField = view.findViewById(R.id.textbook_title);
+        textbookTitle = titleField.getText().toString();
+
+        EditText authorField = view.findViewById(R.id.textbook_author);
+        textbookAuthor = authorField.getText().toString();
+
+        Spinner editionSpinner = view.findViewById(R.id.textbook_edition_spinner);
+        textbookEdition = editionSpinner.getSelectedItem().toString();
+        if(textbookEdition.equals("Edition")) {
+            textbookEdition = "";
+        }
+
+        Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
+        textbookCondition = conditionSpinner.getSelectedItem().toString();
+        if(textbookCondition.equals("Condition")) {
+            textbookCondition = "";
+        }
+
+        Spinner typeSpinner = view.findViewById(R.id.textbook_type_spinner);
+        textbookType = typeSpinner.getSelectedItem().toString();
+        if(textbookType.equals("Type")) {
+            textbookType = "";
+        }
+
+        EditText coursecodeField = view.findViewById(R.id.textbook_coursecode);
+        textbookCoursecode = coursecodeField.getText().toString();
+
+        EditText priceField = view.findViewById(R.id.textbook_price);
+        textbookPrice = priceField.getText().toString();
+    }
+
+    public void textbookPostReq(final View view) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://rickybooks.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TextbookFormService textbookFormService = retrofit.create(TextbookFormService.class);
+        Call<String> call = textbookFormService.POST(tokenString, userId, textbookTitle,
+                textbookAuthor, textbookEdition, textbookCondition, textbookType,
+                textbookCoursecode, textbookPrice);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                textbookPostRes(view, response);
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Ricky", "textbookPostReq error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void textbookPostRes(View view, Response<String> response) {
+        if(response.isSuccessful()) {
+            createAlert("Success!", "Your textbook has been successfully posted!");
+            EditText titleField = view.findViewById(R.id.textbook_title);
+            titleField.getText().clear();
+            EditText authorField = view.findViewById(R.id.textbook_author);
+            authorField.getText().clear();
+            Spinner editionSpinner = view.findViewById(R.id.textbook_edition_spinner);
+            Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
+            Spinner typeSpinner = view.findViewById(R.id.textbook_type_spinner);
+            editionSpinner.setSelection(0);
+            conditionSpinner.setSelection(0);
+            typeSpinner.setSelection(0);
+            EditText coursecodeField = view.findViewById(R.id.textbook_coursecode);
+            coursecodeField.getText().clear();
+            EditText priceField = view.findViewById(R.id.textbook_price);
+            priceField.getText().clear();
+
+            String textbookId = response.body();
+            if(imageFile != null) {
+                getSignedUrl(textbookId);
+            }
+        }
+        else {
+            try {
+                String errorResponse = response.errorBody().string();
+
+                JSONObject resObj = new JSONObject(errorResponse);
+                JSONObject resData = resObj.getJSONObject("data");
+                StringBuilder errorMessage = new StringBuilder();
+                for(int i=0; i<resData.length(); i++) {
+                    String name = resData.names().getString(i);
+                    String value = resData.get(name).toString();
+                    value = value.replace("[\"can't be blank\"]", "Missing: ");
+                    name = name.replace(name.substring(0, 9), "Textbook ");
+                    name = name.substring(0, 9)
+                            + name.substring(9, 10).toUpperCase()
+                            + name.substring(10);
+                    if(i == resData.length()-1) {
+                        errorMessage.append(value).append(name);
+                    }
+                    else {
+                        errorMessage.append(value).append(name).append("\n");
+                    }
+                }
+                createAlert("Hmm.. you forgot something!", String.valueOf(errorMessage));
+            } catch(IOException e) {
+                e.printStackTrace();
+            } catch(JSONException e) {
+                e.printStackTrace();
+            } catch(NullPointerException e) {
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
+            }
+        }
+    }
+
+    public void getSignedUrl(String textbookId) {
+        TextbookUrlService textbookUrlService = retrofit.create(TextbookUrlService.class);
+        Call<String> call = textbookUrlService.GET(tokenString, textbookId, chosenImageExtension);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String signedUrl = response.body();
+                uploadImage(signedUrl);
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Ricky", "getSignedUrl error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void uploadImage(String signedUrl) {
+        TextbookImageService textbookImageService = retrofit.create(TextbookImageService.class);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+        Call<Void> call = textbookImageService.PUT(signedUrl, reqFile);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                imageFile = null;
+                chosenImageBitmap = null;
+                chosenImage.setImageBitmap(null);
+                setChooseImageButtonText("CHOOSE");
+                chosenImageExtension = null;
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "uploadImage error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void chooseImageButtonPressed() {
+        if(chooseImageButton.getText().equals("CHOOSE IMAGE")) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                    PICK_IMAGE_REQUEST);
+        }
+        if(chooseImageButton.getText().equals("DELETE IMAGE")) {
+            chosenImage.setImageBitmap(null);
+            chosenImageBitmap = null;
+            setChooseImageButtonText("CHOOSE");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
+                && data.getData() != null) {
+            setChooseImageButtonText("DELETE");
+            Uri chosenImageUri = data.getData();
+            try {
+                MainActivity activity = (MainActivity) getActivity();
+                chosenImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(),
+                        chosenImageUri);
+                chosenImageExtension = activity.getContentResolver().getType(chosenImageUri);
+                chosenImageExtension = chosenImageExtension.substring(6);
+                chosenImage.setImageBitmap(chosenImageBitmap);
+
+                imageFile = new File(getContext().getCacheDir(), "ChosenImage");
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                chosenImageBitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
+                byte[] chosenImageBitmapData = byteArrayOutputStream.toByteArray();
+
+                FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+                fileOutputStream.write(chosenImageBitmapData);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setChooseImageButtonText(String buttonText) {
+        if(buttonText.equals("CHOOSE")) {
+            chooseImageButton.setBackgroundResource(R.drawable.button_blue);
+            chooseImageButton.setText(R.string.choose_image_button_text);
+        }
+        if(buttonText.equals("DELETE")) {
+            chooseImageButton.setBackgroundResource(R.drawable.button_red);
+            chooseImageButton.setText(R.string.delete_image_button_text);
+        }
+
     }
 
     public void hideKeyboard(View view) {
@@ -328,18 +452,23 @@ public class SellFragment extends Fragment {
         }
     }
 
-    public void createAlert(String title, String message) {
-        Activity activity = getActivity();
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                new DialogInterface.OnClickListener() {
+    public void createAlert(final String title, final String message) {
+        final Activity activity = getActivity();
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void run() {
+                AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+                alertDialog.setTitle(title);
+                alertDialog.setMessage(message);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                alertDialog.show();
             }
         });
-        alertDialog.show();
     }
 }

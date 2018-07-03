@@ -60,6 +60,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
     public void onBindViewHolder(@NonNull final TextbookAdapter.TextbookViewHolder holder,
                                  final int position) {
         final Textbook textbook = textbookList.get(holder.getAdapterPosition());
+
         holder.itemView.setBackgroundResource(R.color.white);
 
         holder.textbook_title.setText(textbook.getTitle());
@@ -72,7 +73,17 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         holder.textbook_seller.setText(textbook.getSellerName());
 
         final ImageView imageView = holder.imageView;
-        Glide.with(activity).load(R.drawable.placeholder_img).into(imageView);
+
+        final List<String> imagesUrls = textbook.getImageUrls();
+        final String imageUrl;
+        if(imagesUrls.size() > 0) {
+            imageUrl = imagesUrls.get(0);
+            Glide.with(activity).load(imageUrl).into(imageView);
+        }
+        else {
+            imageUrl = "";
+            Glide.with(activity).load(R.drawable.textbook_placeholder).into(imageView);
+        }
 
         final ProfileFragment profileFragment = getProfileFragment(activity);
         if(profileFragment != null) {
@@ -112,6 +123,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                     bundle.putString("Price", textbook.getPrice());
                     bundle.putString("SellerName", textbook.getSellerName());
                     bundle.putString("SellerId", textbook.getSellerId());
+                    bundle.putString("ImageUrl", imageUrl);
 
                     activity.setDetailsBundle(bundle);
                     activity.replaceFragment("DetailsFragment");
