@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Models;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ public class Message {
     private String sender;
     private Date createdAt;
 
-    Message(String message, String sender, Date createdAt) {
+    public Message(String message, String sender, Date createdAt) {
         this.message = message;
         this.sender = sender;
         this.createdAt = createdAt;

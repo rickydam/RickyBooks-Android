@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.R;
 
 public class AccountFragment extends Fragment {
     @Nullable

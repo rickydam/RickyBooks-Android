@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Other;
 
 import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;
@@ -8,9 +8,9 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-class BottomNavigationViewHelper {
+public class BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")
-    static void disableShiftMode(BottomNavigationView view) {
+    public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");

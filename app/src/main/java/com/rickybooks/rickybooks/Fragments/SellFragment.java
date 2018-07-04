@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,6 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Services.TextbookFormService;
+import com.rickybooks.rickybooks.Services.TextbookImageService;
+import com.rickybooks.rickybooks.Services.TextbookUrlService;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Models;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ public class Textbook {
     private String sellerName;
     private List<String> imageUrls;
 
-    Textbook(String id, String title, String author, String edition, String condition, String type,
-             String coursecode, String price, String sellerId, String sellerName,
-             List<String> imageUrls) {
+    public Textbook(String id, String title, String author, String edition, String condition, String type,
+                    String coursecode, String price, String sellerId, String sellerName,
+                    List<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.author = author;

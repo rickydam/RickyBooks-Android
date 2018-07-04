@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.rickybooks.rickybooks.Models.Message;
+import com.rickybooks.rickybooks.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +24,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     private List<Message> messageList;
     private Context context;
 
-    MessageAdapter(Context context, List<Message> messageList) {
+    public MessageAdapter(Context context, List<Message> messageList) {
         this.context = context;
         this.messageList = messageList;
     }

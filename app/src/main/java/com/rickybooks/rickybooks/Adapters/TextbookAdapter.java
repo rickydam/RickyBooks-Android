@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Adapters;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import com.rickybooks.rickybooks.Fragments.ProfileFragment;
+import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.Models.Textbook;
+import com.rickybooks.rickybooks.R;
 
 import java.util.List;
 
@@ -43,7 +48,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         }
     }
 
-    TextbookAdapter(MainActivity activity, List<Textbook> textbookList) {
+    public TextbookAdapter(MainActivity activity, List<Textbook> textbookList) {
         this.activity = activity;
         this.textbookList = textbookList;
     }

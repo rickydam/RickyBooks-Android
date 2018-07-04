@@ -11,6 +11,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.rickybooks.rickybooks.Fragments.AccountFragment;
+import com.rickybooks.rickybooks.Fragments.BuyFragment;
+import com.rickybooks.rickybooks.Fragments.DetailsFragment;
+import com.rickybooks.rickybooks.Fragments.HomeFragment;
+import com.rickybooks.rickybooks.Fragments.ConversationsFragment;
+import com.rickybooks.rickybooks.Fragments.LoginFragment;
+import com.rickybooks.rickybooks.Fragments.MessagesFragment;
+import com.rickybooks.rickybooks.Fragments.ProfileFragment;
+import com.rickybooks.rickybooks.Fragments.RegisterFragment;
+import com.rickybooks.rickybooks.Fragments.SellFragment;
+import com.rickybooks.rickybooks.Other.BottomNavigationViewHelper;
+
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {

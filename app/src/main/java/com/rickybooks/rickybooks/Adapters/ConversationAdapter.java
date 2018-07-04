@@ -1,4 +1,4 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.Models.Conversation;
+import com.rickybooks.rickybooks.R;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
     }
 
-    ConversationAdapter(List<Conversation> conversationList) {
+    public ConversationAdapter(List<Conversation> conversationList) {
         this.conversationList = conversationList;
     }
 

@@ -1,10 +1,10 @@
-package com.rickybooks.rickybooks;
+package com.rickybooks.rickybooks.Models;
 
 public class Conversation {
     private String conversationId;
     private String recipientName;
 
-    Conversation(String conversationId, String recipientName) {
+    public Conversation(String conversationId, String recipientName) {
         this.conversationId = conversationId;
         this.recipientName = recipientName;
     }
