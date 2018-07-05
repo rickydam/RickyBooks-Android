@@ -2,9 +2,7 @@ package com.rickybooks.rickybooks.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +12,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,32 +20,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
 
 import com.rickybooks.rickybooks.Adapters.TextbookAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Textbook;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
+import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ProfileFragment extends Fragment {
     private List<Textbook> textbookList = new ArrayList<>();
     private TextbookAdapter textbookAdapter;
     private List<Textbook> selectedTextbooks = new ArrayList<>();
     private boolean actionMode = false;
+    private TextbookService textbookService;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Retrofit retrofit = new RetrofitClient().getClient();
+        textbookService = retrofit.create(TextbookService.class);
+        getUserTextbooksReq();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -59,7 +68,7 @@ public class ProfileFragment extends Fragment {
             public void onRefresh() {
                 if(!actionMode) {
                     textbookList.clear();
-                    reqUserTextbookData();
+                    getUserTextbooksReq();
                 }
                 srl.setRefreshing(false);
             }
@@ -69,18 +78,18 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         textbookAdapter = new TextbookAdapter(activity, textbookList);
 
-        RecyclerView recyclerView = view.findViewById(R.id.profile_recycler);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(textbookAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+        RecyclerView profileRecycler = view.findViewById(R.id.profile_recycler);
+        profileRecycler.setHasFixedSize(true);
+        profileRecycler.setLayoutManager(layoutManager);
+        profileRecycler.setAdapter(textbookAdapter);
+        profileRecycler.addItemDecoration(new DividerItemDecoration(profileRecycler.getContext(),
                 DividerItemDecoration.VERTICAL));
 
         Button button = view.findViewById(R.id.logout_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                logoutReq();
             }
         });
 
@@ -109,7 +118,8 @@ public class ProfileFragment extends Fragment {
                     if(selectedTextbooksCount >= 1) {
                         for(int i=0; i<selectedTextbooksCount; i++) {
                             Textbook book = selectedTextbooks.get(i);
-                            deleteTextbookReq(book);
+                            String textbookId = book.getId();
+                            deleteTextbookReq(textbookId);
                             textbookList.remove(0);
                         }
                         textbookAdapter.notifyDataSetChanged();
@@ -139,39 +149,6 @@ public class ProfileFragment extends Fragment {
         activity.startSupportActionMode(actionModeCallbacks);
     }
 
-    public void deleteTextbookReq(Textbook textbook) {
-        final String textbookId = textbook.getId();
-        String url = "https://rickybooks.herokuapp.com/textbooks/" + textbookId;
-        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
-                new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                // No action required
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-
-                MainActivity activity = (MainActivity) getActivity();
-                String token = activity.getToken();
-                headers.put("Authorization", "Token token=" + token);
-
-                return headers;
-            }
-        };
-        MainActivity activity = (MainActivity) getActivity();
-        RequestQueue queue = Volley.newRequestQueue(activity);
-        queue.add(stringRequest);
-    }
-
     public void selectTextbook(Textbook textbook) {
         if(!textbookExists(textbook)) {
             selectedTextbooks.add(textbook);
@@ -189,102 +166,138 @@ public class ProfileFragment extends Fragment {
         return actionMode;
     }
 
-    public void reqUserTextbookData() {
-        MainActivity activity = (MainActivity) getActivity();
-
-        SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
-                Context.MODE_PRIVATE);
-        String userId = sharedPref.getString("user_id", null);
-
-        String url = "https://rickybooks.herokuapp.com/users/" + userId + "/textbooks";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+    public void deleteTextbookReq(String textbookId) {
+        Call<Void> call = textbookService.deleteTextbook(getTokenString(), textbookId);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(String response) {
-                loadUserTextbookData(response);
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                deleteTextbookRes(response);
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "deleteTextbookReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                            "reach the server at the moment.\n\nPlease try again later.");
+            }
+        });
+    }
+
+    public void deleteTextbookRes(Response<Void> response) {
+        // No action required, just check to make sure it worked
+        if(!response.isSuccessful()) {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "deleteTextbookReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
+    }
+
+    public void getUserTextbooksReq() {
+        MainActivity activity = (MainActivity) getActivity();
+        String userId = activity.getUserId();
+
+        Call<JsonArray> call = textbookService.getUserTextbooks(userId);
+        call.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                getUserTextbooksRes(response);
+            }
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                Log.e("Ricky", "reqUserTextbookData error: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
         });
-        RequestQueue queue = Volley.newRequestQueue(activity);
-        queue.add(stringRequest);
     }
 
-    public void loadUserTextbookData(String response) {
-        try {
-            JSONArray res = new JSONArray(response);
+    public void getUserTextbooksRes(Response<JsonArray> response) {
+        if(response.isSuccessful()) {
+            try {
+                String res = String.valueOf(response.body());
+                JSONArray resData = new JSONArray(res);
+                for(int i=0; i<resData.length(); i++) {
+                    JSONObject textbookObj = resData.getJSONObject(i);
+                    String id         = textbookObj.getString("id");
+                    String title      = textbookObj.getString("textbook_title");
+                    String author     = textbookObj.getString("textbook_author");
+                    String edition    = textbookObj.getString("textbook_edition");
+                    String condition  = textbookObj.getString("textbook_condition");
+                    String type       = textbookObj.getString("textbook_type");
+                    String coursecode = textbookObj.getString("textbook_coursecode");
+                    String price      = "$ " + textbookObj.getString("textbook_price");
 
-            for(int i=0; i<res.length(); i++) {
-                JSONObject textbookObj = res.getJSONObject(i);
-                String id         = textbookObj.getString("id");
-                String title      = textbookObj.getString("textbook_title");
-                String author     = textbookObj.getString("textbook_author");
-                String edition    = textbookObj.getString("textbook_edition");
-                String condition  = textbookObj.getString("textbook_condition");
-                String type       = textbookObj.getString("textbook_type");
-                String coursecode = textbookObj.getString("textbook_coursecode");
-                String price      = "$ " + textbookObj.getString("textbook_price");
-                String sellerId   = textbookObj.getString("user_id");
+                    JSONObject user = textbookObj.getJSONObject("user");
+                    String sellerId = textbookObj.getString("user_id");
+                    String sellerName = user.getString("name");
 
-                JSONObject user = textbookObj.getJSONObject("user");
-                String sellerName = user.getString("name");
+                    List<String> imageUrls = new ArrayList<>();
+                    JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
 
-                List<String> imageUrls = new ArrayList<>();
-                JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
+                    for(int j=0; j<imagesJSONarr.length(); j++) {
+                        JSONObject imageObj = imagesJSONarr.getJSONObject(j);
+                        String url = imageObj.getString("url");
+                        imageUrls.add(url);
+                    }
 
-                for(int j=0; j<imagesJSONarr.length(); j++) {
-                    JSONObject imageObj = imagesJSONarr.getJSONObject(j);
-                    String url = imageObj.getString("url");
-                    imageUrls.add(url);
+                    Textbook textbook = new Textbook(id, title, author, edition, condition,
+                            type, coursecode, price, sellerId, sellerName, imageUrls);
+
+                    textbookList.add(textbook);
                 }
-
-                Textbook textbook = new Textbook(id, title, author, edition, condition, type,
-                        coursecode, price, sellerId, sellerName, imageUrls);
-                textbookList.add(textbook);
+                textbookAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            textbookAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }
+        else {
+            try {
+                Log.e("Ricky", "loadTextbookDataRes error: " + response.errorBody().string());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
         }
     }
 
-    public void logout() {
-        final Context context = getActivity().getApplicationContext();
-        String url = "https://rickybooks.herokuapp.com/logout";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
-                new Response.Listener<String>() {
+    public void logoutReq() {
+        Call<Void> call = textbookService.logout(getTokenString());
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(String response) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.logout();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                logoutRes(response);
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "logoutReq failure: " + t.getMessage());
             }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
+        });
+    }
 
-                MainActivity activity = (MainActivity) getActivity();
-                String token = activity.getToken();
-                headers.put("Authorization", "Token token=" + token);
-
-                return headers;
+    public void logoutRes(Response<Void> response) {
+        if(response.isSuccessful()) {
+            MainActivity activity = (MainActivity) getActivity();
+            activity.logout();
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "logoutReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        };
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
+        }
+    }
+
+    public String getTokenString() {
+        MainActivity activity = (MainActivity) getActivity();
+        String token = activity.getToken();
+        return "Token token=" + token;
     }
 
     public void createAlert(String title, String message) {

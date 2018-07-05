@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +17,35 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
+import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class LoginFragment extends Fragment {
+    private TextbookService textbookService;
+    private EditText emailField;
+    private EditText passwordField;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Retrofit retrofit = new RetrofitClient().getClient();
+        textbookService = retrofit.create(TextbookService.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,94 +58,99 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 hideKeyboard(view);
                 unfocus(view);
-
-                String URL = "https://rickybooks.herokuapp.com/login";
-
-                JSONObject paramsObj = new JSONObject();
-                try {
-                    EditText email_field = view.findViewById(R.id.login_email);
-                    String email = email_field.getText().toString();
-                    paramsObj.put("email", email);
-
-                    EditText password_field = view.findViewById(R.id.login_password);
-                    String password = password_field.getText().toString();
-                    paramsObj.put("password", password);
-                } catch(JSONException e) {
-                    e.printStackTrace();
-                }
-
-                JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, URL, paramsObj,
-                        new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        EditText email_field = view.findViewById(R.id.login_email);
-                        email_field.getText().clear();
-                        EditText password_field = view.findViewById(R.id.login_password);
-                        password_field.getText().clear();
-
-                        String token = null;
-                        String userId = null;
-                        String name = null;
-                        try {
-                            token = response.getString("token");
-                            userId = response.getString("user_id");
-                            name = response.getString("name");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("token", token);
-                        editor.putString("user_id", userId);
-                        editor.putString("name", name);
-                        editor.apply();
-
-                        MainActivity activity = (MainActivity) getActivity();
-
-                        // LoginFragment -> AccountFragment
-                        activity.getSupportFragmentManager().popBackStack();
-
-                        // AccountFragment -> The fragment the user was at
-                        activity.getSupportFragmentManager().popBackStack();
-
-                        // Set justLoggedIn boolean to true
-                        activity.loggedIn();
-
-                        // Get the fragment the user wanted
-                        String wantedFragmentName = activity.getWantedFragmentName();
-
-                        // Redirect to the fragment the user wants
-                        activity.replaceFragment(wantedFragmentName);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            byte[] errorData = error.networkResponse.data;
-                            VolleyError volleyError = new VolleyError(new String(errorData));
-                            String volleyErrorMessage = volleyError.getMessage();
-                            JSONObject resObj = new JSONObject(volleyErrorMessage);
-                            String resErr = resObj.getJSONArray("errors").get(0).toString();
-                            JSONObject errorObj = new JSONObject(resErr);
-                            String errorMessage = String.valueOf(errorObj.get("detail"));
-                            createAlert("Typo! Try again!", errorMessage);
-                        } catch(JSONException e) {
-                            e.printStackTrace();
-                        } catch(NullPointerException e) {
-                            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                                    "reach the server at the moment.\n\nPlease try again later.");
-                        }
-                    }
-                });
-                Context context = getActivity().getApplicationContext();
-                RequestQueue queue = Volley.newRequestQueue(context);
-                queue.add(req);
+                loginPressed(view);
             }
         });
         return view;
+    }
+
+    public void loginPressed(View view) {
+        JsonObject paramsObj = new JsonObject();
+
+        emailField = view.findViewById(R.id.login_email);
+        String email = emailField.getText().toString();
+        paramsObj.addProperty("email", email);
+
+        passwordField = view.findViewById(R.id.login_password);
+        String password = passwordField.getText().toString();
+        paramsObj.addProperty("password", password);
+
+        loginReq(paramsObj);
+    }
+
+    public void loginReq(JsonObject obj) {
+        Call<JsonObject> call = textbookService.login(obj);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                loginRes(response);
+            }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("Ricky", "loginReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
+            }
+        });
+    }
+
+    public void loginRes(Response<JsonObject> response) {
+        if(response.isSuccessful()) {
+            emailField.getText().clear();
+            passwordField.getText().clear();
+
+            String token = "";
+            String userId = "";
+            String name = "";
+
+            try {
+                String res = String.valueOf(response.body());
+                JSONObject obj = new JSONObject(res);
+                token = obj.getString("token");
+                userId = obj.getString("user_id");
+                name = obj.getString("name");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                    "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("token", token);
+            editor.putString("user_id", userId);
+            editor.putString("name", name);
+            editor.apply();
+
+            MainActivity activity = (MainActivity) getActivity();
+
+            // LoginFragment -> AccountFragment
+            activity.getSupportFragmentManager().popBackStack();
+
+            // AccountFragment -> The fragment the user was at
+            activity.getSupportFragmentManager().popBackStack();
+
+            // Set justLoggedIn boolean to true
+            activity.loggedIn();
+
+            // Get the fragment the user wanted
+            String wantedFragmentName = activity.getWantedFragmentName();
+
+            // Redirect to the fragment the user wants
+            activity.replaceFragment(wantedFragmentName);
+        }
+        else {
+            try {
+                JSONObject resObj = new JSONObject(response.errorBody().string());
+                String resErr = resObj.getJSONArray("errors").get(0).toString();
+                JSONObject errorObj = new JSONObject(resErr);
+                String errorMessage = String.valueOf(errorObj.get("detail"));
+                createAlert("Typo! Try again!", errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void createAlert(String title, String message) {

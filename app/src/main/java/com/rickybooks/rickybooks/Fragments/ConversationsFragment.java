@@ -13,34 +13,44 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
 
 import com.rickybooks.rickybooks.Adapters.ConversationAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Conversation;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
+import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ConversationsFragment extends Fragment {
     private List<Conversation> conversationsList = new ArrayList<>();
     private ConversationAdapter conversationAdapter;
+    private TextbookService textbookService;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Retrofit retrofit = new RetrofitClient().getClient();
+        textbookService = retrofit.create(TextbookService.class);
+        getConversationsReq();
+    }
 
     @Nullable
     @Override
@@ -52,7 +62,7 @@ public class ConversationsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadConversations();
+                getConversationsReq();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -68,67 +78,66 @@ public class ConversationsFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
 
-        loadConversations();
         return view;
     }
 
-    public void loadConversations() {
-        clearConversations();
+    public void getConversationsReq() {
+        MainActivity activity = (MainActivity) getActivity();
+        String token = activity.getToken();
+        String tokenString = "Token token=" + token;
+        String userId = activity.getUserId();
 
-        Context context = getActivity();
-        SharedPreferences sharedPref = context.getSharedPreferences("com.rickybooks.rickybooks",
-                Context.MODE_PRIVATE);
-        String userId = sharedPref.getString("user_id", null);
-        String url = "https://rickybooks.herokuapp.com/conversations/" + userId;
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+        Call<JsonArray> call = textbookService.getConversations(tokenString, userId);
+        call.enqueue(new Callback<JsonArray>() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray res = new JSONArray(response);
-
-                    for(int i=0; i<res.length(); i++) {
-                        JSONObject obj = res.getJSONObject(i);
-                        String conversationId = obj.getString("id");
-                        JSONObject recipient = obj.getJSONObject("recipient");
-                        String recipientName = (String) recipient.get("name");
-
-                        MainActivity activity = (MainActivity) getActivity();
-                        SharedPreferences sharedPref = activity.getSharedPreferences(
-                                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("recipient_name", recipientName);
-                        editor.apply();
-
-                        Conversation conversation = new Conversation(conversationId, recipientName);
-                        conversationsList.add(conversation);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                conversationAdapter.notifyDataSetChanged();
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                getConversationsRes(response);
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                Log.e("Ricky", "getConversationsReq failure: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
+        });
+    }
 
-                String token = ((MainActivity) getActivity()).getToken();
-                headers.put("Authorization", "Token token=" + token);
+    public void getConversationsRes(Response<JsonArray> response) {
+        if(response.isSuccessful()) {
+            try {
+                String res = String.valueOf(response.body());
+                JSONArray resData = new JSONArray(res);
+                for(int i=0; i<resData.length(); i++) {
+                    JSONObject obj = resData.getJSONObject(i);
+                    String conversationId = obj.getString("id");
+                    JSONObject recipient = obj.getJSONObject("recipient");
+                    String recipientName = (String) recipient.get("name");
 
-                return headers;
+                    MainActivity activity = (MainActivity) getActivity();
+                    SharedPreferences sharedPref = activity.getSharedPreferences(
+                            "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("recipient_name", recipientName);
+                    editor.apply();
+
+                    Conversation conversation = new Conversation(conversationId, recipientName);
+                    conversationsList.add(conversation);
+                }
+                conversationAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        };
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "getConversationsReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
     }
 
     public void clearConversations() {

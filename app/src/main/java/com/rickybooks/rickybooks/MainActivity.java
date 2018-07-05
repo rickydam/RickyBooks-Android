@@ -434,9 +434,21 @@ public class MainActivity extends AppCompatActivity {
         return token;
     }
 
+    public String getUserId() {
+        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
+                Context.MODE_PRIVATE);
+        return sharedPref.getString("user_id", null);
+    }
+
+    public String getConversationId() {
+        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
+                Context.MODE_PRIVATE);
+        return sharedPref.getString("conversation_id", null);
+    }
+
     public void logout() {
-        SharedPreferences sharedPref = this.getSharedPreferences(
-                "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("token", null);
         editor.apply();

@@ -32,9 +32,8 @@ import android.widget.TextView;
 
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
-import com.rickybooks.rickybooks.Services.TextbookFormService;
-import com.rickybooks.rickybooks.Services.TextbookImageService;
-import com.rickybooks.rickybooks.Services.TextbookUrlService;
+import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
+import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,11 +45,11 @@ import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -70,7 +69,7 @@ public class SellFragment extends Fragment {
     private String textbookType = "";
     private String textbookCoursecode = "";
     private String textbookPrice = "";
-    private Retrofit retrofit;
+    private TextbookService textbookService;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -84,6 +83,13 @@ public class SellFragment extends Fragment {
             chosenImage.setImageBitmap(chosenImageBitmap);
             setChooseImageButtonText("DELETE");
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Retrofit retrofit = new RetrofitClient().getClient();
+        textbookService = retrofit.create(TextbookService.class);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -120,7 +126,6 @@ public class SellFragment extends Fragment {
         editionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editionSpinner.setAdapter(editionAdapter);
 
-        // Create the Condition spinner
         final Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
         conditionSpinner.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -277,13 +282,7 @@ public class SellFragment extends Fragment {
     }
 
     public void textbookPostReq(final View view) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://rickybooks.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TextbookFormService textbookFormService = retrofit.create(TextbookFormService.class);
-        Call<String> call = textbookFormService.POST(tokenString, userId, textbookTitle,
+        Call<String> call = textbookService.postTextbookForm(tokenString, userId, textbookTitle,
                 textbookAuthor, textbookEdition, textbookCondition, textbookType,
                 textbookCoursecode, textbookPrice);
         call.enqueue(new Callback<String>() {
@@ -318,7 +317,7 @@ public class SellFragment extends Fragment {
 
             String textbookId = response.body();
             if(imageFile != null) {
-                getSignedUrl(textbookId);
+                getSignedPostUrlReq(textbookId);
             }
         }
         else {
@@ -355,40 +354,75 @@ public class SellFragment extends Fragment {
         }
     }
 
-    public void getSignedUrl(String textbookId) {
-        TextbookUrlService textbookUrlService = retrofit.create(TextbookUrlService.class);
-        Call<String> call = textbookUrlService.GET(tokenString, textbookId, chosenImageExtension);
+    public void getSignedPostUrlReq(String textbookId) {
+        Call<String> call = textbookService.getSignedPostUrl(tokenString, textbookId,
+                chosenImageExtension);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String signedUrl = response.body();
-                uploadImage(signedUrl);
+                getSignedPostUrlRes(response);
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Ricky", "getSignedUrl error: " + t.getMessage());
+                Log.e("Ricky", "getSignedPostUrlReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
             }
         });
     }
 
-    public void uploadImage(String signedUrl) {
-        TextbookImageService textbookImageService = retrofit.create(TextbookImageService.class);
+    public void getSignedPostUrlRes(Response<String> response) {
+        if(response.isSuccessful()) {
+            String signedUrl = response.body();
+            uploadImageReq(signedUrl);
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "getSignedPostUrlReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
+    }
+
+    public void uploadImageReq(String signedUrl) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
-        Call<Void> call = textbookImageService.PUT(signedUrl, reqFile);
+        Call<Void> call = textbookService.putImageAws(signedUrl, reqFile);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                imageFile = null;
-                chosenImageBitmap = null;
-                chosenImage.setImageBitmap(null);
-                setChooseImageButtonText("CHOOSE");
-                chosenImageExtension = null;
+                uploadImageRes(response);
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Ricky", "uploadImage error: " + t.getMessage());
+                Log.e("Ricky", "uploadImage failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
             }
         });
+    }
+
+    public void uploadImageRes(Response<Void> response) {
+        if(response.isSuccessful()) {
+            imageFile = null;
+            chosenImageBitmap = null;
+            chosenImage.setImageBitmap(null);
+            setChooseImageButtonText("CHOOSE");
+            chosenImageExtension = null;
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "uploadImageReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
     }
 
     public void chooseImageButtonPressed() {

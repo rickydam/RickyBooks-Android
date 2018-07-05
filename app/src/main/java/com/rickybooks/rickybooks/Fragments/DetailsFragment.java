@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,24 +20,35 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+
+import com.google.gson.JsonObject;
 
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
+import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class DetailsFragment extends Fragment {
+    private TextbookService textbookService;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Retrofit retrofit = new RetrofitClient().getClient();
+        textbookService = retrofit.create(TextbookService.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -136,7 +148,7 @@ public class DetailsFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String message = String.valueOf(messageInput.getText());
-                    conversationReq(message);
+                    createConversationReq(message);
                     dialog.dismiss();
                 }
             });
@@ -153,104 +165,97 @@ public class DetailsFragment extends Fragment {
         }
     }
 
-    public void conversationReq(final String message) {
-        final Context context = getActivity();
-        String url = "https://rickybooks.herokuapp.com/conversations";
+    public void createConversationReq(final String message) {
+        String tokenString = getTokenString();
+        String userId = getUserId();
+        Bundle bundle = getArguments();
+        String sellerId = bundle.getString("SellerId");
+        String textbookId = bundle.getString("Id");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
+        Call<JsonObject> call = textbookService.createConversation(tokenString, userId, sellerId,
+                textbookId);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    String conversation_id = obj.getString("conversation_id");
-                    messageReq(message, conversation_id);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                createConversationRes(message, response);
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("Ricky", "createConversationReq failure: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                String token = ((MainActivity) context).getToken();
-                headers.put("Authorization", "Token token=" + token);
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                        "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
-                String userId = sharedPref.getString("user_id", null);
-                params.put("sender_id", userId);
-
-                Bundle bundle = getArguments();
-                String sellerId = (String) bundle.get("SellerId");
-                params.put("recipient_id", sellerId);
-
-                String textbookId = (String) bundle.get("Id");
-                params.put("textbook_id", textbookId);
-
-                return params;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
+        });
     }
 
-    public void messageReq(final String message, String conversation_id) {
-        final Context context = getActivity();
-        String url = "https://rickybooks.herokuapp.com/conversations/" + conversation_id + "/messages";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                createAlert("Success!", "Message has been sent successfully.");
+    public void createConversationRes(String message, Response<JsonObject> response) {
+        if(response.isSuccessful()) {
+            String res = String.valueOf(response.body());
+            String conversationId = "";
+            try {
+                JSONObject obj = new JSONObject(res);
+                conversationId = obj.getString("conversation_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                createAlert("Seems like you forgot something...", "That's right! " +
-                        "The message!");
+            sendMessageReq(message, conversationId);
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "createConversationReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        })
-        {
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
+    }
+
+    public void sendMessageReq(String message, String conversationId) {
+        String tokenString = getTokenString();
+        String userId = getUserId();
+        Call<JsonObject> call = textbookService.sendMessage(tokenString, conversationId, message,
+            userId);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                String token = ((MainActivity) context).getToken();
-                headers.put("Authorization", "Token token=" + token);
-
-                return headers;
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                sendMessageRes(response);
             }
-
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("body", message);
-
-                SharedPreferences sharedPref = context.getSharedPreferences("com.rickybooks.rickybooks",
-                        Context.MODE_PRIVATE);
-                String user_id = sharedPref.getString("user_id", null);
-                params.put("user_id", user_id);
-
-                return params;
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("Ricky", "sendMessageReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
             }
-        };
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
+        });
+    }
+
+    public void sendMessageRes(Response<JsonObject> response) {
+        if(response.isSuccessful()) {
+            createAlert("Success!", "Message has been sent successfully.");
+        }
+        else {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "sendMessageReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Seems like you forgot something...", "That's right! " +
+                    "The message!");
+        }
+    }
+
+    public String getTokenString() {
+        MainActivity activity = (MainActivity) getActivity();
+        String token = activity.getToken();
+        return "Token token=" + token;
+    }
+
+    public String getUserId() {
+        MainActivity activity = (MainActivity) getActivity();
+        return activity.getUserId();
     }
 
     public void createAlert(String title, String message) {
