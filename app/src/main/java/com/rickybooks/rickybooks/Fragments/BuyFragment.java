@@ -80,7 +80,7 @@ public class BuyFragment extends Fragment {
         return view;
     }
 
-    private void getTextbooksReq() {
+    public void getTextbooksReq() {
         Call<JsonArray> call = textbookService.getTextbooks();
         call.enqueue(new Callback<JsonArray>() {
             @Override
@@ -96,7 +96,7 @@ public class BuyFragment extends Fragment {
         });
     }
 
-    private void getTextbooksRes(Response<JsonArray> response) {
+    public void getTextbooksRes(Response<JsonArray> response) {
         if(response.isSuccessful()) {
             try {
                 String res = String.valueOf(response.body());

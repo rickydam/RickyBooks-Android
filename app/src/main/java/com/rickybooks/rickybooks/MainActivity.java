@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setBottomNavigationItem(int index) {
+    public void setBottomNavigationItem(int index) {
         BottomNavigationView bnv = findViewById(R.id.navigation);
         bnv.getMenu().getItem(index).setChecked(true);
     }
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void setAppTitle(String title) {
+    public void setAppTitle(String title) {
         setTitle(title);
         titles.push(prevTitle);
         prevTitle = title;
