@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
 import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
@@ -70,6 +71,7 @@ public class SellFragment extends Fragment {
     private String textbookCoursecode = "";
     private String textbookPrice = "";
     private TextbookService textbookService;
+    private View view;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -80,7 +82,7 @@ public class SellFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if(chosenImageBitmap != null) {
-            chosenImage.setImageBitmap(chosenImageBitmap);
+            Glide.with(view).load(chosenImageBitmap).into(chosenImage);
             setChooseImageButtonText("DELETE");
         }
     }
@@ -96,7 +98,7 @@ public class SellFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_sell, container, false);
+        view = inflater.inflate(R.layout.fragment_sell, container, false);
 
         chosenImage = view.findViewById(R.id.chosen_image);
 
@@ -454,6 +456,7 @@ public class SellFragment extends Fragment {
                 chosenImageExtension = activity.getContentResolver().getType(chosenImageUri);
                 chosenImageExtension = chosenImageExtension.substring(6);
                 chosenImage.setImageBitmap(chosenImageBitmap);
+                Glide.with(view).load(chosenImageBitmap).into(chosenImage);
 
                 imageFile = new File(getContext().getCacheDir(), "ChosenImage");
 
