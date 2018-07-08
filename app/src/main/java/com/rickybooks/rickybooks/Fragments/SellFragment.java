@@ -58,7 +58,7 @@ public class SellFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 71;
     private ImageView chosenImage = null;
     private Bitmap chosenImageBitmap = null;
-    private String chosenImageExtension = null;
+    private String chosenImageFileExtension = null;
     private Button chooseImageButton = null;
     private File imageFile = null;
     private String tokenString = "";
@@ -358,7 +358,7 @@ public class SellFragment extends Fragment {
 
     public void getSignedPostUrlReq(String textbookId) {
         Call<String> call = textbookService.getSignedPostUrl(tokenString, textbookId,
-                chosenImageExtension);
+                chosenImageFileExtension);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -409,11 +409,7 @@ public class SellFragment extends Fragment {
 
     public void uploadImageRes(Response<Void> response) {
         if(response.isSuccessful()) {
-            imageFile = null;
-            chosenImageBitmap = null;
-            chosenImage.setImageBitmap(null);
-            setChooseImageButtonText("CHOOSE");
-            chosenImageExtension = null;
+            clearImageData();
         }
         else {
             try {
@@ -436,9 +432,7 @@ public class SellFragment extends Fragment {
                     PICK_IMAGE_REQUEST);
         }
         if(chooseImageButton.getText().equals("DELETE IMAGE")) {
-            chosenImage.setImageBitmap(null);
-            chosenImageBitmap = null;
-            setChooseImageButtonText("CHOOSE");
+            clearImageData();
         }
     }
 
@@ -453,9 +447,8 @@ public class SellFragment extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 chosenImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(),
                         chosenImageUri);
-                chosenImageExtension = activity.getContentResolver().getType(chosenImageUri);
-                chosenImageExtension = chosenImageExtension.substring(6);
-                chosenImage.setImageBitmap(chosenImageBitmap);
+                chosenImageFileExtension = activity.getContentResolver().getType(chosenImageUri);
+                chosenImageFileExtension = chosenImageFileExtension.substring(6);
                 Glide.with(view).load(chosenImageBitmap).into(chosenImage);
 
                 imageFile = new File(getContext().getCacheDir(), "ChosenImage");
@@ -473,6 +466,14 @@ public class SellFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void clearImageData() {
+        chosenImageBitmap = null;
+        chosenImageFileExtension = null;
+        imageFile = null;
+        chosenImage.setImageResource(0);
+        setChooseImageButtonText("CHOOSE");
     }
 
     public void setChooseImageButtonText(String buttonText) {

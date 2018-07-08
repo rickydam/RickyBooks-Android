@@ -106,9 +106,15 @@ public interface TextbookService {
 
     // ProfileFragment
     @DELETE("textbooks/{textbook_id}")
-    Call<Void> deleteTextbook(
+    Call<String> deleteTextbook(
         @Header("Authorization") String tokenString,
         @Path("textbook_id") String textbookId
+    );
+
+    // ProfileFragment
+    @DELETE
+    Call<Void> deleteImage(
+        @Url String url
     );
 
     // ProfileFragment

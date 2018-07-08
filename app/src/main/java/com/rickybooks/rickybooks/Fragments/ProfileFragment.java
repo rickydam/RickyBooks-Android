@@ -167,14 +167,14 @@ public class ProfileFragment extends Fragment {
     }
 
     public void deleteTextbookReq(String textbookId) {
-        Call<Void> call = textbookService.deleteTextbook(getTokenString(), textbookId);
-        call.enqueue(new Callback<Void>() {
+        Call<String> call = textbookService.deleteTextbook(getTokenString(), textbookId);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 deleteTextbookRes(response);
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e("Ricky", "deleteTextbookReq failure: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                             "reach the server at the moment.\n\nPlease try again later.");
@@ -182,12 +182,45 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void deleteTextbookRes(Response<Void> response) {
-        // No action required, just check to make sure it worked
-        if(!response.isSuccessful()) {
+    public void deleteTextbookRes(Response<String> response) {
+        if(response.isSuccessful()) {
+            String signedDeleteUrl = response.body();
+            deleteTextbookImageReq(signedDeleteUrl);
+        }
+        else {
             try {
                 String errorMessage = response.errorBody().string();
                 Log.e("Ricky", "deleteTextbookReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
+    }
+
+    public void deleteTextbookImageReq(String signedDeleteUrl) {
+        Call<Void> call = textbookService.deleteImage(signedDeleteUrl);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                deleteTextbookImageRes(response);
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "deleteTextbookImageReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
+            }
+        });
+    }
+
+    public void deleteTextbookImageRes(Response<Void> response) {
+        // No action needed for successful AWS S3 textbook image deletion
+        if(!response.isSuccessful()) {
+           try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "deleteTextbookImageReq unsuccessful: " + errorMessage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
