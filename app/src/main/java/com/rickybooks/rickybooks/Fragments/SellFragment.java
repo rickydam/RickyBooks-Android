@@ -461,7 +461,8 @@ public class SellFragment extends Fragment {
                 imageFile = new File(getContext().getCacheDir(), "ChosenImage");
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                chosenImageBitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
+
+                chosenImageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
                 byte[] chosenImageBitmapData = byteArrayOutputStream.toByteArray();
 
                 FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
