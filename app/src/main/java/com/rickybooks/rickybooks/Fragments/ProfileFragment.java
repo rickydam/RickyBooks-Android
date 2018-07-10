@@ -118,8 +118,7 @@ public class ProfileFragment extends Fragment {
                     if(selectedTextbooksCount >= 1) {
                         for(int i=0; i<selectedTextbooksCount; i++) {
                             Textbook book = selectedTextbooks.get(i);
-                            String textbookId = book.getId();
-                            deleteTextbookReq(textbookId);
+                            deleteTextbookReq(book);
                             textbookList.remove(0);
                         }
                         textbookAdapter.notifyDataSetChanged();
@@ -166,12 +165,12 @@ public class ProfileFragment extends Fragment {
         return actionMode;
     }
 
-    public void deleteTextbookReq(String textbookId) {
-        Call<String> call = textbookService.deleteTextbook(getTokenString(), textbookId);
+    public void deleteTextbookReq(final Textbook textbook) {
+        Call<String> call = textbookService.deleteTextbook(getTokenString(), textbook.getId());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                deleteTextbookRes(response);
+                deleteTextbookRes(textbook, response);
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
@@ -182,10 +181,12 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void deleteTextbookRes(Response<String> response) {
+    public void deleteTextbookRes(Textbook textbook, Response<String> response) {
         if(response.isSuccessful()) {
-            String signedDeleteUrl = response.body();
-            deleteTextbookImageReq(signedDeleteUrl);
+            if(textbook.getImageUrls().size() > 0) {
+                String signedDeleteUrl = response.body();
+                deleteTextbookImageReq(signedDeleteUrl);
+            }
         }
         else {
             try {
