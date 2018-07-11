@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@id/details_layout">
 
         <Button
-            android:id="@+id/details_send_button"
+            android:id="@+id/details_message_button"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="@drawable/button_blue"

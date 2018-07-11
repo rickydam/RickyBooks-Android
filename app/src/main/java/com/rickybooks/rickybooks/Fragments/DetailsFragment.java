@@ -55,7 +55,7 @@ public class DetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
-        Button button = view.findViewById(R.id.details_send_button);
+        Button button = view.findViewById(R.id.details_message_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
