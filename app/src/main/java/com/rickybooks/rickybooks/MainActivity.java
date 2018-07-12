@@ -449,9 +449,7 @@ public class MainActivity extends AppCompatActivity {
     public void logout() {
         SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("token", null);
-        editor.apply();
+        sharedPref.edit().clear().apply();
         token = null;
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentByTag("ConversationsFragment");
