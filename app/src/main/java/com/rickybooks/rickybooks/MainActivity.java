@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         currentFragmentName = "HomeFragment";
         fragmentNames.push(currentFragmentName);
 
-        fm.addOnBackStackChangedListener(
-                new FragmentManager.OnBackStackChangedListener() {
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
                 if(backStackCount > fm.getBackStackEntryCount()) {
@@ -447,27 +446,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
-                Context.MODE_PRIVATE);
-        sharedPref.edit().clear().apply();
-        token = null;
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag("ConversationsFragment");
-        if(fragment != null) {
-            ((ConversationsFragment) fragment).clearConversations();
-        }
-        bottomNavigationPosition.clear();
-        titles.clear();
-        fragmentNames.clear();
-        prevTitle = "RickyBooks";
-        prevNavPosition = 0;
-        backStackCount = 0;
-        poppedIndex = 0;
-        peekIndex = 0;
+        clearAll();
         replaceFragment("HomeFragment");
         fragmentNames.push(currentFragmentName);
-        justLoggedIn = false;
+        FragmentManager fm = getSupportFragmentManager();
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    public void clearAll() {
+        try {
+            SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
+                    Context.MODE_PRIVATE);
+            sharedPref.edit().clear().apply();
+            token = null;
+            FragmentManager fm = getSupportFragmentManager();
+            Fragment fragment = fm.findFragmentByTag("ConversationsFragment");
+            if(fragment != null) {
+                ((ConversationsFragment) fragment).clearConversations();
+            }
+            bottomNavigationPosition.clear();
+            titles.clear();
+            fragmentNames.clear();
+            prevTitle = "RickyBooks";
+            prevNavPosition = 0;
+            backStackCount = 0;
+            poppedIndex = 0;
+            peekIndex = 0;
+            justLoggedIn = false;
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loggedIn() {
