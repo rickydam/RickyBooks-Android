@@ -1,6 +1,7 @@
 package com.rickybooks.rickybooks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,8 +52,15 @@ public class MainActivity extends AppCompatActivity {
     private static final int PROFILE = 4;
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        replaceFragment("ConversationsFragment");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         bottomNavigationPosition = new Stack<>();
         titles = new Stack<>();
