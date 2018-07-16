@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonObject;
 
 import com.rickybooks.rickybooks.MainActivity;
@@ -121,6 +122,9 @@ public class LoginFragment extends Fragment {
             editor.putString("name", name);
             editor.apply();
 
+            String tokenString = "Token token=" + token;
+            storeFirebaseToken(tokenString, userId);
+
             MainActivity activity = (MainActivity) getActivity();
 
             // LoginFragment -> AccountFragment
@@ -151,6 +155,33 @@ public class LoginFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void storeFirebaseToken(String tokenString, String userId) {
+        String firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        Call<Void> call = textbookService.storeFirebaseToken(tokenString, userId, firebaseToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(!response.isSuccessful()) {
+                    try {
+                        String errorMessage = response.errorBody().string();
+                        Log.e("Ricky", "storeFirebaseToken unsuccessful: " + errorMessage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                            "reach the server at the moment.\n\nPlease try again later.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "storeFirebaseToken failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
+            }
+        });
     }
 
     public void createAlert(String title, String message) {
