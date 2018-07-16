@@ -58,6 +58,15 @@ public interface TextbookService {
         @Body JsonObject user
     );
 
+    // LoginFragment && RegisterFragment
+    @FormUrlEncoded
+    @POST("firebase")
+    Call<Void> storeFirebaseToken(
+        @Header("Authorization") String tokenString,
+        @Field("user_id") String userId,
+        @Field("firebase_token") String firebaseToken
+    );
+
     // RegisterFragment
     @POST("users")
     Call<JsonObject> register(
