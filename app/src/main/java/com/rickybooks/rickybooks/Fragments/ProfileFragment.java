@@ -247,7 +247,7 @@ public class ProfileFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
-                Log.e("Ricky", "reqUserTextbookData error: " + t.getMessage());
+                Log.e("Ricky", "getUserTextbooksReq error: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
             }
@@ -260,7 +260,7 @@ public class ProfileFragment extends Fragment {
         }
         else {
             try {
-                Log.e("Ricky", "loadTextbookDataRes error: " + response.errorBody().string());
+                Log.e("Ricky", "getUserTextbooksReq unsuccessful: " + response.errorBody().string());
             } catch (IOException e) {
                 e.printStackTrace();
             }
