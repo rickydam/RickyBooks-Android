@@ -13,11 +13,12 @@ public class Textbook {
     private String price;
     private String sellerId;
     private String sellerName;
+    private String timestamp;
     private List<String> imageUrls;
 
-    public Textbook(String id, String title, String author, String edition, String condition, String type,
-                    String coursecode, String price, String sellerId, String sellerName,
-                    List<String> imageUrls) {
+    public Textbook(String id, String title, String author, String edition, String condition,
+                    String type, String coursecode, String price, String sellerId,
+                    String sellerName, String timestamp, List<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -28,6 +29,7 @@ public class Textbook {
         this.price = price;
         this.sellerId = sellerId;
         this.sellerName = sellerName;
+        this.timestamp = timestamp;
         this.imageUrls = imageUrls;
     }
 
@@ -89,6 +91,10 @@ public class Textbook {
 
     public String getSellerName() {
         return sellerName;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
     }
 
     public List<String> getImageUrls() {
