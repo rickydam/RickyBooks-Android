@@ -32,6 +32,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         private TextView textbook_coursecode;
         private TextView textbook_price;
         private TextView textbook_seller;
+        private TextView textbook_timestamp;
         private ImageView imageView;
 
         TextbookViewHolder(View view) {
@@ -44,6 +45,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
             textbook_coursecode = view.findViewById(R.id.textbook_coursecode);
             textbook_price = view.findViewById(R.id.textbook_price);
             textbook_seller = view.findViewById(R.id.textbook_seller);
+            textbook_timestamp = view.findViewById(R.id.textbook_timestamp);
             imageView = view.findViewById(R.id.textbook_image);
         }
     }
@@ -76,6 +78,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
         holder.textbook_coursecode.setText(textbook.getCoursecode());
         holder.textbook_price.setText(textbook.getPrice());
         holder.textbook_seller.setText(textbook.getSellerName());
+        holder.textbook_timestamp.setText(textbook.getTimestamp());
 
         final ImageView imageView = holder.imageView;
 
@@ -128,6 +131,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                     bundle.putString("Price", textbook.getPrice());
                     bundle.putString("SellerName", textbook.getSellerName());
                     bundle.putString("SellerId", textbook.getSellerId());
+                    bundle.putString("Timestamp", textbook.getTimestamp());
                     bundle.putString("ImageUrl", imageUrl);
 
                     activity.setDetailsBundle(bundle);
