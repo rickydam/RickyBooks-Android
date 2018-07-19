@@ -98,42 +98,7 @@ public class BuyFragment extends Fragment {
 
     public void getTextbooksRes(Response<JsonArray> response) {
         if(response.isSuccessful()) {
-            try {
-                String res = String.valueOf(response.body());
-                JSONArray resData = new JSONArray(res);
-                for(int i=0; i<resData.length(); i++) {
-                    JSONObject textbookObj = resData.getJSONObject(i);
-                    String id         = textbookObj.getString("id");
-                    String title      = textbookObj.getString("textbook_title");
-                    String author     = textbookObj.getString("textbook_author");
-                    String edition    = textbookObj.getString("textbook_edition");
-                    String condition  = textbookObj.getString("textbook_condition");
-                    String type       = textbookObj.getString("textbook_type");
-                    String coursecode = textbookObj.getString("textbook_coursecode");
-                    String price      = "$ " + textbookObj.getString("textbook_price");
-
-                    JSONObject user = textbookObj.getJSONObject("user");
-                    String sellerId = textbookObj.getString("user_id");
-                    String sellerName = user.getString("name");
-
-                    List<String> imageUrls = new ArrayList<>();
-                    JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
-
-                    for(int j=0; j<imagesJSONarr.length(); j++) {
-                        JSONObject imageObj = imagesJSONarr.getJSONObject(j);
-                        String url = imageObj.getString("url");
-                        imageUrls.add(url);
-                    }
-
-                    Textbook textbook = new Textbook(id, title, author, edition, condition,
-                            type, coursecode, price, sellerId, sellerName, imageUrls);
-
-                    textbookList.add(textbook);
-                }
-                textbookAdapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            parseTextbookData(response);
         }
         else {
             try {
@@ -146,6 +111,44 @@ public class BuyFragment extends Fragment {
         }
     }
 
+    public void parseTextbookData(Response<JsonArray> response) {
+        try {
+            String res = String.valueOf(response.body());
+            JSONArray resData = new JSONArray(res);
+            for(int i=0; i<resData.length(); i++) {
+                JSONObject textbookObj = resData.getJSONObject(i);
+                String id         = textbookObj.getString("id");
+                String title      = textbookObj.getString("textbook_title");
+                String author     = textbookObj.getString("textbook_author");
+                String edition    = textbookObj.getString("textbook_edition");
+                String condition  = textbookObj.getString("textbook_condition");
+                String type       = textbookObj.getString("textbook_type");
+                String coursecode = textbookObj.getString("textbook_coursecode");
+                String price      = "$ " + textbookObj.getString("textbook_price");
+
+                JSONObject user = textbookObj.getJSONObject("user");
+                String sellerId = textbookObj.getString("user_id");
+                String sellerName = user.getString("name");
+
+                List<String> imageUrls = new ArrayList<>();
+                JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
+
+                for(int j=0; j<imagesJSONarr.length(); j++) {
+                    JSONObject imageObj = imagesJSONarr.getJSONObject(j);
+                    String url = imageObj.getString("url");
+                    imageUrls.add(url);
+                }
+
+                Textbook textbook = new Textbook(id, title, author, edition, condition,
+                        type, coursecode, price, sellerId, sellerName, imageUrls);
+
+                textbookList.add(textbook);
+            }
+            textbookAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public void createAlert(String title, String message) {
         Activity activity = getActivity();
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
