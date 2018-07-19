@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             currentFragmentName = "DetailsFragment";
         }
         if(fragmentName.equals("ConversationsFragment")) {
+            setBottomNavigationItem(MESSAGES);
             setAppTitle("Conversations");
             if(popped) {
                 bottomNavigationPosition.push(peekIndex);
