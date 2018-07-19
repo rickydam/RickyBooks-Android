@@ -20,16 +20,18 @@ public class FirebaseService extends FirebaseMessagingService {
         if(remoteMessage.getData().size() > 0) {
             String title = remoteMessage.getData().get("title");
             String message = remoteMessage.getData().get("body");
-            doNotification(title, message);
+            String conversationId = remoteMessage.getData().get("conversation_id");
+            doNotification(title, message, conversationId);
         }
     }
 
-    public void doNotification(String title, String message) {
+    public void doNotification(String title, String message, String conversationId) {
         createNotificationChannel();
 
         Context context = getApplicationContext();
 
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("conversation_id", conversationId);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Ricky");
