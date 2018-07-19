@@ -79,13 +79,21 @@
             app:layout_constraintTop_toBottomOf="@id/details_coursecode" />
 
         <TextView
+            android:id="@+id/details_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/details_text_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/details_price" />
+
+        <TextView
             android:id="@+id/details_seller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/details_text_size"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/details_price" />
+            app:layout_constraintTop_toBottomOf="@id/details_timestamp" />
 
     </android.support.constraint.ConstraintLayout>
 
