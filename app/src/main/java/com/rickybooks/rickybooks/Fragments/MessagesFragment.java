@@ -84,6 +84,7 @@ public class MessagesFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
+        layoutManager.setStackFromEnd(true);
         messageAdapter = new MessageAdapter(activity, messagesList);
 
         RecyclerView messageRecycler = view.findViewById(R.id.messages_recycler);
