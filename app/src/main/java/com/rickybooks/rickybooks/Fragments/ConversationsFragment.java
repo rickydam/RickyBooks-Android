@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,7 @@ public class ConversationsFragment extends Fragment {
     private List<Conversation> conversationsList = new ArrayList<>();
     private ConversationAdapter conversationAdapter;
     private TextbookService textbookService;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class ConversationsFragment extends Fragment {
         Retrofit retrofit = new RetrofitClient().getClient();
         textbookService = retrofit.create(TextbookService.class);
         getConversationsReq();
+        checkBundle();
     }
 
     @Nullable
@@ -71,7 +74,7 @@ public class ConversationsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         conversationAdapter = new ConversationAdapter(conversationsList);
 
-        RecyclerView recyclerView = view.findViewById(R.id.conversations_recycler);
+        recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(conversationAdapter);
@@ -79,6 +82,37 @@ public class ConversationsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL));
 
         return view;
+    }
+
+    public void checkBundle() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bundle bundle = getArguments();
+                    String notificationConversationId = bundle.getString("notification_conversation_id");
+                    int position = -1;
+                    for(int i=0; i<conversationsList.size(); i++) {
+                        Conversation conversation = conversationsList.get(i);
+                        if(conversation.getConversationId().equals(notificationConversationId)) {
+                            position = i;
+                        }
+                    }
+                    openConversation(position);
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 100);
+    }
+
+    public void openConversation(final int position) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+            }
+        }, 100);
     }
 
     public void getConversationsReq() {
