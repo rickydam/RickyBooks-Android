@@ -30,8 +30,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -139,8 +144,11 @@ public class BuyFragment extends Fragment {
                     imageUrls.add(url);
                 }
 
+                String createdAt = textbookObj.getString("created_at");
+                String timestamp = parseTime(createdAt);
+
                 Textbook textbook = new Textbook(id, title, author, edition, condition,
-                        type, coursecode, price, sellerId, sellerName, imageUrls);
+                        type, coursecode, price, sellerId, sellerName, timestamp, imageUrls);
 
                 textbookList.add(textbook);
             }
@@ -149,6 +157,54 @@ public class BuyFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    public String parseTime(String createdAt) {
+        SimpleDateFormat rubyDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                Locale.CANADA);
+        rubyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date createdAtDate = null;
+        try {
+            createdAtDate = rubyDateFormat.parse(createdAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String timestamp = "";
+
+        Long currentTime = new Date().getTime();
+        Long createdAtTime = createdAtDate.getTime();
+        Long differenceMillis = currentTime - createdAtTime;
+        int differenceSeconds = (int) (differenceMillis/1000);
+        int differenceMinutes = differenceSeconds/60;
+        int differenceHours = differenceMinutes/60;
+
+        if(differenceHours >= 24) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, MMMM dd, yyyy", Locale.CANADA);
+            timestamp = sdf.format(createdAtDate);
+        }
+        if(differenceHours < 24 && differenceHours > 1) {
+            timestamp = differenceHours + " hours ago";
+        }
+        if(differenceHours == 1) {
+            timestamp = differenceHours + " hour ago";
+        }
+        if(differenceMinutes < 60 && differenceMinutes > 1) {
+            timestamp = differenceMinutes + " minutes ago";
+        }
+        if(differenceMinutes == 1) {
+            timestamp = differenceMinutes + " minute ago";
+        }
+        if(differenceSeconds < 60 && differenceSeconds > 30) {
+            timestamp = differenceSeconds + " seconds ago";
+        }
+        if(differenceSeconds <= 30) {
+            timestamp = "Just now";
+        }
+
+        return timestamp;
+    }
+
     public void createAlert(String title, String message) {
         Activity activity = getActivity();
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
