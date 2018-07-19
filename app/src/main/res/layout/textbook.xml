@@ -111,8 +111,15 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textbook_seller"
+                    android:id="@+id/textbook_timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/textbook_price"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textbook_seller"
+                    android:layout_below="@id/textbook_timestamp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content" />
 
