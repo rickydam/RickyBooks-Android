@@ -76,6 +76,7 @@ public class DetailsFragment extends Fragment {
         TextView detailsType = view.findViewById(R.id.details_type);
         TextView detailsCoursecode = view.findViewById(R.id.details_coursecode);
         TextView detailsPrice = view.findViewById(R.id.details_price);
+        TextView detailsTimestamp = view.findViewById(R.id.details_timestamp);
         TextView detailsSellerName = view.findViewById(R.id.details_seller);
 
         Bundle bundle = getArguments();
@@ -88,6 +89,7 @@ public class DetailsFragment extends Fragment {
         detailsCoursecode.setText(bundle.getString("Coursecode"));
         detailsPrice.setText(bundle.getString("Price"));
         detailsSellerName.setText(bundle.getString("SellerName"));
+        detailsTimestamp.setText(bundle.getString("Timestamp"));
 
         String imageUrl = bundle.getString("ImageUrl");
         ImageView detailsImage = view.findViewById(R.id.details_image);
