@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Stack<String> fragmentNames;
     private boolean hasFragmentChanges = true;
     private String poppedFragmentName;
-    boolean justLoggedIn = false;
+    private boolean justLoggedIn = false;
 
     private static final int HOME = 0;
     private static final int BUY = 1;
