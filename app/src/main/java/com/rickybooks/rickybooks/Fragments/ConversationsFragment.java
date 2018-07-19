@@ -103,7 +103,7 @@ public class ConversationsFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }, 100);
+        }, 500);
     }
 
     public void openConversation(final int position) {
@@ -112,7 +112,7 @@ public class ConversationsFragment extends Fragment {
             public void run() {
                 recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
             }
-        }, 100);
+        }, 500);
     }
 
     public void getConversationsReq() {
