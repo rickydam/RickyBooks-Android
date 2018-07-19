@@ -80,14 +80,14 @@ public class DetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-        detailsTitle.setText((String) bundle.get("Title"));
-        detailsAuthor.setText((String) bundle.get("Author"));
-        detailsEdition.setText((String) bundle.get("Edition"));
-        detailsCondition.setText((String) bundle.get("Condition"));
-        detailsType.setText((String) bundle.get("Type"));
-        detailsCoursecode.setText((String) bundle.get("Coursecode"));
-        detailsPrice.setText((String) bundle.get("Price"));
-        detailsSellerName.setText((String) bundle.get("SellerName"));
+        detailsTitle.setText(bundle.getString("Title"));
+        detailsAuthor.setText(bundle.getString("Author"));
+        detailsEdition.setText(bundle.getString("Edition"));
+        detailsCondition.setText(bundle.getString("Condition"));
+        detailsType.setText(bundle.getString("Type"));
+        detailsCoursecode.setText(bundle.getString("Coursecode"));
+        detailsPrice.setText(bundle.getString("Price"));
+        detailsSellerName.setText(bundle.getString("SellerName"));
 
         String imageUrl = bundle.getString("ImageUrl");
         ImageView detailsImage = view.findViewById(R.id.details_image);
@@ -146,7 +146,7 @@ public class DetailsFragment extends Fragment {
         parentLayout.addView(messageInput);
 
         Bundle bundle = getArguments();
-        String sellerName = (String) bundle.get("SellerName");
+        String sellerName = bundle.getString("SellerName");
         alertDialog.setTitle("Message " + sellerName);
         alertDialog.setView(parentLayout);
         alertDialog.setCancelable(false);
