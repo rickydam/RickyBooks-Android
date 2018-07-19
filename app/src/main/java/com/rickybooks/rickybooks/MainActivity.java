@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        notificationConversationId = intent.getStringExtra("conversation_id");
-        replaceFragment("ConversationsFragment");
+        if(intent.getStringExtra("conversation_id") != null) {
+            notificationConversationId = intent.getStringExtra("conversation_id");
+            replaceFragment("ConversationsFragment");
+        }
     }
 
     @Override
