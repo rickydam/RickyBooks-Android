@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasFragmentChanges = true;
     private String poppedFragmentName;
     private boolean justLoggedIn = false;
+    private String notificationConversationId = null;
 
     private static final int HOME = 0;
     private static final int BUY = 1;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        notificationConversationId = intent.getStringExtra("conversation_id");
         replaceFragment("ConversationsFragment");
     }
 
@@ -250,6 +252,11 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.fragment_container, fragment, "ConversationsFragment");
                     hasFragmentChanges = true;
                     fragmentNames.push(currentFragmentName);
+                }
+                if(notificationConversationId != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("notification_conversation_id", notificationConversationId);
+                    fragment.setArguments(bundle);
                 }
             }
             currentFragmentName = "ConversationsFragment";
@@ -481,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
             poppedIndex = 0;
             peekIndex = 0;
             justLoggedIn = false;
+            notificationConversationId = null;
         } catch(NullPointerException e) {
             e.printStackTrace();
         }
