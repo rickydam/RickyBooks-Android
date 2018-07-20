@@ -114,7 +114,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                     if(profileFragment != null) {
                         boolean actionMode = profileFragment.getActionMode();
                         if(actionMode) {
-                            profileFragment.selectTextbook(textbook);
+                            profileFragment.selectTextbook(textbook, null);
                             notifyItemChanged(holder.getAdapterPosition());
                         }
                     }

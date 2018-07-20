@@ -52,6 +52,7 @@ public class ProfileFragment extends Fragment {
     private TextbookAdapter textbookAdapter;
     private List<Textbook> selectedTextbooks = new ArrayList<>();
     private boolean actionMode = false;
+    private ActionMode mode;
     private TextbookService textbookService;
 
     @Override
@@ -107,7 +108,7 @@ public class ProfileFragment extends Fragment {
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 actionMode = true;
                 menu.add("DELETE").setIcon(R.drawable.ic_delete);
-                selectTextbook(textbook);
+                selectTextbook(textbook, mode);
                 return true;
             }
 
@@ -153,13 +154,17 @@ public class ProfileFragment extends Fragment {
         activity.startSupportActionMode(actionModeCallbacks);
     }
 
-    public void selectTextbook(Textbook textbook) {
+    public void selectTextbook(Textbook textbook, ActionMode mode) {
+        if(mode != null) {
+            this.mode = mode;
+        }
         if(!textbookExists(textbook)) {
             selectedTextbooks.add(textbook);
         }
         else {
             selectedTextbooks.remove(textbook);
         }
+        this.mode.setTitle(selectedTextbooks.size() + " selected");
     }
 
     public boolean textbookExists(Textbook textbook) {
