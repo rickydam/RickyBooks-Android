@@ -454,6 +454,12 @@ public class MainActivity extends AppCompatActivity {
         return sharedPref.getString("user_id", null);
     }
 
+    public String getUserName() {
+        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
+                Context.MODE_PRIVATE);
+        return sharedPref.getString("name", null);
+    }
+
     public String getConversationId() {
         SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
