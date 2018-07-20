@@ -41,6 +41,7 @@ public class RegisterFragment extends Fragment {
     private EditText emailField;
     private EditText passwordField;
     private EditText passwordCField;
+    private Button registerbutton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,12 +55,13 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_register, container, false);
-        final Button button = view.findViewById(R.id.register_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        registerbutton = view.findViewById(R.id.register_button);
+        registerbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 hideKeyboard(v);
                 unfocus(v);
+                registerbutton.setClickable(false);
                 registerButtonPressed(view);
             }
         });
@@ -100,6 +102,7 @@ public class RegisterFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                registerbutton.setClickable(true);
                 Log.e("Ricky", "registerReq failure: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                             "reach the server at the moment.\n\nPlease try again later.");
@@ -157,6 +160,7 @@ public class RegisterFragment extends Fragment {
                                     "You are now logged in.");
         }
         else {
+            registerbutton.setClickable(true);
             try {
                 JSONObject resObj = new JSONObject(response.errorBody().string());
                 StringBuilder errorMessage = new StringBuilder();
