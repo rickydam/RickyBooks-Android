@@ -20,11 +20,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     private List<Conversation> conversationList;
 
     class ConversationViewHolder extends RecyclerView.ViewHolder {
-        private TextView recipientName;
+        private TextView otherName;
 
         ConversationViewHolder(View view) {
             super(view);
-            recipientName = view.findViewById(R.id.conversation_recipient_name);
+            otherName = view.findViewById(R.id.conversation_other_name);
         }
     }
 
@@ -43,7 +43,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(@NonNull ConversationViewHolder holder, int position) {
         final Conversation conversation = conversationList.get(position);
-        holder.recipientName.setText(conversation.getRecipientName());
+        holder.otherName.setText(conversation.getOtherName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

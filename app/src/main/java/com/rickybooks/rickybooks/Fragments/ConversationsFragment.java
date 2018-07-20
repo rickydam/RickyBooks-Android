@@ -150,7 +150,7 @@ public class ConversationsFragment extends Fragment {
 
                     MainActivity activity = (MainActivity) getActivity();
 
-                    Conversation conversation = new Conversation(conversationId, recipientName);
+                    Conversation conversation = new Conversation(conversationId, otherName);
                     conversationsList.add(conversation);
                 }
                 conversationAdapter.notifyDataSetChanged();
