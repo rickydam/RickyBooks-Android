@@ -138,6 +138,7 @@ public class ConversationsFragment extends Fragment {
 
     public void getConversationsRes(Response<JsonArray> response) {
         if(response.isSuccessful()) {
+            clearConversations();
             try {
                 String res = String.valueOf(response.body());
                 JSONArray resData = new JSONArray(res);
