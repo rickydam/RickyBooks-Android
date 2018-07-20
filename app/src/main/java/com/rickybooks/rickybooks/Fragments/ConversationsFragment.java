@@ -145,10 +145,23 @@ public class ConversationsFragment extends Fragment {
                 for(int i=0; i<resData.length(); i++) {
                     JSONObject obj = resData.getJSONObject(i);
                     String conversationId = obj.getString("id");
-                    JSONObject recipient = obj.getJSONObject("recipient");
-                    String recipientName = (String) recipient.get("name");
 
+                    JSONObject recipientObj = obj.getJSONObject("recipient");
+                    String recipientName = recipientObj.getString("name");
+
+                    JSONObject senderObj = obj.getJSONObject("sender");
+                    String senderName = senderObj.getString("name");
+
+                    String otherName;
                     MainActivity activity = (MainActivity) getActivity();
+                    String userName = activity.getUserName();
+
+                    if(userName.equals(recipientName)) {
+                        otherName = senderName;
+                    }
+                    else {
+                        otherName = recipientName;
+                    }
 
                     Conversation conversation = new Conversation(conversationId, otherName);
                     conversationsList.add(conversation);
