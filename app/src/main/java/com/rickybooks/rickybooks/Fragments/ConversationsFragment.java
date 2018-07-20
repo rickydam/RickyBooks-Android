@@ -149,11 +149,6 @@ public class ConversationsFragment extends Fragment {
                     String recipientName = (String) recipient.get("name");
 
                     MainActivity activity = (MainActivity) getActivity();
-                    SharedPreferences sharedPref = activity.getSharedPreferences(
-                            "com.rickybooks.rickybooks", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("recipient_name", recipientName);
-                    editor.apply();
 
                     Conversation conversation = new Conversation(conversationId, recipientName);
                     conversationsList.add(conversation);

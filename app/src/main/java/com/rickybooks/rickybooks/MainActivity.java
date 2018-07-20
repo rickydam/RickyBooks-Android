@@ -265,10 +265,7 @@ public class MainActivity extends AppCompatActivity {
             currentFragmentName = "ConversationsFragment";
         }
         if(fragmentName.equals("MessagesFragment")) {
-            SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
-                    Context.MODE_PRIVATE);
-            String recipientName = sharedPref.getString("recipient_name", null);
-            setAppTitle("Messages with " + recipientName);
+            setAppTitle("Messages");
             if(popped) {
                 bottomNavigationPosition.push(peekIndex);
             }
