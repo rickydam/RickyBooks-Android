@@ -39,6 +39,7 @@ public class LoginFragment extends Fragment {
     private TextbookService textbookService;
     private EditText emailField;
     private EditText passwordField;
+    private Button loginButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,12 +54,13 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        final Button button = view.findViewById(R.id.login_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        loginButton = view.findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard(view);
                 unfocus(view);
+                loginButton.setClickable(false);
                 loginPressed(view);
             }
         });
@@ -88,6 +90,7 @@ public class LoginFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                loginButton.setClickable(true);
                 Log.e("Ricky", "loginReq failure: " + t.getMessage());
                 createAlert("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
@@ -143,6 +146,7 @@ public class LoginFragment extends Fragment {
             activity.replaceFragment(wantedFragmentName);
         }
         else {
+            loginButton.setClickable(true);
             try {
                 JSONObject resObj = new JSONObject(response.errorBody().string());
                 String resErr = resObj.getJSONArray("errors").get(0).toString();
