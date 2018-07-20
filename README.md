@@ -2,6 +2,9 @@
 An Android mobile app for University students to buy and/or list and sell textbooks.
 
 ## Trello
+Issues and improvements <br>
+https://trello.com/b/2puSYgbJ/issues-and-improvements
+
 Notifications with Firebase Cloud Messaging (FCM) <br>
 https://trello.com/b/ki8jgEMa/notifications
 
