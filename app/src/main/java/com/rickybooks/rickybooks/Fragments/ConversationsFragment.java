@@ -199,5 +199,6 @@ public class ConversationsFragment extends Fragment {
                 dialog.dismiss();
             }
         });
+        alertDialog.show();
     }
 }
