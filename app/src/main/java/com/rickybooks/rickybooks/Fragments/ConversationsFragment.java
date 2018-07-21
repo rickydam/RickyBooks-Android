@@ -67,7 +67,11 @@ public class ConversationsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getConversationsReq();
+                MainActivity activity = (MainActivity) getActivity();
+                boolean actionMode = activity.getActionMode();
+                if(!actionMode) {
+                    getConversationsReq();
+                }
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
