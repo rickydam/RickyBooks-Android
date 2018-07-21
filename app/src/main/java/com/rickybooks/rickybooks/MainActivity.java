@@ -488,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
         return mode;
     }
 
-    public void logout() {
+    public void setInitialState() {
         clearAll();
         replaceFragment("HomeFragment");
         fragmentNames.push(currentFragmentName);

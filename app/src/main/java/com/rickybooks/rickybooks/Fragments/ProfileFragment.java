@@ -378,7 +378,7 @@ public class ProfileFragment extends Fragment {
     public void logoutRes(Response<Void> response) {
         if(response.isSuccessful()) {
             MainActivity activity = (MainActivity) getActivity();
-            activity.logout();
+            activity.setInitialState();
         }
         else {
             try {
