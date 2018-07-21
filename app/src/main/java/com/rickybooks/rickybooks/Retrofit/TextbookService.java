@@ -32,6 +32,13 @@ public interface TextbookService {
         @Path("user_id") String userId
     );
 
+    // ConversationsFragment
+    @DELETE("conversations/{conversation_id}")
+    Call<Void> deleteConversation(
+        @Header("Authorization") String tokenString,
+        @Path("conversation_id") String conversationId
+    );
+
     // DetailsFragment && MessagesFragment
     @FormUrlEncoded
     @POST("conversations/{conversation_id}/messages")
