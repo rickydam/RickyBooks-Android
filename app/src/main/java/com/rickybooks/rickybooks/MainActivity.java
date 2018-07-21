@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.view.MenuItem;
 
 import com.rickybooks.rickybooks.Fragments.AccountFragment;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private String poppedFragmentName;
     private boolean justLoggedIn = false;
     private String notificationConversationId = null;
+    private boolean actionMode = false;
+    private ActionMode mode = null;
 
     private static final int HOME = 0;
     private static final int BUY = 1;
@@ -464,6 +467,22 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         return sharedPref.getString("conversation_id", null);
+    }
+
+    public void setActionMode() {
+        actionMode = !actionMode;
+    }
+
+    public boolean getActionMode() {
+        return actionMode;
+    }
+
+    public void setMode(ActionMode mode) {
+        this.mode = mode;
+    }
+
+    public ActionMode getMode() {
+        return mode;
     }
 
     public void logout() {

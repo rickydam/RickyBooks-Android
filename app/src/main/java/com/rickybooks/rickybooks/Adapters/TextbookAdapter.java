@@ -95,7 +95,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
 
         final ProfileFragment profileFragment = getProfileFragment(activity);
         if(profileFragment != null) {
-            boolean actionMode = profileFragment.getActionMode();
+            boolean actionMode = activity.getActionMode();
             if(actionMode) {
                 boolean textbookExists = profileFragment.textbookExists(textbook);
                 if(textbookExists) {
@@ -112,9 +112,9 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
 
                 if(currentFragmentName.equals("ProfileFragment")) {
                     if(profileFragment != null) {
-                        boolean actionMode = profileFragment.getActionMode();
+                        boolean actionMode = activity.getActionMode();
                         if(actionMode) {
-                            profileFragment.selectTextbook(textbook, null);
+                            profileFragment.selectTextbook(textbook);
                             notifyItemChanged(holder.getAdapterPosition());
                         }
                     }
@@ -146,7 +146,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                 String currentFragmentName = activity.getCurrentFragmentName();
                 if(currentFragmentName.equals("ProfileFragment")) {
                     if(profileFragment != null) {
-                        boolean actionMode = profileFragment.getActionMode();
+                        boolean actionMode = activity.getActionMode();
                         if(!actionMode) {
                             profileFragment.prepareSelection(textbook);
                             notifyItemChanged(holder.getAdapterPosition());

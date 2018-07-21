@@ -51,8 +51,6 @@ public class ProfileFragment extends Fragment {
     private List<Textbook> textbookList = new ArrayList<>();
     private TextbookAdapter textbookAdapter;
     private List<Textbook> selectedTextbooks = new ArrayList<>();
-    private boolean actionMode = false;
-    private ActionMode mode;
     private TextbookService textbookService;
 
     @Override
@@ -72,6 +70,8 @@ public class ProfileFragment extends Fragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                MainActivity activity = (MainActivity) getActivity();
+                boolean actionMode = activity.getActionMode();
                 if(!actionMode) {
                     textbookList.clear();
                     getUserTextbooksReq();
@@ -106,9 +106,11 @@ public class ProfileFragment extends Fragment {
         ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                actionMode = true;
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
+                activity.setMode(mode);
                 menu.add("DELETE").setIcon(R.drawable.ic_delete);
-                selectTextbook(textbook, mode);
+                selectTextbook(textbook);
                 return true;
             }
 
@@ -144,7 +146,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                actionMode = false;
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
                 selectedTextbooks.clear();
                 textbookAdapter.notifyDataSetChanged();
             }
@@ -154,25 +157,20 @@ public class ProfileFragment extends Fragment {
         activity.startSupportActionMode(actionModeCallbacks);
     }
 
-    public void selectTextbook(Textbook textbook, ActionMode mode) {
-        if(mode != null) {
-            this.mode = mode;
-        }
+    public void selectTextbook(Textbook textbook) {
         if(!textbookExists(textbook)) {
             selectedTextbooks.add(textbook);
         }
         else {
             selectedTextbooks.remove(textbook);
         }
-        this.mode.setTitle(selectedTextbooks.size() + " selected");
+        MainActivity activity = (MainActivity) getActivity();
+        ActionMode mode = activity.getMode();
+        mode.setTitle(selectedTextbooks.size() + " selected");
     }
 
     public boolean textbookExists(Textbook textbook) {
         return selectedTextbooks.contains(textbook);
-    }
-
-    public boolean getActionMode() {
-        return actionMode;
     }
 
     public void deleteTextbookReq(final Textbook textbook) {
