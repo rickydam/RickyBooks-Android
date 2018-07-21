@@ -151,6 +151,10 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                             profileFragment.prepareSelection(textbook);
                             notifyItemChanged(holder.getAdapterPosition());
                         }
+                        else {
+                            profileFragment.selectTextbook(textbook);
+                            notifyItemChanged(holder.getAdapterPosition());
+                        }
                     }
                 }
                 return true;
