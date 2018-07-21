@@ -9,11 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,6 +46,7 @@ public class ConversationsFragment extends Fragment {
     private ConversationAdapter conversationAdapter;
     private TextbookService textbookService;
     private RecyclerView recyclerView;
+    private List<Conversation> selectedConversations = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class ConversationsFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
-        conversationAdapter = new ConversationAdapter(conversationsList);
+        conversationAdapter = new ConversationAdapter(activity, conversationsList);
 
         recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
@@ -80,6 +84,110 @@ public class ConversationsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL));
 
         return view;
+    }
+
+    public void prepareSelection(final Conversation conversation) {
+        ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
+                activity.setMode(mode);
+                menu.add("DELETE").setIcon(R.drawable.ic_delete);
+                selectConversation(conversation);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                if(item.toString().equals("DELETE")) {
+                    int selectedConversationsCount = selectedConversations.size();
+                    if(selectedConversationsCount >= 1) {
+                        for(int i=0; i<selectedConversationsCount; i++) {
+                            Conversation convo = selectedConversations.get(i);
+                            deleteConversationReq(convo);
+                            conversationsList.remove(0);
+                        }
+                        conversationAdapter.notifyDataSetChanged();
+                    }
+                    if(selectedConversationsCount == 1) {
+                        createAlert("Success!", "Successfully deleted " + selectedConversationsCount
+                                + " conversation!");
+                    }
+                    if(selectedConversationsCount > 1) {
+                        createAlert("Success!", "Successfully deleted " + selectedConversationsCount
+                                + " conversations!");
+                    }
+                    mode.finish();
+                }
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
+                selectedConversations.clear();
+                conversationAdapter.notifyDataSetChanged();
+            }
+        };
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.startSupportActionMode(actionModeCallbacks);
+    }
+
+    public void selectConversation(Conversation conversation) {
+        if(!conversationExists(conversation)) {
+            selectedConversations.add(conversation);
+        }
+        else {
+            selectedConversations.remove(conversation);
+        }
+        MainActivity activity = (MainActivity) getActivity();
+        ActionMode mode = activity.getMode();
+        mode.setTitle(selectedConversations.size() + " selected");
+    }
+
+    public boolean conversationExists(Conversation conversation) {
+        return selectedConversations.contains(conversation);
+    }
+
+    public void deleteConversationReq(Conversation conversation) {
+        MainActivity activity = (MainActivity) getActivity();
+        String token = activity.getToken();
+        String tokenString = "Token token=" + token;
+
+        Call<Void> call = textbookService.deleteConversation(tokenString, conversation.getId());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                deleteConversationRes(response);
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Ricky", "deleteConversationReq failure: " + t.getMessage());
+                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                        "reach the server at the moment.\n\nPlease try again later.");
+            }
+        });
+    }
+
+    public void deleteConversationRes(Response<Void> response) {
+        if(!response.isSuccessful()) {
+            try {
+                String errorMessage = response.errorBody().string();
+                Log.e("Ricky", "deleteConversationReq unsuccessful: " + errorMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+                    "reach the server at the moment.\n\nPlease try again later.");
+        }
     }
 
     public void checkBundle() {

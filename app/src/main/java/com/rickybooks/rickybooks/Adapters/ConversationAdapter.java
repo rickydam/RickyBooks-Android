@@ -3,12 +3,14 @@ package com.rickybooks.rickybooks.Adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.rickybooks.rickybooks.Fragments.ConversationsFragment;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Conversation;
 import com.rickybooks.rickybooks.R;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter
         .ConversationViewHolder> {
     private List<Conversation> conversationList;
+    private MainActivity activity;
 
     class ConversationViewHolder extends RecyclerView.ViewHolder {
         private TextView otherName;
@@ -28,7 +31,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
     }
 
-    public ConversationAdapter(List<Conversation> conversationList) {
+    public ConversationAdapter(MainActivity activity, List<Conversation> conversationList) {
+        this.activity = activity;
         this.conversationList = conversationList;
     }
 
@@ -41,22 +45,67 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ConversationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ConversationViewHolder holder, int position) {
         final Conversation conversation = conversationList.get(position);
         holder.otherName.setText(conversation.getOtherName());
+
+        holder.itemView.setBackgroundResource(R.color.white);
+
+        final ConversationsFragment conversationsFragment = getConversationsFragment(activity);
+        if(conversationsFragment != null) {
+            boolean actionMode = activity.getActionMode();
+            if(actionMode) {
+                boolean conversationExists = conversationsFragment.conversationExists(conversation);
+                if(conversationExists) {
+                    holder.itemView.setBackgroundResource(R.color.lightGray);
+                }
+            }
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity activity = (MainActivity) v.getContext();
-                SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("conversation_id", conversation.getConversationId());
-                editor.apply();
-                activity.replaceFragment("MessagesFragment");
+                boolean actionMode = activity.getActionMode();
+                if(actionMode) {
+                    conversationsFragment.selectConversation(conversation);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+                else {
+                    SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("conversation_id", conversation.getId());
+                    editor.apply();
+                    activity.replaceFragment("MessagesFragment");
+                }
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                boolean actionMode = activity.getActionMode();
+                if(!actionMode) {
+                    conversationsFragment.prepareSelection(conversation);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+                else {
+                    conversationsFragment.selectConversation(conversation);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+                return true;
+            }
+        });
+    }
+
+    private ConversationsFragment getConversationsFragment(MainActivity activity) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        ConversationsFragment conversationsFragment = (ConversationsFragment) fm.findFragmentByTag(
+                "ConversationsFragment");
+        if(conversationsFragment != null) {
+            return conversationsFragment;
+        }
+        return null;
     }
 
     @Override
