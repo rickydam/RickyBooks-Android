@@ -94,7 +94,7 @@ public class ConversationsFragment extends Fragment {
                     int position = -1;
                     for(int i=0; i<conversationsList.size(); i++) {
                         Conversation conversation = conversationsList.get(i);
-                        if(conversation.getConversationId().equals(notificationConversationId)) {
+                        if(conversation.getId().equals(notificationConversationId)) {
                             position = i;
                         }
                     }

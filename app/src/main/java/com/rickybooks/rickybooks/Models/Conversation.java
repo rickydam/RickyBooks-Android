@@ -1,16 +1,16 @@
 package com.rickybooks.rickybooks.Models;
 
 public class Conversation {
-    private String conversationId;
+    private String id;
     private String otherName;
 
-    public Conversation(String conversationId, String otherName) {
-        this.conversationId = conversationId;
+    public Conversation(String id, String otherName) {
+        this.id = id;
         this.otherName = otherName;
     }
 
-    public String getConversationId() {
-        return conversationId;
+    public String getId() {
+        return id;
     }
 
     public String getOtherName() {
