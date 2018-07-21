@@ -165,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(String fragmentName) {
+        if(actionMode) {
+            mode.finish();
+        }
         checkToken();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         FragmentManager fm = getSupportFragmentManager();
