@@ -76,4 +76,5 @@
     <string name="message_button">MESSAGE</string>
     <string name="choose_image_button_text">CHOOSE IMAGE</string>
     <string name="delete_image_button_text">DELETE IMAGE</string>
+    <string name="delete_account">Delete Account</string>
 </resources>
