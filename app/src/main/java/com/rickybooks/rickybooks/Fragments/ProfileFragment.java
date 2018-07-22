@@ -25,8 +25,15 @@ import com.google.gson.JsonArray;
 
 import com.rickybooks.rickybooks.Adapters.TextbookAdapter;
 import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.Models.Conversation;
 import com.rickybooks.rickybooks.Models.Textbook;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.DeleteConversationCall;
+import com.rickybooks.rickybooks.Retrofit.DeleteImageCall;
+import com.rickybooks.rickybooks.Retrofit.DeleteTextbookCall;
+import com.rickybooks.rickybooks.Retrofit.DeleteUserCall;
+import com.rickybooks.rickybooks.Retrofit.GetConversationsCall;
+import com.rickybooks.rickybooks.Retrofit.GetUserTextbooksCall;
 import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
 import com.rickybooks.rickybooks.Retrofit.TextbookService;
 
@@ -412,6 +419,64 @@ public class ProfileFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         String token = activity.getToken();
         return "Token token=" + token;
+    }
+
+    public void deleteAccount() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                deleteAccountThread();
+                final MainActivity activity = (MainActivity) getActivity();
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.setInitialState();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void deleteAccountThread() {
+        MainActivity activity = (MainActivity) getActivity();
+
+        // Get all the conversations for that user
+        GetConversationsCall getConversationsCall = new GetConversationsCall(activity);
+        getConversationsCall.req();
+        List<Conversation> conversations = getConversationsCall.getData();
+
+        // Delete all the conversations for that user
+        DeleteConversationCall deleteConversationCall = new DeleteConversationCall(activity);
+        for(int i=0; i<conversations.size(); i++) {
+            Conversation conversation = conversations.get(i);
+            deleteConversationCall.req(conversation);
+        }
+
+        // Get all the textbooks for that user
+        GetUserTextbooksCall getUserTextbooksCall = new GetUserTextbooksCall(activity, null);
+        getUserTextbooksCall.req();
+        List<Textbook> textbooks = getUserTextbooksCall.getData();
+
+        for(int i=0; i<textbooks.size(); i++) {
+            Textbook textbook = textbooks.get(i);
+
+            // Delete all the user's textbooks
+            DeleteTextbookCall deleteTextbookCall = new DeleteTextbookCall(activity);
+            deleteTextbookCall.req(textbook.getId());
+
+            // Only proceed if the textbook has images to delete
+            if(textbook.getImageUrls().size() > 0) {
+                String signedDeleteUrl = deleteTextbookCall.getData();
+
+                // Delete all the user's textbook images
+                DeleteImageCall deleteImageCall = new DeleteImageCall(activity);
+                deleteImageCall.req(signedDeleteUrl);
+            }
+        }
+
+        // Delete the user
+        DeleteUserCall deleteUserCall = new DeleteUserCall(activity);
+        deleteUserCall.req();
     }
 
     public void createAlert(String title, String message) {
