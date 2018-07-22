@@ -153,6 +153,7 @@ public class ProfileFragment extends Fragment {
                             Textbook book = selectedTextbooks.get(i);
                             deleteTextbookReq(book);
                             textbookList.remove(0);
+                            textbookList.remove(textbooks.indexOf(book));
                         }
                         textbookAdapter.notifyDataSetChanged();
                     }
