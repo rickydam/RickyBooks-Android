@@ -138,4 +138,11 @@ public interface TextbookService {
     Call<Void> logout(
         @Header("Authorization") String tokenString
     );
+
+    // ProfileFragment
+    @DELETE("users/{user_id}")
+    Call<Void> deleteUser(
+        @Header("Authorization") String tokenString,
+        @Path("user_id") String userId
+    );
 }
