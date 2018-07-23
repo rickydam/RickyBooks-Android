@@ -2,7 +2,6 @@ package com.rickybooks.rickybooks.Retrofit;
 
 import com.google.gson.JsonArray;
 
-import com.rickybooks.rickybooks.Adapters.TextbookAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Textbook;
 import com.rickybooks.rickybooks.Other.Alert;
