@@ -26,13 +26,11 @@ import retrofit2.Retrofit;
 
 public class GetUserTextbooksCall {
     private MainActivity activity;
-    private TextbookAdapter textbookAdapter;
     private TextbookService textbookService;
     private List<Textbook> textbooks;
 
-    public GetUserTextbooksCall(MainActivity activity, TextbookAdapter textbookAdapter) {
+    public GetUserTextbooksCall(MainActivity activity) {
         this.activity = activity;
-        this.textbookAdapter = textbookAdapter;
         Retrofit retrofit = new RetrofitClient().getClient();
         textbookService = retrofit.create(TextbookService.class);
         textbooks = new ArrayList<>();
@@ -101,10 +99,6 @@ public class GetUserTextbooksCall {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-
-        if(textbookAdapter != null) {
-            textbookAdapter.notifyDataSetChanged();
         }
     }
 
