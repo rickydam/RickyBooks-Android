@@ -12,7 +12,6 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.gson.JsonArray;
-
 import com.rickybooks.rickybooks.Adapters.TextbookAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Conversation;
 import com.rickybooks.rickybooks.Models.Textbook;
+import com.rickybooks.rickybooks.Other.Alert;
 import com.rickybooks.rickybooks.R;
 import com.rickybooks.rickybooks.Retrofit.DeleteConversationCall;
 import com.rickybooks.rickybooks.Retrofit.DeleteImageCall;
@@ -34,40 +32,31 @@ import com.rickybooks.rickybooks.Retrofit.DeleteTextbookCall;
 import com.rickybooks.rickybooks.Retrofit.DeleteUserCall;
 import com.rickybooks.rickybooks.Retrofit.GetConversationsCall;
 import com.rickybooks.rickybooks.Retrofit.GetUserTextbooksCall;
-import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
-import com.rickybooks.rickybooks.Retrofit.TextbookService;
+import com.rickybooks.rickybooks.Retrofit.LogoutCall;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ProfileFragment extends Fragment {
-    private List<Textbook> textbookList = new ArrayList<>();
+    private List<Textbook> textbooks;
     private TextbookAdapter textbookAdapter;
-    private List<Textbook> selectedTextbooks = new ArrayList<>();
-    private TextbookService textbookService;
+    private List<Textbook> selectedTextbooks;
+    private List<Conversation> conversations;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
-        getUserTextbooksReq();
+        textbooks = new ArrayList<>();
+        selectedTextbooks = new ArrayList<>();
+        conversations = new ArrayList<>();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getUserTextbooks();
+            }
+        }).start();
     }
 
     @Override
@@ -79,19 +68,23 @@ public class ProfileFragment extends Fragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MainActivity activity = (MainActivity) getActivity();
+                final MainActivity activity = (MainActivity) getActivity();
                 boolean actionMode = activity.getActionMode();
                 if(!actionMode) {
-                    textbookList.clear();
-                    getUserTextbooksReq();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getUserTextbooks();
+                        }
+                    }).start();
                 }
                 srl.setRefreshing(false);
             }
         });
 
-        MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
-        textbookAdapter = new TextbookAdapter(activity, textbookList);
+        textbookAdapter = new TextbookAdapter(activity, textbooks);
 
         RecyclerView profileRecycler = view.findViewById(R.id.profile_recycler);
         profileRecycler.setHasFixedSize(true);
@@ -104,7 +97,12 @@ public class ProfileFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logoutReq();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        logoutThread();
+                    }
+                }).start();
             }
         });
 
@@ -147,25 +145,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 if(item.toString().equals("DELETE")) {
-                    int selectedTextbooksCount = selectedTextbooks.size();
-                    if(selectedTextbooksCount >= 1) {
-                        for(int i=0; i<selectedTextbooksCount; i++) {
-                            Textbook book = selectedTextbooks.get(i);
-                            deleteTextbookReq(book);
-                            textbookList.remove(0);
-                            textbookList.remove(textbooks.indexOf(book));
-                        }
-                        textbookAdapter.notifyDataSetChanged();
-                    }
-                    if(selectedTextbooksCount == 1) {
-                        createAlert("Success!", "Successfully deleted " + selectedTextbooksCount +
-                                " textbook!");
-                    }
-                    if(selectedTextbooksCount > 1) {
-                        createAlert("Success!", "Successfully deleted " + selectedTextbooksCount +
-                                " textbooks!");
-                    }
-                    mode.finish();
+                    deleteActionPressed(mode);
                 }
                 return true;
             }
@@ -181,6 +161,39 @@ public class ProfileFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         activity.startSupportActionMode(actionModeCallbacks);
+    }
+
+    public void deleteActionPressed(final ActionMode mode) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity activity = (MainActivity) getActivity();
+                int selectedTextbooksCount = selectedTextbooks.size();
+
+                if(selectedTextbooksCount >= 1) {
+                    deleteTextbook(selectedTextbooks, true);
+                }
+
+                if(selectedTextbooksCount == 1) {
+                    Alert alert = new Alert(activity);
+                    alert.create("Success!", "Successfully deleted " + selectedTextbooksCount +
+                            " textbook!");
+                }
+
+                if(selectedTextbooksCount > 1) {
+                    Alert alert = new Alert(activity);
+                    alert.create("Success!", "Successfully deleted " + selectedTextbooksCount +
+                            " textbooks!");
+                }
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mode.finish();
+                    }
+                });
+            }
+        }).start();
     }
 
     public void selectTextbook(Textbook textbook) {
@@ -199,269 +212,72 @@ public class ProfileFragment extends Fragment {
         return selectedTextbooks.contains(textbook);
     }
 
-    public void deleteTextbookReq(final Textbook textbook) {
-        Call<String> call = textbookService.deleteTextbook(getTokenString(), textbook.getId());
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                deleteTextbookRes(textbook, response);
-            }
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Ricky", "deleteTextbookReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                            "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void deleteTextbookRes(Textbook textbook, Response<String> response) {
-        if(response.isSuccessful()) {
-            if(textbook.getImageUrls().size() > 0) {
-                String signedDeleteUrl = response.body();
-                deleteTextbookImageReq(signedDeleteUrl);
-            }
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "deleteTextbookReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
-
-    public void deleteTextbookImageReq(String signedDeleteUrl) {
-        Call<Void> call = textbookService.deleteImage(signedDeleteUrl);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                deleteTextbookImageRes(response);
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Ricky", "deleteTextbookImageReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void deleteTextbookImageRes(Response<Void> response) {
-        // No action needed for successful AWS S3 textbook image deletion
-        if(!response.isSuccessful()) {
-           try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "deleteTextbookImageReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
-
-    public void getUserTextbooksReq() {
-        MainActivity activity = (MainActivity) getActivity();
-        String userId = activity.getUserId();
-
-        Call<JsonArray> call = textbookService.getUserTextbooks(userId);
-        call.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                getUserTextbooksRes(response);
-            }
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                Log.e("Ricky", "getUserTextbooksReq error: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void getUserTextbooksRes(Response<JsonArray> response) {
-        if(response.isSuccessful()) {
-            parseTextbookData(response);
-        }
-        else {
-            try {
-                Log.e("Ricky", "getUserTextbooksReq unsuccessful: " + response.errorBody().string());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
-
-    public void parseTextbookData(Response<JsonArray> response) {
-        try {
-            String res = String.valueOf(response.body());
-            JSONArray resData = new JSONArray(res);
-            for(int i=0; i<resData.length(); i++) {
-                JSONObject textbookObj = resData.getJSONObject(i);
-                String id         = textbookObj.getString("id");
-                String title      = textbookObj.getString("textbook_title");
-                String author     = textbookObj.getString("textbook_author");
-                String edition    = textbookObj.getString("textbook_edition");
-                String condition  = textbookObj.getString("textbook_condition");
-                String type       = textbookObj.getString("textbook_type");
-                String coursecode = textbookObj.getString("textbook_coursecode");
-                String price      = "$ " + textbookObj.getString("textbook_price");
-
-                JSONObject user = textbookObj.getJSONObject("user");
-                String sellerId = textbookObj.getString("user_id");
-                String sellerName = user.getString("name");
-
-                List<String> imageUrls = new ArrayList<>();
-                JSONArray imagesJSONarr = textbookObj.getJSONArray("images");
-
-                for(int j=0; j<imagesJSONarr.length(); j++) {
-                    JSONObject imageObj = imagesJSONarr.getJSONObject(j);
-                    String url = imageObj.getString("url");
-                    imageUrls.add(url);
-                }
-
-                String createdAt = textbookObj.getString("created_at");
-                String timestamp = parseTime(createdAt);
-
-                Textbook textbook = new Textbook(id, title, author, edition, condition,
-                        type, coursecode, price, sellerId, sellerName, timestamp, imageUrls);
-
-                textbookList.add(textbook);
-            }
-            textbookAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String parseTime(String createdAt) {
-        SimpleDateFormat rubyDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                Locale.CANADA);
-        rubyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Date createdAtDate = null;
-        try {
-            createdAtDate = rubyDateFormat.parse(createdAt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String timestamp = "";
-
-        Long currentTime = new Date().getTime();
-        Long createdAtTime = createdAtDate.getTime();
-        Long differenceMillis = currentTime - createdAtTime;
-        int differenceSeconds = (int) (differenceMillis/1000);
-        int differenceMinutes = differenceSeconds/60;
-        int differenceHours = differenceMinutes/60;
-
-        if(differenceHours >= 24) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, MMMM dd, yyyy", Locale.CANADA);
-            timestamp = sdf.format(createdAtDate);
-        }
-        if(differenceHours < 24 && differenceHours > 1) {
-            timestamp = differenceHours + " hours ago";
-        }
-        if(differenceHours == 1) {
-            timestamp = differenceHours + " hour ago";
-        }
-        if(differenceMinutes < 60 && differenceMinutes > 1) {
-            timestamp = differenceMinutes + " minutes ago";
-        }
-        if(differenceMinutes == 1) {
-            timestamp = differenceMinutes + " minute ago";
-        }
-        if(differenceSeconds < 60 && differenceSeconds > 30) {
-            timestamp = differenceSeconds + " seconds ago";
-        }
-        if(differenceSeconds <= 30) {
-            timestamp = "Just now";
-        }
-
-        return timestamp;
-    }
-
-    public void logoutReq() {
-        Call<Void> call = textbookService.logout(getTokenString());
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                logoutRes(response);
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Ricky", "logoutReq failure: " + t.getMessage());
-            }
-        });
-    }
-
-    public void logoutRes(Response<Void> response) {
-        if(response.isSuccessful()) {
-            MainActivity activity = (MainActivity) getActivity();
-            activity.setInitialState();
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "logoutReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public String getTokenString() {
-        MainActivity activity = (MainActivity) getActivity();
-        String token = activity.getToken();
-        return "Token token=" + token;
-    }
-
     public void deleteAccount() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                deleteAccountThread();
-                final MainActivity activity = (MainActivity) getActivity();
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.setInitialState();
-                    }
-                });
+                // Get all the user's conversations
+                getConversations();
+
+                // Delete all the user's conversations
+                deleteConversation();
+
+                // Get all the user's textbooks
+                getUserTextbooks();
+
+                // Delete all the user's textbooks
+                deleteTextbook(textbooks, false);
+
+                // Delete the user
+                deleteUser();
             }
         }).start();
     }
 
-    public void deleteAccountThread() {
+    public void getUserTextbooks() {
+        textbooks.clear();
         MainActivity activity = (MainActivity) getActivity();
 
-        // Get all the conversations for that user
+        GetUserTextbooksCall getUserTextbooksCall = new GetUserTextbooksCall(activity);
+        getUserTextbooksCall.req();
+        textbooks.addAll(getUserTextbooksCall.getData());
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textbookAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void logoutThread() {
+        MainActivity activity = (MainActivity) getActivity();
+        LogoutCall logoutCall = new LogoutCall(activity);
+        logoutCall.req();
+    }
+
+    public void getConversations() {
+        MainActivity activity = (MainActivity) getActivity();
         GetConversationsCall getConversationsCall = new GetConversationsCall(activity);
         getConversationsCall.req();
-        List<Conversation> conversations = getConversationsCall.getData();
+        conversations = getConversationsCall.getData();
+    }
 
-        // Delete all the conversations for that user
+    public void deleteConversation() {
+        MainActivity activity = (MainActivity) getActivity();
         DeleteConversationCall deleteConversationCall = new DeleteConversationCall(activity);
         for(int i=0; i<conversations.size(); i++) {
             Conversation conversation = conversations.get(i);
             deleteConversationCall.req(conversation);
         }
+    }
 
-        // Get all the textbooks for that user
-        GetUserTextbooksCall getUserTextbooksCall = new GetUserTextbooksCall(activity, null);
-        getUserTextbooksCall.req();
-        List<Textbook> textbooks = getUserTextbooksCall.getData();
+    public void deleteTextbook(final List<Textbook> textbooksToDelete, final boolean selected) {
+        MainActivity activity = (MainActivity) getActivity();
 
-        for(int i=0; i<textbooks.size(); i++) {
-            Textbook textbook = textbooks.get(i);
+        for(int i=0; i<textbooksToDelete.size(); i++) {
+            Textbook textbook = textbooksToDelete.get(i);
 
-            // Delete all the user's textbooks
             DeleteTextbookCall deleteTextbookCall = new DeleteTextbookCall(activity);
             deleteTextbookCall.req(textbook.getId());
 
@@ -473,26 +289,24 @@ public class ProfileFragment extends Fragment {
                 DeleteImageCall deleteImageCall = new DeleteImageCall(activity);
                 deleteImageCall.req(signedDeleteUrl);
             }
+            if(selected) {
+                textbooks.remove(textbooks.indexOf(textbook));
+            }
         }
-
-        // Delete the user
-        DeleteUserCall deleteUserCall = new DeleteUserCall(activity);
-        deleteUserCall.req();
+        if(selected) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textbookAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 
-    public void createAlert(String title, String message) {
-        Activity activity = getActivity();
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.show();
+    public void deleteUser() {
+        MainActivity activity = (MainActivity) getActivity();
+        DeleteUserCall deleteUserCall = new DeleteUserCall(activity);
+        deleteUserCall.req();
     }
 
     public void createAlertPrompt(String title, String message) {
