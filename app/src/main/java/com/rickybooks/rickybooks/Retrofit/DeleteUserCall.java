@@ -28,7 +28,15 @@ public class DeleteUserCall {
             Call<Void> call = textbookService.deleteUser(tokenString, userId);
             Response<Void> response = call.execute();
 
-            if(!response.isSuccessful()) {
+            if(response.isSuccessful()) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.setInitialState();
+                    }
+                });
+            }
+            else {
                 Alert alert = new Alert(activity);
                 alert.create("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");
