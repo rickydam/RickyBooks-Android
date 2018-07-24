@@ -25,13 +25,10 @@ import retrofit2.Retrofit;
 
 public class GetUserTextbooksCall {
     private MainActivity activity;
-    private TextbookService textbookService;
     private List<Textbook> textbooks;
 
     public GetUserTextbooksCall(MainActivity activity) {
         this.activity = activity;
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
         textbooks = new ArrayList<>();
     }
 
@@ -43,6 +40,9 @@ public class GetUserTextbooksCall {
         String userId = activity.getUserId();
 
         try {
+            Retrofit retrofit = new RetrofitClient().getClient();
+            TextbookService textbookService = retrofit.create(TextbookService.class);
+
             Call<JsonArray> call = textbookService.getUserTextbooks(userId);
             Response<JsonArray> response = call.execute();
 

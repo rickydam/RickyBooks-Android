@@ -11,12 +11,9 @@ import retrofit2.Retrofit;
 
 public class LogoutCall {
     private MainActivity activity;
-    private TextbookService textbookService;
 
     public LogoutCall(MainActivity activity) {
         this.activity = activity;
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
     }
 
     public void req() {
@@ -24,6 +21,9 @@ public class LogoutCall {
         String tokenString = "Token token=" + token;
 
         try {
+            Retrofit retrofit = new RetrofitClient().getClient();
+            TextbookService textbookService = retrofit.create(TextbookService.class);
+
             Call<Void> call = textbookService.logout(tokenString);
             Response<Void> response = call.execute();
 

@@ -11,12 +11,9 @@ import retrofit2.Retrofit;
 
 public class DeleteUserCall {
     private MainActivity activity;
-    private TextbookService textbookService;
 
     public DeleteUserCall(MainActivity activity) {
         this.activity = activity;
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
     }
 
     public void req() {
@@ -25,6 +22,9 @@ public class DeleteUserCall {
         String userId = activity.getUserId();
 
         try {
+            Retrofit retrofit = new RetrofitClient().getClient();
+            TextbookService textbookService = retrofit.create(TextbookService.class);
+
             Call<Void> call = textbookService.deleteUser(tokenString, userId);
             Response<Void> response = call.execute();
 

@@ -11,13 +11,11 @@ import retrofit2.Retrofit;
 
 public class DeleteTextbookCall {
     private MainActivity activity;
-    private TextbookService textbookService;
     private String signedDeleteUrl;
 
     public DeleteTextbookCall(MainActivity activity) {
         this.activity = activity;
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
+
     }
 
     public String getData() {
@@ -29,6 +27,9 @@ public class DeleteTextbookCall {
         String tokenString = "Token token=" + token;
 
         try {
+            Retrofit retrofit = new RetrofitClient().getClient();
+            TextbookService textbookService = retrofit.create(TextbookService.class);
+
             Call<String> call = textbookService.deleteTextbook(tokenString, textbookId);
             Response<String> response = call.execute();
 

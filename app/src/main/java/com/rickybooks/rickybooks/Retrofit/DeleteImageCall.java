@@ -11,16 +11,16 @@ import retrofit2.Retrofit;
 
 public class DeleteImageCall {
     private MainActivity activity;
-    private TextbookService textbookService;
 
     public DeleteImageCall(MainActivity activity) {
         this.activity = activity;
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
     }
 
     public void req(String signedDeleteUrl) {
         try {
+            Retrofit retrofit = new RetrofitClient().getClient();
+            TextbookService textbookService = retrofit.create(TextbookService.class);
+
             Call<Void> call = textbookService.deleteImage(signedDeleteUrl);
             Response<Void> response = call.execute();
 
