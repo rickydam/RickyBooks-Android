@@ -87,7 +87,7 @@ public interface TextbookService {
     // SellFragment
     @FormUrlEncoded
     @POST("textbooks")
-    Call<String> postTextbookForm(
+    Call<String> postTextbook(
         @Header("Authorization") String tokenString,
         @Field("user_id") String userId,
         @Field("textbook_title") String textbookTitle,
