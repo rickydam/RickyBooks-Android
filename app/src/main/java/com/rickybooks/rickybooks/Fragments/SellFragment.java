@@ -1,10 +1,7 @@
 package com.rickybooks.rickybooks.Fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,13 +27,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
-import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
-import com.rickybooks.rickybooks.Retrofit.TextbookService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.rickybooks.rickybooks.Retrofit.GetSignedPostUrlCall;
+import com.rickybooks.rickybooks.Retrofit.PostTextbookCall;
+import com.rickybooks.rickybooks.Retrofit.PutImageAwsCall;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,11 +41,6 @@ import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -70,7 +60,6 @@ public class SellFragment extends Fragment {
     private String textbookType = "";
     private String textbookCoursecode = "";
     private String textbookPrice = "";
-    private TextbookService textbookService;
     private View view;
 
     @Override
@@ -85,13 +74,6 @@ public class SellFragment extends Fragment {
             Glide.with(view).load(chosenImageBitmap).into(chosenImage);
             setChooseImageButtonText("DELETE");
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -239,10 +221,15 @@ public class SellFragment extends Fragment {
         return view;
     }
 
-    public void submitButtonPressed(View view) {
+    public void submitButtonPressed(final View view) {
         hideKeyboard(view);
         getData(view);
-        textbookPostReq(view);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postTextbook(view);
+            }
+        }).start();
     }
 
     public void getData(View view) {
@@ -283,143 +270,43 @@ public class SellFragment extends Fragment {
         textbookPrice = priceField.getText().toString();
     }
 
-    public void textbookPostReq(final View view) {
-        Call<String> call = textbookService.postTextbookForm(tokenString, userId, textbookTitle,
-                textbookAuthor, textbookEdition, textbookCondition, textbookType,
-                textbookCoursecode, textbookPrice);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                textbookPostRes(view, response);
-            }
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Ricky", "textbookPostReq error: " + t.getMessage());
-            }
-        });
-    }
+    public void postTextbook(View view) {
+        MainActivity activity = (MainActivity) getActivity();
 
-    public void textbookPostRes(View view, Response<String> response) {
-        if(response.isSuccessful()) {
-            createAlert("Success!", "Your textbook has been successfully posted!");
-            EditText titleField = view.findViewById(R.id.textbook_title);
-            titleField.getText().clear();
-            EditText authorField = view.findViewById(R.id.textbook_author);
-            authorField.getText().clear();
-            Spinner editionSpinner = view.findViewById(R.id.textbook_edition_spinner);
-            Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
-            Spinner typeSpinner = view.findViewById(R.id.textbook_type_spinner);
-            editionSpinner.setSelection(0);
-            conditionSpinner.setSelection(0);
-            typeSpinner.setSelection(0);
-            EditText coursecodeField = view.findViewById(R.id.textbook_coursecode);
-            coursecodeField.getText().clear();
-            EditText priceField = view.findViewById(R.id.textbook_price);
-            priceField.getText().clear();
+        PostTextbookCall postTextbookCall = new PostTextbookCall(activity, view);
+        postTextbookCall.req(tokenString, userId, textbookTitle, textbookAuthor, textbookEdition,
+                textbookCondition, textbookType, textbookCoursecode, textbookPrice);
 
-            String textbookId = response.body();
-            if(imageFile != null) {
-                getSignedPostUrlReq(textbookId);
-            }
-        }
-        else {
-            try {
-                String errorResponse = response.errorBody().string();
-
-                JSONObject resObj = new JSONObject(errorResponse);
-                JSONObject resData = resObj.getJSONObject("data");
-                StringBuilder errorMessage = new StringBuilder();
-                for(int i=0; i<resData.length(); i++) {
-                    String name = resData.names().getString(i);
-                    String value = resData.get(name).toString();
-                    value = value.replace("[\"can't be blank\"]", "Missing: ");
-                    name = name.replace(name.substring(0, 9), "Textbook ");
-                    name = name.substring(0, 9)
-                            + name.substring(9, 10).toUpperCase()
-                            + name.substring(10);
-                    if(i == resData.length()-1) {
-                        errorMessage.append(value).append(name);
-                    }
-                    else {
-                        errorMessage.append(value).append(name).append("\n");
-                    }
-                }
-                createAlert("Hmm.. you forgot something!", String.valueOf(errorMessage));
-            } catch(IOException e) {
-                e.printStackTrace();
-            } catch(JSONException e) {
-                e.printStackTrace();
-            } catch(NullPointerException e) {
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
+        if(imageFile != null) {
+            String textbookId = postTextbookCall.getData();
+            getSignedPostUrl(textbookId, chosenImageFileExtension);
         }
     }
 
-    public void getSignedPostUrlReq(String textbookId) {
-        Call<String> call = textbookService.getSignedPostUrl(tokenString, textbookId,
-                chosenImageFileExtension);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                getSignedPostUrlRes(response);
-            }
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Ricky", "getSignedPostUrlReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
+    public void getSignedPostUrl(String textbookId, String chosenImageFileExtension) {
+        MainActivity activity = (MainActivity) getActivity();
 
-    public void getSignedPostUrlRes(Response<String> response) {
-        if(response.isSuccessful()) {
-            String signedUrl = response.body();
-            uploadImageReq(signedUrl);
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "getSignedPostUrlReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
+        GetSignedPostUrlCall getSignedPostUrlCall = new GetSignedPostUrlCall(activity);
+        getSignedPostUrlCall.req(textbookId, chosenImageFileExtension);
 
-    public void uploadImageReq(String signedUrl) {
+        String signedPostUrl = getSignedPostUrlCall.getData();
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
-        Call<Void> call = textbookService.putImageAws(signedUrl, reqFile);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                uploadImageRes(response);
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Ricky", "uploadImage failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
+        putImageAws(signedPostUrl, reqFile);
     }
 
-    public void uploadImageRes(Response<Void> response) {
-        if(response.isSuccessful()) {
-            clearImageData();
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "uploadImageReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
+    public void putImageAws(String signedPostUrl, RequestBody reqFile) {
+        MainActivity activity = (MainActivity) getActivity();
+
+        PutImageAwsCall putImageAwsCall = new PutImageAwsCall(activity);
+        putImageAwsCall.req(signedPostUrl, reqFile);
+
+        if(putImageAwsCall.isSuccessful()) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    clearImageData();
+                }
+            });
         }
     }
 
@@ -485,7 +372,6 @@ public class SellFragment extends Fragment {
             chooseImageButton.setBackgroundResource(R.drawable.button_red);
             chooseImageButton.setText(R.string.delete_image_button_text);
         }
-
     }
 
     public void hideKeyboard(View view) {
@@ -495,25 +381,5 @@ public class SellFragment extends Fragment {
         if(inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-    public void createAlert(final String title, final String message) {
-        final Activity activity = getActivity();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-                alertDialog.setTitle(title);
-                alertDialog.setMessage(message);
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                alertDialog.show();
-            }
-        });
     }
 }
