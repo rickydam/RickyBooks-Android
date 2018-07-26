@@ -1,8 +1,5 @@
 package com.rickybooks.rickybooks.Fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,47 +10,40 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.JsonArray;
-
 import com.rickybooks.rickybooks.Adapters.ConversationAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Conversation;
+import com.rickybooks.rickybooks.Other.Alert;
 import com.rickybooks.rickybooks.R;
-import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
-import com.rickybooks.rickybooks.Retrofit.TextbookService;
+import com.rickybooks.rickybooks.Retrofit.DeleteConversationCall;
+import com.rickybooks.rickybooks.Retrofit.GetConversationsCall;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
 public class ConversationsFragment extends Fragment {
-    private List<Conversation> conversationsList = new ArrayList<>();
+    private List<Conversation> conversations = new ArrayList<>();
     private ConversationAdapter conversationAdapter;
-    private TextbookService textbookService;
     private RecyclerView recyclerView;
     private List<Conversation> selectedConversations = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
-        getConversationsReq();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getConversations();
+            }
+        }).start();
+
         checkBundle();
     }
 
@@ -70,7 +60,12 @@ public class ConversationsFragment extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 boolean actionMode = activity.getActionMode();
                 if(!actionMode) {
-                    getConversationsReq();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getConversations();
+                        }
+                    }).start();
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -78,7 +73,7 @@ public class ConversationsFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
-        conversationAdapter = new ConversationAdapter(activity, conversationsList);
+        conversationAdapter = new ConversationAdapter(activity, conversations);
 
         recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
@@ -113,18 +108,26 @@ public class ConversationsFragment extends Fragment {
                     int selectedConversationsCount = selectedConversations.size();
                     if(selectedConversationsCount >= 1) {
                         for(int i=0; i<selectedConversationsCount; i++) {
-                            Conversation convo = selectedConversations.get(i);
-                            deleteConversationReq(convo);
-                            conversationsList.remove(0);
+                            final Conversation convo = selectedConversations.get(i);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteConversation(convo);
+                                }
+                            }).start();
+                            conversations.remove(0);
                         }
                         conversationAdapter.notifyDataSetChanged();
                     }
+                    MainActivity activity = (MainActivity) getActivity();
                     if(selectedConversationsCount == 1) {
-                        createAlert("Success!", "Successfully deleted " + selectedConversationsCount
+                        Alert alert = new Alert(activity);
+                        alert.create("Success!", "Successfully deleted " + selectedConversationsCount
                                 + " conversation!");
                     }
                     if(selectedConversationsCount > 1) {
-                        createAlert("Success!", "Successfully deleted " + selectedConversationsCount
+                        Alert alert = new Alert(activity);
+                        alert.create("Success!", "Successfully deleted " + selectedConversationsCount
                                 + " conversations!");
                     }
                     mode.finish();
@@ -161,39 +164,6 @@ public class ConversationsFragment extends Fragment {
         return selectedConversations.contains(conversation);
     }
 
-    public void deleteConversationReq(Conversation conversation) {
-        MainActivity activity = (MainActivity) getActivity();
-        String token = activity.getToken();
-        String tokenString = "Token token=" + token;
-
-        Call<Void> call = textbookService.deleteConversation(tokenString, conversation.getId());
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                deleteConversationRes(response);
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Ricky", "deleteConversationReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void deleteConversationRes(Response<Void> response) {
-        if(!response.isSuccessful()) {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "deleteConversationReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
-
     public void checkBundle() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -202,8 +172,8 @@ public class ConversationsFragment extends Fragment {
                     Bundle bundle = getArguments();
                     String notificationConversationId = bundle.getString("notification_conversation_id");
                     int position = -1;
-                    for(int i=0; i<conversationsList.size(); i++) {
-                        Conversation conversation = conversationsList.get(i);
+                    for(int i=0; i<conversations.size(); i++) {
+                        Conversation conversation = conversations.get(i);
                         if(conversation.getId().equals(notificationConversationId)) {
                             position = i;
                         }
@@ -225,90 +195,26 @@ public class ConversationsFragment extends Fragment {
         }, 300);
     }
 
-    public void getConversationsReq() {
+    public void getConversations() {
+        conversations.clear();
         MainActivity activity = (MainActivity) getActivity();
-        String token = activity.getToken();
-        String tokenString = "Token token=" + token;
-        String userId = activity.getUserId();
 
-        Call<JsonArray> call = textbookService.getConversations(tokenString, userId);
-        call.enqueue(new Callback<JsonArray>() {
+        GetConversationsCall getConversationsCall = new GetConversationsCall(activity);
+        getConversationsCall.req();
+        conversations.addAll(getConversationsCall.getData());
+
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                getConversationsRes(response);
-            }
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                Log.e("Ricky", "getConversationsReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void getConversationsRes(Response<JsonArray> response) {
-        if(response.isSuccessful()) {
-            clearConversations();
-            try {
-                String res = String.valueOf(response.body());
-                JSONArray resData = new JSONArray(res);
-                for(int i=0; i<resData.length(); i++) {
-                    JSONObject obj = resData.getJSONObject(i);
-                    String conversationId = obj.getString("id");
-
-                    JSONObject recipientObj = obj.getJSONObject("recipient");
-                    String recipientName = recipientObj.getString("name");
-
-                    JSONObject senderObj = obj.getJSONObject("sender");
-                    String senderName = senderObj.getString("name");
-
-                    String otherName;
-                    MainActivity activity = (MainActivity) getActivity();
-                    String userName = activity.getUserName();
-
-                    if(userName.equals(recipientName)) {
-                        otherName = senderName;
-                    }
-                    else {
-                        otherName = recipientName;
-                    }
-
-                    Conversation conversation = new Conversation(conversationId, otherName);
-                    conversationsList.add(conversation);
-                }
+            public void run() {
                 conversationAdapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "getConversationsReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
-        }
-    }
-
-    public void clearConversations() {
-        conversationsList.clear();
-    }
-
-    public void createAlert(String title, String message) {
-        Activity activity = getActivity();
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
             }
         });
-        alertDialog.show();
+    }
+
+    public void deleteConversation(Conversation conversation) {
+        MainActivity activity = (MainActivity) getActivity();
+
+        DeleteConversationCall deleteConversationCall = new DeleteConversationCall(activity);
+        deleteConversationCall.req(conversation);
     }
 }
