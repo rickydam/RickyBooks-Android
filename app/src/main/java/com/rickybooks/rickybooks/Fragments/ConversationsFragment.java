@@ -115,7 +115,7 @@ public class ConversationsFragment extends Fragment {
                                     deleteConversation(convo);
                                 }
                             }).start();
-                            conversations.remove(0);
+                            conversations.remove(conversations.indexOf(convo));
                         }
                         conversationAdapter.notifyDataSetChanged();
                     }
