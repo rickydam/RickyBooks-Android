@@ -2,6 +2,9 @@
 An Android mobile app for University students to buy and/or list and sell textbooks.
 
 ## Trello
+Extra Features <br>
+https://trello.com/b/5oQWRqpH/extra-features
+
 Issues and improvements <br>
 https://trello.com/b/2puSYgbJ/issues-and-improvements
 
