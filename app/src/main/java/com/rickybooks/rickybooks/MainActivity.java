@@ -447,5 +447,9 @@ public class MainActivity extends AppCompatActivity {
         accountNavPosition = -1;
         wantedFragmentName = null;
         notificationConversationId = null;
+        actionMode = false;
+        mode = null;
+        detailsBundle = null;
+        messagesBundle = null;
     }
 }
