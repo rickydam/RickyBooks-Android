@@ -42,7 +42,7 @@ public interface TextbookService {
     // DetailsFragment && MessagesFragment
     @FormUrlEncoded
     @POST("conversations/{conversation_id}/messages")
-    Call<JsonObject> sendMessage(
+    Call<Void> sendMessage(
         @Header("Authorization") String tokenString,
         @Path("conversation_id") String conversationId,
         @Field("body") String body,
