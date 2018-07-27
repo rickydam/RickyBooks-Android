@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean actionMode;
     private ActionMode mode;
     private Bundle detailsBundle;
+    private Bundle messagesBundle;
 
     private int backStackCount;
     private Stack<String> titles;
@@ -317,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(!currentFragmentName.equals("MessagesFragment")) {
                     handleValues("Messages", MESSAGES, "MessagesFragment");
+                    messagesFragment.setArguments(messagesBundle);
                     transaction.replace(R.id.fragment_container, messagesFragment, currentFragmentName);
                     hasFragmentChanges = true;
                 }
@@ -382,6 +384,10 @@ public class MainActivity extends AppCompatActivity {
         detailsBundle = bundle;
     }
 
+    public void setMessagesBundle(Bundle bundle) {
+        messagesBundle = bundle;
+    }
+
     public String getToken() {
         SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
@@ -398,12 +404,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
         return sharedPref.getString("name", null);
-    }
-
-    public String getConversationId() {
-        SharedPreferences sharedPref = this.getSharedPreferences("com.rickybooks.rickybooks",
-                Context.MODE_PRIVATE);
-        return sharedPref.getString("conversation_id", null);
     }
 
     public void setActionMode() {

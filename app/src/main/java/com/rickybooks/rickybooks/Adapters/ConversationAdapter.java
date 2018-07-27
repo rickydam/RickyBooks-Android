@@ -2,6 +2,7 @@ package com.rickybooks.rickybooks.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,11 +72,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     notifyItemChanged(holder.getAdapterPosition());
                 }
                 else {
-                    SharedPreferences sharedPref = activity.getSharedPreferences("com.rickybooks.rickybooks",
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("conversation_id", conversation.getId());
-                    editor.apply();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("conversation_id", conversation.getId());
+                    activity.setMessagesBundle(bundle);
                     activity.replaceFragment("MessagesFragment");
                 }
             }
