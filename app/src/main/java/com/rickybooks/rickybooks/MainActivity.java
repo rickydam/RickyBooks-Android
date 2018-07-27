@@ -238,47 +238,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if(fragmentName.equals("SellFragment")){
-            if(getToken() == null) {
-                accountTitle = "Sell a textbook!";
-                accountNavPosition = SELL;
-                wantedFragmentName = "SellFragment";
-                replaceFragment("AccountFragment");
-            }
-            else {
-                Fragment sellFragment = fm.findFragmentByTag("SellFragment");
-                if(sellFragment == null) {
-                    sellFragment = new SellFragment();
-                }
-                if(!currentFragmentName.equals("SellFragment")) {
-                    handleValues("Sell a textbook!", SELL, "SellFragment");
-                    transaction.replace(R.id.fragment_container, sellFragment, currentFragmentName);
-                    hasFragmentChanges = true;
-                }
-            }
-        }
-
-        if(fragmentName.equals("ProfileFragment")) {
-            if(getToken() == null) {
-                accountTitle = "Profile";
-                accountNavPosition = PROFILE;
-                wantedFragmentName = "ProfileFragment";
-                replaceFragment("AccountFragment");
-            }
-            else {
-                Fragment profileFragment = fm.findFragmentByTag("ProfileFragment");
-                if(profileFragment == null) {
-                    profileFragment = new ProfileFragment();
-                }
-                if(!currentFragmentName.equals("ProfileFragment")) {
-                    String title = getUserName();
-                    handleValues(title, PROFILE, "ProfileFragment");
-                    transaction.replace(R.id.fragment_container, profileFragment, currentFragmentName);
-                    hasFragmentChanges = true;
-                }
-            }
-        }
-
         if(fragmentName.equals("ConversationsFragment")) {
             if(getToken() == null) {
                 accountTitle = "Conversations";
@@ -320,6 +279,47 @@ public class MainActivity extends AppCompatActivity {
                     handleValues("Messages", MESSAGES, "MessagesFragment");
                     messagesFragment.setArguments(messagesBundle);
                     transaction.replace(R.id.fragment_container, messagesFragment, currentFragmentName);
+                    hasFragmentChanges = true;
+                }
+            }
+        }
+
+        if(fragmentName.equals("SellFragment")){
+            if(getToken() == null) {
+                accountTitle = "Sell a textbook!";
+                accountNavPosition = SELL;
+                wantedFragmentName = "SellFragment";
+                replaceFragment("AccountFragment");
+            }
+            else {
+                Fragment sellFragment = fm.findFragmentByTag("SellFragment");
+                if(sellFragment == null) {
+                    sellFragment = new SellFragment();
+                }
+                if(!currentFragmentName.equals("SellFragment")) {
+                    handleValues("Sell a textbook!", SELL, "SellFragment");
+                    transaction.replace(R.id.fragment_container, sellFragment, currentFragmentName);
+                    hasFragmentChanges = true;
+                }
+            }
+        }
+
+        if(fragmentName.equals("ProfileFragment")) {
+            if(getToken() == null) {
+                accountTitle = "Profile";
+                accountNavPosition = PROFILE;
+                wantedFragmentName = "ProfileFragment";
+                replaceFragment("AccountFragment");
+            }
+            else {
+                Fragment profileFragment = fm.findFragmentByTag("ProfileFragment");
+                if(profileFragment == null) {
+                    profileFragment = new ProfileFragment();
+                }
+                if(!currentFragmentName.equals("ProfileFragment")) {
+                    String title = getUserName();
+                    handleValues(title, PROFILE, "ProfileFragment");
+                    transaction.replace(R.id.fragment_container, profileFragment, currentFragmentName);
                     hasFragmentChanges = true;
                 }
             }
