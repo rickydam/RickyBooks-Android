@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         actionMode = false;
         mode = null;
         detailsBundle = null;
+        messagesBundle = null;
         backStackCount = 0;
         titles = new Stack<>();
         bottomNavPositions = new Stack<>();
