@@ -37,16 +37,8 @@ public class Textbook {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {
@@ -57,24 +49,12 @@ public class Textbook {
         return edition;
     }
 
-    public void setEdition(String edition) {
-        this.edition = edition;
-    }
-
     public String getCondition() {
         return condition;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getCoursecode() {
