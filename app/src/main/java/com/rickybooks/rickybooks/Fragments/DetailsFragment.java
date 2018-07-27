@@ -1,6 +1,5 @@
 package com.rickybooks.rickybooks.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,33 +18,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import com.google.gson.JsonObject;
-
 import com.rickybooks.rickybooks.MainActivity;
+import com.rickybooks.rickybooks.Other.Alert;
 import com.rickybooks.rickybooks.R;
-import com.rickybooks.rickybooks.Retrofit.RetrofitClient;
-import com.rickybooks.rickybooks.Retrofit.TextbookService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import com.rickybooks.rickybooks.Retrofit.CreateConversationCall;
+import com.rickybooks.rickybooks.Retrofit.SendMessageCall;
 
 public class DetailsFragment extends Fragment {
-    private TextbookService textbookService;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Retrofit retrofit = new RetrofitClient().getClient();
-        textbookService = retrofit.create(TextbookService.class);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -154,8 +132,13 @@ public class DetailsFragment extends Fragment {
         alertDialog.setPositiveButton("SEND", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String message = String.valueOf(messageInput.getText());
-                createConversationReq(message);
+                final String body = String.valueOf(messageInput.getText());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        createConversation(body);
+                    }
+                }).start();
                 dialog.dismiss();
             }
         });
@@ -168,111 +151,36 @@ public class DetailsFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void createConversationReq(final String message) {
-        String tokenString = getTokenString();
-        String userId = getUserId();
+    public void createConversation(String body) {
+        MainActivity activity = (MainActivity) getActivity();
         Bundle bundle = getArguments();
         String sellerId = bundle.getString("SellerId");
         String textbookId = bundle.getString("Id");
 
-        Call<JsonObject> call = textbookService.createConversation(tokenString, userId, sellerId,
-                textbookId);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                createConversationRes(message, response);
-            }
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e("Ricky", "createConversationReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
+        CreateConversationCall createConversationCall = new CreateConversationCall(activity);
+        createConversationCall.req(sellerId, textbookId);
+        boolean isSuccessful = createConversationCall.isSuccessful();
+        if(isSuccessful) {
+            String conversationId = createConversationCall.getData();
+            sendMessage(conversationId, body);
+        }
     }
 
-    public void createConversationRes(String message, Response<JsonObject> response) {
-        if(response.isSuccessful()) {
-            String res = String.valueOf(response.body());
-            String conversationId = "";
-            try {
-                JSONObject obj = new JSONObject(res);
-                conversationId = obj.getString("conversation_id");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sendMessageReq(message, conversationId);
+    public void sendMessage(String conversationId, String body) {
+        MainActivity activity = (MainActivity) getActivity();
+
+        SendMessageCall sendMessageCall = new SendMessageCall(activity);
+        sendMessageCall.req(conversationId, body);
+
+        boolean isSuccessful = sendMessageCall.isSuccessful();
+        if(isSuccessful) {
+            Alert alert = new Alert(activity);
+            alert.create("Success!", "Message has been sent successfully!");
         }
         else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "createConversationReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Oh no! Server problem!", "Seems like we are unable to " +
+            Alert alert = new Alert(activity);
+            alert.create("Oh no! Server problem!", "Seems like we are unable to " +
                     "reach the server at the moment.\n\nPlease try again later.");
         }
-    }
-
-    public void sendMessageReq(String message, String conversationId) {
-        String tokenString = getTokenString();
-        String userId = getUserId();
-        Call<JsonObject> call = textbookService.sendMessage(tokenString, conversationId, message,
-            userId);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                sendMessageRes(response);
-            }
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e("Ricky", "sendMessageReq failure: " + t.getMessage());
-                createAlert("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
-            }
-        });
-    }
-
-    public void sendMessageRes(Response<JsonObject> response) {
-        if(response.isSuccessful()) {
-            createAlert("Success!", "Message has been sent successfully.");
-        }
-        else {
-            try {
-                String errorMessage = response.errorBody().string();
-                Log.e("Ricky", "sendMessageReq unsuccessful: " + errorMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            createAlert("Seems like you forgot something...", "That's right! " +
-                    "The message!");
-        }
-    }
-
-    public String getTokenString() {
-        MainActivity activity = (MainActivity) getActivity();
-        String token = activity.getToken();
-        return "Token token=" + token;
-    }
-
-    public String getUserId() {
-        MainActivity activity = (MainActivity) getActivity();
-        return activity.getUserId();
-    }
-
-    public void createAlert(String title, String message) {
-        Activity activity = getActivity();
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.show();
     }
 }
