@@ -118,6 +118,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.options_delete_textbook:
+                prepareSelection(null);
+                break;
             case R.id.options_delete_account:
                 createAlertPrompt("Delete your account?", "Are you sure? This is irreversible.");
                 break;
@@ -197,11 +200,13 @@ public class ProfileFragment extends Fragment {
     }
 
     public void selectTextbook(Textbook textbook) {
-        if(!textbookExists(textbook)) {
-            selectedTextbooks.add(textbook);
-        }
-        else {
-            selectedTextbooks.remove(textbook);
+        if(textbook != null) {
+            if(!textbookExists(textbook)) {
+                selectedTextbooks.add(textbook);
+            }
+            else {
+                selectedTextbooks.remove(textbook);
+            }
         }
         MainActivity activity = (MainActivity) getActivity();
         ActionMode mode = activity.getMode();
