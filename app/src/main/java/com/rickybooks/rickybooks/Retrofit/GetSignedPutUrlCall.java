@@ -9,16 +9,16 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class GetSignedPostUrlCall {
+public class GetSignedPutUrlCall {
     private MainActivity activity;
-    private String signedPostUrl;
+    private String signedPutUrl;
 
-    public GetSignedPostUrlCall(MainActivity activity) {
+    public GetSignedPutUrlCall(MainActivity activity) {
         this.activity = activity;
     }
 
     public String getData() {
-        return signedPostUrl;
+        return signedPutUrl;
     }
 
     public void req(String textbookId, String chosenImageFileExtension) {
@@ -29,12 +29,12 @@ public class GetSignedPostUrlCall {
         String tokenString = "Token token=" + token;
 
         try {
-            Call<String> call = textbookService.getSignedPostUrl(tokenString, textbookId,
+            Call<String> call = textbookService.getSignedPutUrl(tokenString, textbookId,
                     chosenImageFileExtension);
             Response<String> response = call.execute();
 
             if(response.isSuccessful()) {
-                signedPostUrl = response.body();
+                signedPutUrl = response.body();
             }
             else {
                 Alert alert = new Alert(activity);

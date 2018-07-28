@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.R;
-import com.rickybooks.rickybooks.Retrofit.GetSignedPostUrlCall;
+import com.rickybooks.rickybooks.Retrofit.GetSignedPutUrlCall;
 import com.rickybooks.rickybooks.Retrofit.PostTextbookCall;
 import com.rickybooks.rickybooks.Retrofit.PutImageAwsCall;
 
@@ -279,26 +279,26 @@ public class SellFragment extends Fragment {
 
         if(imageFile != null) {
             String textbookId = postTextbookCall.getData();
-            getSignedPostUrl(textbookId, chosenImageFileExtension);
+            getSignedPutUrl(textbookId, chosenImageFileExtension);
         }
     }
 
-    public void getSignedPostUrl(String textbookId, String chosenImageFileExtension) {
+    public void getSignedPutUrl(String textbookId, String chosenImageFileExtension) {
         MainActivity activity = (MainActivity) getActivity();
 
-        GetSignedPostUrlCall getSignedPostUrlCall = new GetSignedPostUrlCall(activity);
-        getSignedPostUrlCall.req(textbookId, chosenImageFileExtension);
+        GetSignedPutUrlCall getSignedPutUrlCall = new GetSignedPutUrlCall(activity);
+        getSignedPutUrlCall.req(textbookId, chosenImageFileExtension);
 
-        String signedPostUrl = getSignedPostUrlCall.getData();
+        String signedPutUrl = getSignedPutUrlCall.getData();
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
-        putImageAws(signedPostUrl, reqFile);
+        putImageAws(signedPutUrl, reqFile);
     }
 
-    public void putImageAws(String signedPostUrl, RequestBody reqFile) {
+    public void putImageAws(String signedPutUrl, RequestBody reqFile) {
         MainActivity activity = (MainActivity) getActivity();
 
         PutImageAwsCall putImageAwsCall = new PutImageAwsCall(activity);
-        putImageAwsCall.req(signedPostUrl, reqFile);
+        putImageAwsCall.req(signedPutUrl, reqFile);
 
         if(putImageAwsCall.isSuccessful()) {
             activity.runOnUiThread(new Runnable() {

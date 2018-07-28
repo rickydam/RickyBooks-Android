@@ -24,12 +24,12 @@ public class PutImageAwsCall {
         return isSuccessful;
     }
 
-    public void req(String signedPostUrl, RequestBody reqFile) {
+    public void req(String signedPutUrl, RequestBody reqFile) {
         Retrofit retrofit = new RetrofitClient().getClient();
         TextbookService textbookService = retrofit.create(TextbookService.class);
 
         try {
-            Call<Void> call = textbookService.putImageAws(signedPostUrl, reqFile);
+            Call<Void> call = textbookService.putImageAws(signedPutUrl, reqFile);
             Response<Void> response = call.execute();
 
             isSuccessful = response.isSuccessful();

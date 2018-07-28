@@ -101,7 +101,7 @@ public interface TextbookService {
 
     // SellFragment
     @GET("aws/{textbook_id}/{extension}")
-    Call<String> getSignedPostUrl(
+    Call<String> getSignedPutUrl(
         @Header("Authorization") String tokenString,
         @Path("textbook_id") String textbookId,
         @Path("extension") String extension
