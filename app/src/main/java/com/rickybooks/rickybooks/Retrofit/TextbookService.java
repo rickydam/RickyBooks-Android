@@ -162,6 +162,13 @@ public interface TextbookService {
     );
 
     // EditTextbookFragment
+    @DELETE("delete_image/{textbook_id}")
+    Call<Void> deleteImageEntry(
+        @Header("Authorization") String tokenString,
+        @Path("textbook_id") String textbookId
+    );
+
+    // EditTextbookFragment
     @GET("get_delete_url/{textbook_id}")
     Call<String> getSignedDeleteUrl(
         @Header("Authorization") String tokenString,
