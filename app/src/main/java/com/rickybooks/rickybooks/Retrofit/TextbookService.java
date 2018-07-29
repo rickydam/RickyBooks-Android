@@ -160,4 +160,11 @@ public interface TextbookService {
         @Header("Authorization") String tokenString,
         @Path("user_id") String userId
     );
+
+    // EditTextbookFragment
+    @GET("get_delete_url/{textbook_id}")
+    Call<String> getSignedDeleteUrl(
+        @Header("Authorization") String tokenString,
+        @Path("textbook_id") String textbookId
+    );
 }
