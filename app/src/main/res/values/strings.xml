@@ -78,4 +78,5 @@
     <string name="delete_image_button_text">DELETE IMAGE</string>
     <string name="delete_account">Delete Account</string>
     <string name="delete_textbook">Delete Textbook</string>
+    <string name="save_button_text">SAVE</string>
 </resources>
