@@ -120,20 +120,7 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                     }
                 }
                 else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Id", textbook.getId());
-                    bundle.putString("Title", textbook.getTitle());
-                    bundle.putString("Author", textbook.getAuthor());
-                    bundle.putString("Edition", textbook.getEdition());
-                    bundle.putString("Condition", textbook.getCondition());
-                    bundle.putString("Type", textbook.getType());
-                    bundle.putString("Coursecode", textbook.getCoursecode());
-                    bundle.putString("Price", textbook.getPrice());
-                    bundle.putString("SellerName", textbook.getSellerName());
-                    bundle.putString("SellerId", textbook.getSellerId());
-                    bundle.putString("Timestamp", textbook.getTimestamp());
-                    bundle.putString("ImageUrl", imageUrl);
-
+                    Bundle bundle = createBundle(textbook, imageUrl);
                     activity.setDetailsBundle(bundle);
                     activity.replaceFragment("DetailsFragment");
                 }
@@ -160,6 +147,25 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                 return true;
             }
         });
+    }
+
+    private Bundle createBundle(Textbook textbook, String imageUrl) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("Id", textbook.getId());
+        bundle.putString("Title", textbook.getTitle());
+        bundle.putString("Author", textbook.getAuthor());
+        bundle.putString("Edition", textbook.getEdition());
+        bundle.putString("Condition", textbook.getCondition());
+        bundle.putString("Type", textbook.getType());
+        bundle.putString("Coursecode", textbook.getCoursecode());
+        bundle.putString("Price", textbook.getPrice());
+        bundle.putString("SellerName", textbook.getSellerName());
+        bundle.putString("SellerId", textbook.getSellerId());
+        bundle.putString("Timestamp", textbook.getTimestamp());
+        bundle.putString("ImageUrl", imageUrl);
+
+        return bundle;
     }
 
     private ProfileFragment getProfileFragment(MainActivity activity) {
