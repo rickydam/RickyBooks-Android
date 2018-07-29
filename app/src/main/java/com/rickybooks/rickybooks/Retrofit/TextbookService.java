@@ -121,6 +121,21 @@ public interface TextbookService {
     );
 
     // ProfileFragment
+    @FormUrlEncoded
+    @PUT("textbooks/{textbook_id}")
+    Call<Void> editTextbook(
+            @Header("Authorization") String tokenString,
+            @Path("textbook_id") String textbookId,
+            @Field("textbook_title") String textbookTitle,
+            @Field("textbook_author") String textbookAuthor,
+            @Field("textbook_edition") String textbookEdition,
+            @Field("textbook_condition") String textbookCondition,
+            @Field("textbook_type") String textbookType,
+            @Field("textbook_coursecode") String textbookCoursecode,
+            @Field("textbook_price") String textbookPrice
+    );
+
+    // ProfileFragment
     @DELETE("textbooks/{textbook_id}")
     Call<String> deleteTextbook(
         @Header("Authorization") String tokenString,
