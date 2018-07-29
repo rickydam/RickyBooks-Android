@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.rickybooks.rickybooks.Fragments.AccountFragment;
 import com.rickybooks.rickybooks.Fragments.BuyFragment;
 import com.rickybooks.rickybooks.Fragments.DetailsFragment;
+import com.rickybooks.rickybooks.Fragments.EditTextbookFragment;
 import com.rickybooks.rickybooks.Fragments.HomeFragment;
 import com.rickybooks.rickybooks.Fragments.ConversationsFragment;
 import com.rickybooks.rickybooks.Fragments.LoginFragment;
@@ -321,6 +322,28 @@ public class MainActivity extends AppCompatActivity {
                     String title = getUserName();
                     handleValues(title, PROFILE, "ProfileFragment");
                     transaction.replace(R.id.fragment_container, profileFragment, currentFragmentName);
+                    hasFragmentChanges = true;
+                }
+            }
+        }
+
+        if(fragmentName.equals("EditTextbookFragment")) {
+            String title = "Edit " + editTextbookBundle.getString("Title");
+            if(getToken() == null) {
+                accountTitle = title;
+                accountNavPosition = PROFILE;
+                wantedFragmentName = "EditTextbookFragment";
+                replaceFragment("AccountFragment");
+            }
+            else {
+                Fragment editTextbookFragment = fm.findFragmentByTag("EditTextbookFragment");
+                if(editTextbookFragment == null) {
+                    editTextbookFragment = new EditTextbookFragment();
+                }
+                if(!currentFragmentName.equals("EditTextbookFragment")) {
+                    handleValues(title, PROFILE, "EditTextbookFragment");
+                    editTextbookFragment.setArguments(editTextbookBundle);
+                    transaction.replace(R.id.fragment_container, editTextbookFragment, currentFragmentName);
                     hasFragmentChanges = true;
                 }
             }
