@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionMode mode;
     private Bundle detailsBundle;
     private Bundle messagesBundle;
+    private Bundle editTextbookBundle;
 
     private int backStackCount;
     private Stack<String> titles;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mode = null;
         detailsBundle = null;
         messagesBundle = null;
+        editTextbookBundle = null;
         backStackCount = 0;
         titles = new Stack<>();
         bottomNavPositions = new Stack<>();
@@ -412,6 +414,10 @@ public class MainActivity extends AppCompatActivity {
         messagesBundle = bundle;
     }
 
+    public void setEditTextbookBundle(Bundle bundle) {
+        editTextbookBundle = bundle;
+    }
+
     public String getToken() {
         SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
@@ -474,5 +480,6 @@ public class MainActivity extends AppCompatActivity {
         mode = null;
         detailsBundle = null;
         messagesBundle = null;
+        editTextbookBundle = null;
     }
 }
