@@ -11,9 +11,15 @@ import retrofit2.Retrofit;
 
 public class DeleteImageCall {
     private MainActivity activity;
+    private boolean isSuccessful;
 
     public DeleteImageCall(MainActivity activity) {
         this.activity = activity;
+        isSuccessful = false;
+    }
+
+    public boolean isSuccessful() {
+        return isSuccessful;
     }
 
     public void req(String signedDeleteUrl) {
@@ -24,7 +30,8 @@ public class DeleteImageCall {
             Call<Void> call = textbookService.deleteImage(signedDeleteUrl);
             Response<Void> response = call.execute();
 
-            if(!response.isSuccessful()) {
+            isSuccessful = response.isSuccessful();
+            if(!isSuccessful) {
                 Alert alert = new Alert(activity);
                 alert.create("Oh no! Server problem!", "Seems like we are unable to " +
                         "reach the server at the moment.\n\nPlease try again later.");

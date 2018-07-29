@@ -12,13 +12,19 @@ import retrofit2.Retrofit;
 public class GetSignedPutUrlCall {
     private MainActivity activity;
     private String signedPutUrl;
+    private boolean isSuccessful;
 
     public GetSignedPutUrlCall(MainActivity activity) {
         this.activity = activity;
+        isSuccessful = false;
     }
 
     public String getData() {
         return signedPutUrl;
+    }
+
+    public boolean isSuccessful() {
+        return isSuccessful;
     }
 
     public void req(String textbookId, String chosenImageFileExtension) {
@@ -33,7 +39,8 @@ public class GetSignedPutUrlCall {
                     chosenImageFileExtension);
             Response<String> response = call.execute();
 
-            if(response.isSuccessful()) {
+            isSuccessful = response.isSuccessful();
+            if(isSuccessful) {
                 signedPutUrl = response.body();
             }
             else {
