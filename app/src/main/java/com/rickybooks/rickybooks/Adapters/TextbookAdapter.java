@@ -117,6 +117,11 @@ public class TextbookAdapter extends RecyclerView.Adapter<TextbookAdapter.Textbo
                             profileFragment.selectTextbook(textbook);
                             notifyItemChanged(holder.getAdapterPosition());
                         }
+                        else {
+                            Bundle bundle = createBundle(textbook, imageUrl);
+                            activity.setEditTextbookBundle(bundle);
+                            activity.replaceFragment("EditTextbookFragment");
+                        }
                     }
                 }
                 else {
