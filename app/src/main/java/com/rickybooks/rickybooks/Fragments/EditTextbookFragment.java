@@ -314,7 +314,7 @@ public class EditTextbookFragment extends Fragment {
     public void alertSuccessPopAndRefresh() {
         MainActivity activity = (MainActivity) getActivity();
         Alert alert = new Alert(activity);
-        alert.create("Success!", "Textbook has been successfully updated!");
+        alert.create("Success!", "Textbook successfully updated!");
         FragmentManager fm = activity.getSupportFragmentManager();
         fm.popBackStack();
         Fragment profileFragment = fm.findFragmentByTag("ProfileFragment");
