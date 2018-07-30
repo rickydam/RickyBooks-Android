@@ -53,10 +53,20 @@ public class EditTextbookFragment extends Fragment {
     private View view;
     private ImageView chosenImage;
     private Button chooseImageButton;
+    private Bitmap chosenImageBitmap;
     private String chosenImageFileExtension;
     private File imageFile;
     private boolean chooseImageButtonPressed;
     private boolean textbookHadImage;
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(chosenImageBitmap != null) {
+            Glide.with(view).load(chosenImageBitmap).into(chosenImage);
+            setChooseImageButtonText("DELETE IMAGE");
+        }
+    }
 
     @Nullable
     @Override
@@ -118,7 +128,6 @@ public class EditTextbookFragment extends Fragment {
     }
 
     public void initChooseImageButton() {
-        chooseImageButtonPressed = false;
         chooseImageButton = view.findViewById(R.id.edit_textbook_choose_button);
         chooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,8 +162,8 @@ public class EditTextbookFragment extends Fragment {
             try {
                 MainActivity activity = (MainActivity) getActivity();
 
-                Bitmap chosenImageBitmap = MediaStore.Images.Media.getBitmap(
-                        activity.getContentResolver(), chosenImageUri);
+                chosenImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(),
+                        chosenImageUri);
                 Glide.with(view).load(chosenImageBitmap).into(chosenImage);
 
                 chosenImageFileExtension = activity.getContentResolver().getType(chosenImageUri);
