@@ -81,4 +81,13 @@
     <string name="save_button_text">SAVE</string>
     <string name="menu_search_title">Search Textbooks</string>
     <string name="search_input_hint">Search…</string>
+    <string-array name="search">
+        <item>Category</item>
+        <item>Title</item>
+        <item>Author</item>
+        <item>Edition</item>
+        <item>Condition</item>
+        <item>Type</item>
+        <item>Course</item>
+    </string-array>
 </resources>
