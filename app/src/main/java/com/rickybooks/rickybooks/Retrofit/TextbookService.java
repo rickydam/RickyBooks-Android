@@ -84,6 +84,13 @@ public interface TextbookService {
     @GET("textbooks")
     Call<JsonArray> getTextbooks();
 
+    // SearchFragment
+    @GET("search/{category}/{input}")
+    Call<JsonArray> searchTextbooks(
+        @Path("category") String category,
+        @Path("input") String input
+    );
+
     // SellFragment
     @FormUrlEncoded
     @POST("textbooks")
