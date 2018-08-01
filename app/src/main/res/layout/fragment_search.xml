@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_marginBottom="@dimen/bottom_navigation_height"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/search_form_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/search_spinner_layout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@id/search_input"
+            android:layout_alignLeft="@id/search_input"
+            android:layout_alignRight="@id/search_input"
+            android:layout_alignStart="@id/search_input"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+            <Spinner
+                android:id="@+id/search_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_spinner_layout"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/border"
+            android:ems="16"
+            android:hint="@string/search_input_hint"
+            android:inputType="textCapSentences"
+            android:layout_centerHorizontal="true"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:textColorHint="@color/lightGray"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/search_edition_spinner_layout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@id/search_input"
+            android:layout_alignLeft="@id/search_input"
+            android:layout_alignRight="@id/search_input"
+            android:layout_alignStart="@id/search_input"
+            android:layout_below="@id/search_spinner_layout"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/border"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="gone">
+            <Spinner
+                android:id="@+id/search_edition_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/search_condition_spinner_layout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@id/search_input"
+            android:layout_alignLeft="@id/search_input"
+            android:layout_alignRight="@id/search_input"
+            android:layout_alignStart="@id/search_input"
+            android:layout_below="@id/search_spinner_layout"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/border"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="gone">
+            <Spinner
+                android:id="@+id/search_condition_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/search_type_spinner_layout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@id/search_input"
+            android:layout_alignLeft="@id/search_input"
+            android:layout_alignRight="@id/search_input"
+            android:layout_alignStart="@id/search_input"
+            android:layout_below="@id/search_spinner_layout"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/border"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="gone">
+            <Spinner
+                android:id="@+id/search_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/textbook_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_form_layout"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>
