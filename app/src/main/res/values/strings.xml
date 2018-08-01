@@ -80,4 +80,5 @@
     <string name="delete_textbook">Delete Textbook</string>
     <string name="save_button_text">SAVE</string>
     <string name="menu_search_title">Search Textbooks</string>
+    <string name="search_input_hint">Search…</string>
 </resources>
