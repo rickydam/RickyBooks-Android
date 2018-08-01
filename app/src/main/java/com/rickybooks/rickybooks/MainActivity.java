@@ -23,6 +23,7 @@ import com.rickybooks.rickybooks.Fragments.LoginFragment;
 import com.rickybooks.rickybooks.Fragments.MessagesFragment;
 import com.rickybooks.rickybooks.Fragments.ProfileFragment;
 import com.rickybooks.rickybooks.Fragments.RegisterFragment;
+import com.rickybooks.rickybooks.Fragments.SearchFragment;
 import com.rickybooks.rickybooks.Fragments.SellFragment;
 import com.rickybooks.rickybooks.Other.BottomNavigationViewHelper;
 
@@ -238,6 +239,18 @@ public class MainActivity extends AppCompatActivity {
                 String title = "Buy " + detailsBundle.get("Title");
                 handleValues(title, BUY, "DetailsFragment");
                 transaction.replace(R.id.fragment_container, detailsFragment, currentFragmentName);
+                hasFragmentChanges = true;
+            }
+        }
+
+        if(fragmentName.equals("SearchFragment")) {
+            Fragment searchFragment = fm.findFragmentByTag("SearchFragment");
+            if(searchFragment == null) {
+                searchFragment = new SearchFragment();
+            }
+            if(!currentFragmentName.equals("SearchFragment")) {
+                handleValues("Search for a textbook!", BUY, "SearchFragment");
+                transaction.replace(R.id.fragment_container, searchFragment, currentFragmentName);
                 hasFragmentChanges = true;
             }
         }
