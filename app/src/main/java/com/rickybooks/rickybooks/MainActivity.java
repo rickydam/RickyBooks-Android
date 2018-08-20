@@ -19,6 +19,7 @@ import com.rickybooks.rickybooks.Fragments.DetailsFragment;
 import com.rickybooks.rickybooks.Fragments.EditTextbookFragment;
 import com.rickybooks.rickybooks.Fragments.HomeFragment;
 import com.rickybooks.rickybooks.Fragments.ConversationsFragment;
+import com.rickybooks.rickybooks.Fragments.ImageFragment;
 import com.rickybooks.rickybooks.Fragments.LoginFragment;
 import com.rickybooks.rickybooks.Fragments.MessagesFragment;
 import com.rickybooks.rickybooks.Fragments.ProfileFragment;
@@ -239,6 +240,18 @@ public class MainActivity extends AppCompatActivity {
                 String title = "Buy " + detailsBundle.get("Title");
                 handleValues(title, BUY, "DetailsFragment");
                 transaction.replace(R.id.fragment_container, detailsFragment, currentFragmentName);
+                hasFragmentChanges = true;
+            }
+        }
+
+        if(fragmentName.equals("ImageFragment")) {
+            Fragment imageFragment = fm.findFragmentByTag("ImageFragment");
+            if(imageFragment == null) {
+                imageFragment = new ImageFragment();
+            }
+            if(!currentFragmentName.equals("ImageFragment")) {
+                handleValues(String.valueOf(getTitle()), BUY, "ImageFragment");
+                transaction.replace(R.id.fragment_container, imageFragment, currentFragmentName);
                 hasFragmentChanges = true;
             }
         }
