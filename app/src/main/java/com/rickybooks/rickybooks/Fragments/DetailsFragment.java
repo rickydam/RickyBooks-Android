@@ -67,10 +67,20 @@ public class DetailsFragment extends Fragment {
         detailsSellerName.setText(bundle.getString("SellerName"));
         detailsTimestamp.setText(bundle.getString("Timestamp"));
 
-        String imageUrl = bundle.getString("ImageUrl");
-        ImageView detailsImage = view.findViewById(R.id.details_image);
+        final String imageUrl = bundle.getString("ImageUrl");
+        final ImageView detailsImage = view.findViewById(R.id.details_image);
         if(!imageUrl.equals("")) {
             Glide.with(this).load(imageUrl).into(detailsImage);
+            detailsImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ImageUrl", imageUrl);
+                    activity.setImageBundle(bundle);
+                    activity.replaceFragment("ImageFragment");
+                }
+            });
         }
         else {
             Glide.with(this).load(R.drawable.textbook_placeholder).into(detailsImage);
