@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Bundle detailsBundle;
     private Bundle messagesBundle;
     private Bundle editTextbookBundle;
+    private Bundle imageBundle;
 
     private int backStackCount;
     private Stack<String> titles;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         detailsBundle = null;
         messagesBundle = null;
         editTextbookBundle = null;
+        imageBundle = null;
         backStackCount = 0;
         titles = new Stack<>();
         bottomNavPositions = new Stack<>();
@@ -251,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if(!currentFragmentName.equals("ImageFragment")) {
                 handleValues(String.valueOf(getTitle()), BUY, "ImageFragment");
+                imageFragment.setArguments(imageBundle);
                 transaction.replace(R.id.fragment_container, imageFragment, currentFragmentName);
                 hasFragmentChanges = true;
             }
@@ -447,6 +450,10 @@ public class MainActivity extends AppCompatActivity {
         editTextbookBundle = bundle;
     }
 
+    public void setImageBundle(Bundle bundle) {
+        imageBundle = bundle;
+    }
+
     public String getToken() {
         SharedPreferences sharedPref = getSharedPreferences("com.rickybooks.rickybooks",
                 Context.MODE_PRIVATE);
@@ -510,5 +517,6 @@ public class MainActivity extends AppCompatActivity {
         detailsBundle = null;
         messagesBundle = null;
         editTextbookBundle = null;
+        imageBundle = null;
     }
 }
