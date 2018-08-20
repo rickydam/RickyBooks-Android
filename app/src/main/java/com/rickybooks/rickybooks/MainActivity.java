@@ -379,6 +379,9 @@ public class MainActivity extends AppCompatActivity {
                 transaction.replace(R.id.fragment_container, accountFragment, currentFragmentName);
                 hasFragmentChanges = true;
             }
+            if(accountTitle != getTitle()) {
+                setTitle(accountTitle);
+            }
         }
 
         if(fragmentName.equals("RegisterFragment")) {
