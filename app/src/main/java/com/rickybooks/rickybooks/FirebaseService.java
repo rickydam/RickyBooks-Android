@@ -17,6 +17,9 @@ public class FirebaseService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        Intent intent = new Intent("rickybooks.android.action.broadcast");
+        sendBroadcast(intent);
+
         if(remoteMessage.getData().size() > 0) {
             String title = remoteMessage.getData().get("title");
             String message = remoteMessage.getData().get("body");
