@@ -38,7 +38,7 @@
             android:background="@color/veryLightGray"
             android:minHeight="40dp"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/messages_message_input"
