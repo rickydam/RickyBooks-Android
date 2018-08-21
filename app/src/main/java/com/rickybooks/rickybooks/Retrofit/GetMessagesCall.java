@@ -46,7 +46,9 @@ public class GetMessagesCall {
             if(response.isSuccessful()) {
                 parseConversationData(response.body());
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e) {
             e.printStackTrace();
         }
     }

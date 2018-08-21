@@ -119,12 +119,16 @@ public class MessagesFragment extends Fragment {
         getMessagesCall.req(conversationId);
         messages.addAll(getMessagesCall.getData());
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                messageAdapter.notifyDataSetChanged();
-            }
-        });
+        try {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    messageAdapter.notifyDataSetChanged();
+                }
+            });
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMessage(final View view) {
