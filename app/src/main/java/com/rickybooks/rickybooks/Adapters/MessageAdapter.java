@@ -97,7 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         void bind(Message message) {
             messageText.setText(message.getMessage());
 
-            DateFormat df = new SimpleDateFormat("HH:mm, MMMM dd, yyyy", Locale.CANADA);
+            DateFormat df = new SimpleDateFormat("h:mm a, MMM dd", Locale.CANADA);
             Date date = message.getCreatedAt();
             String dateString = df.format(date);
 
@@ -120,7 +120,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         void bind(Message message) {
             messageText.setText(message.getMessage());
 
-            DateFormat df = new SimpleDateFormat("HH:mm, MMMM dd, yyyy", Locale.CANADA);
+            DateFormat df = new SimpleDateFormat("h:mm a, MMM dd", Locale.CANADA);
             Date date = message.getCreatedAt();
             String dateString = df.format(date);
 
