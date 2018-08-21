@@ -35,6 +35,7 @@
             android:id="@+id/send_message_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/veryLightGray"
             android:minHeight="40dp"
             android:orientation="horizontal"
             android:padding="5dp">
