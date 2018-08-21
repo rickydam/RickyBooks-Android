@@ -148,6 +148,7 @@ public class MessagesFragment extends Fragment {
                     messageInput.getText().clear();
                     messageInput.clearFocus();
                     hideKeyboard(view);
+                    layoutManager.scrollToPosition(messages.size()-1);
                 }
             });
             getMessages();
