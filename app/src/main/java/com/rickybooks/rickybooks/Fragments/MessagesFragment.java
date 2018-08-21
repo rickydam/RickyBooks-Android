@@ -1,6 +1,9 @@
 package com.rickybooks.rickybooks.Fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +31,7 @@ import java.util.List;
 public class MessagesFragment extends Fragment {
     private List<Message> messages = new ArrayList<>();
     private MessageAdapter messageAdapter;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +43,25 @@ public class MessagesFragment extends Fragment {
                 getMessages();
             }
         }).start();
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getMessages();
+                    }
+                }).start();
+                try {
+                    layoutManager.scrollToPosition(messages.size()-1);
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter("rickybooks.android.action.broadcast");
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
@@ -74,7 +97,7 @@ public class MessagesFragment extends Fragment {
         });
 
         MainActivity activity = (MainActivity) getActivity();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
+        layoutManager = new LinearLayoutManager(activity);
         layoutManager.setStackFromEnd(true);
         messageAdapter = new MessageAdapter(activity, messages);
 
