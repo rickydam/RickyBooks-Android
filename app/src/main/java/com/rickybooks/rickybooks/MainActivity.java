@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private String accountTitle;
     private int accountNavPosition;
     private String wantedFragmentName;
-    private String notificationConversationId;
 
     private static final int HOME = 0;
     private static final int BUY = 1;
@@ -61,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if(intent.getStringExtra("conversation_id") != null) {
-            notificationConversationId = intent.getStringExtra("conversation_id");
-            replaceFragment("ConversationsFragment");
+            Bundle bundle = new Bundle();
+            String notificationConversationId = intent.getStringExtra("conversation_id");
+            bundle.putString("conversation_id", notificationConversationId);
+            setMessagesBundle(bundle);
+            replaceFragment("MessagesFragment");
         }
     }
 
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         accountTitle = null;
         accountNavPosition = -1;
         wantedFragmentName = null;
-        notificationConversationId = null;
 
         BottomNavigationView bnv = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bnv);
@@ -287,11 +288,6 @@ public class MainActivity extends AppCompatActivity {
                     handleValues("Conversations", MESSAGES, "ConversationsFragment");
                     transaction.replace(R.id.fragment_container, conversationsFragment, currentFragmentName);
                     hasFragmentChanges = true;
-                    if(notificationConversationId != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("notification_conversation_id", notificationConversationId);
-                        conversationsFragment.setArguments(bundle);
-                    }
                 }
             }
         }
@@ -511,7 +507,6 @@ public class MainActivity extends AppCompatActivity {
         accountTitle = null;
         accountNavPosition = -1;
         wantedFragmentName = null;
-        notificationConversationId = null;
         actionMode = false;
         mode = null;
         detailsBundle = null;
