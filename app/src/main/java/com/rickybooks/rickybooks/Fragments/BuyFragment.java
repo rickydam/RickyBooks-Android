@@ -33,13 +33,7 @@ public class BuyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         textbooks = new ArrayList<>();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getTextbooks();
-            }
-        }).start();
+        getTextbooksThread();
     }
 
     @Override
@@ -51,12 +45,7 @@ public class BuyFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getTextbooks();
-                    }
-                }).start();
+                getTextbooksThread();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -89,6 +78,19 @@ public class BuyFragment extends Fragment {
                 activity.replaceFragment("SearchFragment");
         }
         return true;
+    }
+
+    public void getTextbooksThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getTextbooks();
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void getTextbooks() {
