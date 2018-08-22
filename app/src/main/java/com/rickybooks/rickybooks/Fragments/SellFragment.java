@@ -71,6 +71,31 @@ public class SellFragment extends Fragment {
         }
     }
 
+    public void clearAll() {
+        EditText titleField = view.findViewById(R.id.textbook_title);
+        titleField.getText().clear();
+
+        EditText authorField = view.findViewById(R.id.textbook_author);
+        authorField.getText().clear();
+
+        Spinner editionSpinner = view.findViewById(R.id.textbook_edition_spinner);
+        editionSpinner.setSelection(0);
+
+        Spinner conditionSpinner = view.findViewById(R.id.textbook_condition_spinner);
+        conditionSpinner.setSelection(0);
+
+        Spinner typeSpinner = view.findViewById(R.id.textbook_type_spinner);
+        typeSpinner.setSelection(0);
+
+        EditText coursecodeField = view.findViewById(R.id.textbook_coursecode);
+        coursecodeField.getText().clear();
+
+        EditText priceField = view.findViewById(R.id.textbook_price);
+        priceField.getText().clear();
+
+        clearImageData();
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
