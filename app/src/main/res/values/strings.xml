@@ -90,4 +90,5 @@
         <item>Type</item>
         <item>Course</item>
     </string-array>
+    <string name="menu_clearall_title">Clear All</string>
 </resources>
