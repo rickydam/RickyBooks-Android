@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     handleValues("Conversations", MESSAGES, "ConversationsFragment");
                     transaction.replace(R.id.fragment_container, conversationsFragment, currentFragmentName);
                     hasFragmentChanges = true;
+                    ((ConversationsFragment) conversationsFragment).getConversationsThread();
                 }
             }
         }
