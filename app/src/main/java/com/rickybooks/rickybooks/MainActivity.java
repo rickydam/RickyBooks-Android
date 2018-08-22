@@ -139,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if(getIntent().getStringExtra("conversation_id") != null) {
+            Bundle bundle = new Bundle();
+            String notificationConversationId = getIntent().getStringExtra("conversation_id");
+            bundle.putString("conversation_id", notificationConversationId);
+            setMessagesBundle(bundle);
+            replaceFragment("MessagesFragment");
+        }
     }
 
     public void setBottomNavigationItem(int index) {
