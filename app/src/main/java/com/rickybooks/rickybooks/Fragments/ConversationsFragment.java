@@ -34,13 +34,7 @@ public class ConversationsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getConversations();
-            }
-        }).start();
+        getConversationsThread();
     }
 
     @Nullable
@@ -56,12 +50,7 @@ public class ConversationsFragment extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 boolean actionMode = activity.getActionMode();
                 if(!actionMode) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            getConversations();
-                        }
-                    }).start();
+                    getConversationsThread();
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -79,6 +68,19 @@ public class ConversationsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL));
 
         return view;
+    }
+
+    public void getConversationsThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getConversations();
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void prepareSelection(final Conversation conversation) {
