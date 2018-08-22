@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 handleValues("Buy a textbook!", BUY, "BuyFragment");
                 transaction.replace(R.id.fragment_container, buyFragment, currentFragmentName);
                 hasFragmentChanges = true;
+                ((BuyFragment) buyFragment).getTextbooksThread();
             }
         }
 
