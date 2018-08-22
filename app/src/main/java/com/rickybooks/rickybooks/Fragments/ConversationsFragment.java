@@ -1,7 +1,6 @@
 package com.rickybooks.rickybooks.Fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,8 +42,6 @@ public class ConversationsFragment extends Fragment {
                 getConversations();
             }
         }).start();
-
-        checkBundle();
     }
 
     @Nullable
@@ -162,37 +159,6 @@ public class ConversationsFragment extends Fragment {
 
     public boolean conversationExists(Conversation conversation) {
         return selectedConversations.contains(conversation);
-    }
-
-    public void checkBundle() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Bundle bundle = getArguments();
-                    String notificationConversationId = bundle.getString("notification_conversation_id");
-                    int position = -1;
-                    for(int i=0; i<conversations.size(); i++) {
-                        Conversation conversation = conversations.get(i);
-                        if(conversation.getId().equals(notificationConversationId)) {
-                            position = i;
-                        }
-                    }
-                    openConversation(position);
-                } catch(NullPointerException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 300);
-    }
-
-    public void openConversation(final int position) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
-            }
-        }, 300);
     }
 
     public void getConversations() {
