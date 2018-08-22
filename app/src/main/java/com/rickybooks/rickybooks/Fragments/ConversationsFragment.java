@@ -29,7 +29,6 @@ import java.util.List;
 public class ConversationsFragment extends Fragment {
     private List<Conversation> conversations = new ArrayList<>();
     private ConversationAdapter conversationAdapter;
-    private RecyclerView recyclerView;
     private List<Conversation> selectedConversations = new ArrayList<>();
 
     @Override
@@ -72,7 +71,7 @@ public class ConversationsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         conversationAdapter = new ConversationAdapter(activity, conversations);
 
-        recyclerView = view.findViewById(R.id.conversations_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(conversationAdapter);
