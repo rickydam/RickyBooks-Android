@@ -92,4 +92,5 @@
     </string-array>
     <string name="menu_clearall_title">Clear All</string>
     <string name="menu_delete_conversation">Delete Conversation</string>
+    <string name="edit_textbook_instruction">Tap on a textbook to edit.</string>
 </resources>
