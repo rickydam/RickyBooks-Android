@@ -123,7 +123,7 @@ public class GetUserTextbooksCall {
         int differenceHours = differenceMinutes/60;
 
         if(differenceHours >= 24) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, MMMM dd, yyyy", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("h:mm a, MMM dd", Locale.CANADA);
             timestamp = sdf.format(createdAtDate);
         }
         if(differenceHours < 24 && differenceHours > 1) {
