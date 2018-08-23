@@ -111,6 +111,8 @@ public class SearchTextbooksCall {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch(NullPointerException e) {
+            e.printStackTrace();
         }
     }
 

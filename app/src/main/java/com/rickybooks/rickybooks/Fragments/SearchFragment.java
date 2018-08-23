@@ -126,12 +126,16 @@ public class SearchFragment extends Fragment {
         searchTextbooksCall.req(category, input);
         textbooks.addAll(searchTextbooksCall.getData());
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                textbookAdapter.notifyDataSetChanged();
-            }
-        });
+        try {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textbookAdapter.notifyDataSetChanged();
+                }
+            });
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initRecyclerView() {
