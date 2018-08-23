@@ -23,7 +23,7 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -32,6 +32,7 @@
 
         <Button
             android:id="@+id/logout_button"
+            android:layout_centerHorizontal="true"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:background="@drawable/button_red"
@@ -39,6 +40,6 @@
             android:textColor="@color/white"
             android:textSize="15sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
