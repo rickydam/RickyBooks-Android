@@ -176,16 +176,23 @@ public class DetailsFragment extends Fragment {
         }
     }
 
-    public void sendMessage(String conversationId, String body) {
-        MainActivity activity = (MainActivity) getActivity();
+    public void sendMessage(final String conversationId, String body) {
+        final MainActivity activity = (MainActivity) getActivity();
 
         SendMessageCall sendMessageCall = new SendMessageCall(activity);
         sendMessageCall.req(conversationId, body);
 
         boolean isSuccessful = sendMessageCall.isSuccessful();
         if(isSuccessful) {
-            Alert alert = new Alert(activity);
-            alert.create("Success!", "Message has been sent successfully!");
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("conversation_id", conversationId);
+                    activity.setMessagesBundle(bundle);
+                    activity.replaceFragment("MessagesFragment");
+                }
+            });
         }
         else {
             Alert alert = new Alert(activity);
