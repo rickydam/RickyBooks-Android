@@ -91,4 +91,5 @@
         <item>Course</item>
     </string-array>
     <string name="menu_clearall_title">Clear All</string>
+    <string name="menu_delete_conversation">Delete Conversation</string>
 </resources>
