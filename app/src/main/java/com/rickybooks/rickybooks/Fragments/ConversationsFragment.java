@@ -147,11 +147,13 @@ public class ConversationsFragment extends Fragment {
     }
 
     public void selectConversation(Conversation conversation) {
-        if(!conversationExists(conversation)) {
-            selectedConversations.add(conversation);
-        }
-        else {
-            selectedConversations.remove(conversation);
+        if(conversation != null) {
+            if(!conversationExists(conversation)) {
+                selectedConversations.add(conversation);
+            }
+            else {
+                selectedConversations.remove(conversation);
+            }
         }
         MainActivity activity = (MainActivity) getActivity();
         ActionMode mode = activity.getMode();
