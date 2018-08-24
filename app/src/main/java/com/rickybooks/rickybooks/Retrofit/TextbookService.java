@@ -27,7 +27,7 @@ public interface TextbookService {
 
     // ConversationsFragment
     @GET("conversations/{user_id}")
-    Call<JsonArray> getConversations(
+    Call<JsonObject> getConversations(
         @Header("Authorization") String tokenString,
         @Path("user_id") String userId
     );
