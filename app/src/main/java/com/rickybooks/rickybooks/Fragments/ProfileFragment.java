@@ -265,7 +265,7 @@ public class ProfileFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         GetConversationsCall getConversationsCall = new GetConversationsCall(activity);
         getConversationsCall.req();
-        conversations = getConversationsCall.getData();
+        conversations = getConversationsCall.getConversationsData();
     }
 
     public void deleteConversation() {
