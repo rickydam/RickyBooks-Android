@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.rickybooks.rickybooks.Adapters.ConversationAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.Conversation;
+import com.rickybooks.rickybooks.Models.Message;
 import com.rickybooks.rickybooks.Other.Alert;
 import com.rickybooks.rickybooks.R;
 import com.rickybooks.rickybooks.Retrofit.DeleteConversationCall;
@@ -29,6 +30,7 @@ import java.util.List;
 
 public class ConversationsFragment extends Fragment {
     private List<Conversation> conversations = new ArrayList<>();
+    private List<Message> lastMessages = new ArrayList<>();
     private ConversationAdapter conversationAdapter;
     private List<Conversation> selectedConversations = new ArrayList<>();
 
@@ -75,7 +77,7 @@ public class ConversationsFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
-        conversationAdapter = new ConversationAdapter(activity, conversations);
+        conversationAdapter = new ConversationAdapter(activity, conversations, lastMessages);
 
         RecyclerView recyclerView = view.findViewById(R.id.conversations_recycler);
         recyclerView.setHasFixedSize(true);
@@ -183,11 +185,14 @@ public class ConversationsFragment extends Fragment {
 
     public void getConversations() {
         conversations.clear();
+        lastMessages.clear();
+
         MainActivity activity = (MainActivity) getActivity();
 
         GetConversationsCall getConversationsCall = new GetConversationsCall(activity);
         getConversationsCall.req();
-        conversations.addAll(getConversationsCall.getData());
+        conversations.addAll(getConversationsCall.getConversationsData());
+        lastMessages.addAll(getConversationsCall.getLastMessagesData());
 
         activity.runOnUiThread(new Runnable() {
             @Override
