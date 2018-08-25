@@ -96,4 +96,5 @@
     <string name="conversation_placeholder_name">Other User\'s Name</string>
     <string name="conversation_placeholder_timestamp">Last message date</string>
     <string name="conversation_placeholder_preview">Last message preview</string>
+    <string name="menu_notifyme_title">NOTIFY ME</string>
 </resources>
