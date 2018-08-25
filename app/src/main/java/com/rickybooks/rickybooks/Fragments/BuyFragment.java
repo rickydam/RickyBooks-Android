@@ -72,12 +72,13 @@ public class BuyFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        MainActivity activity = (MainActivity) getActivity();
         switch(item.getItemId()) {
             case R.id.buy_menu_search:
-                MainActivity activity = (MainActivity) getActivity();
                 activity.replaceFragment("SearchFragment");
                 break;
-            
+            case R.id.buy_menu_notifyme:
+                activity.replaceFragment("NotifyFragment");
         }
         return true;
     }
