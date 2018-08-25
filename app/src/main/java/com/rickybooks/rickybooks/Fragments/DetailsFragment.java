@@ -70,6 +70,7 @@ public class DetailsFragment extends Fragment {
         final String imageUrl = bundle.getString("ImageUrl");
         final ImageView detailsImage = view.findViewById(R.id.details_image);
         if(!imageUrl.equals("")) {
+            view.findViewById(R.id.details_image_instruction).setVisibility(View.VISIBLE);
             Glide.with(this).load(imageUrl).into(detailsImage);
             detailsImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,6 +84,7 @@ public class DetailsFragment extends Fragment {
             });
         }
         else {
+            view.findViewById(R.id.details_image_instruction).setVisibility(View.GONE);
             Glide.with(this).load(R.drawable.textbook_placeholder).into(detailsImage);
         }
 
