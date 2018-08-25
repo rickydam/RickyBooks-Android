@@ -98,4 +98,7 @@
     <string name="conversation_placeholder_timestamp">Last message date</string>
     <string name="conversation_placeholder_preview">Last message preview</string>
     <string name="menu_notifyme_title">NOTIFY ME</string>
+    <string name="add_item_button_text">Add item</string>
+    <string name="notify_item_placeholder_category">Category</string>
+    <string name="notify_item_placeholder_input">Input</string>
 </resources>
