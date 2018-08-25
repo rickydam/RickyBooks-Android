@@ -76,6 +76,8 @@ public class BuyFragment extends Fragment {
             case R.id.buy_menu_search:
                 MainActivity activity = (MainActivity) getActivity();
                 activity.replaceFragment("SearchFragment");
+                break;
+            
         }
         return true;
     }
