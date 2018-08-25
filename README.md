@@ -1,7 +1,7 @@
 # RickyBooks-Android
 RickyBooks is a mobile app for University students to buy and sell textbooks.
 
-<img src="RickyBooksBanner.png" />
+<img src="RickyBooksBanner.svg" />
 
 ## Trello
 Extra Features <br>
