@@ -181,4 +181,10 @@ public interface TextbookService {
         @Header("Authorization") String tokenString,
         @Path("textbook_id") String textbookId
     );
+
+    // NotifyFragment
+    @GET("notify_items")
+    Call<JsonArray> getNotifyItems(
+        @Header("Authorization") String tokenString
+    );
 }
