@@ -197,4 +197,11 @@ public interface TextbookService {
         @Field("category") String category,
         @Field("input") String input
     );
+
+    // NotifyFragment
+    @GET("notify_results/{user_id}")
+    Call<JsonArray> getNotifyResults(
+        @Header("Authorization") String tokenString,
+        @Path("user_id") String userId
+    );
 }
