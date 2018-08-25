@@ -22,6 +22,7 @@ import com.rickybooks.rickybooks.Fragments.ConversationsFragment;
 import com.rickybooks.rickybooks.Fragments.ImageFragment;
 import com.rickybooks.rickybooks.Fragments.LoginFragment;
 import com.rickybooks.rickybooks.Fragments.MessagesFragment;
+import com.rickybooks.rickybooks.Fragments.NotifyFragment;
 import com.rickybooks.rickybooks.Fragments.ProfileFragment;
 import com.rickybooks.rickybooks.Fragments.RegisterFragment;
 import com.rickybooks.rickybooks.Fragments.SearchFragment;
@@ -239,6 +240,26 @@ public class MainActivity extends AppCompatActivity {
                 transaction.replace(R.id.fragment_container, buyFragment, currentFragmentName);
                 hasFragmentChanges = true;
                 ((BuyFragment) buyFragment).getTextbooksThread();
+            }
+        }
+
+        if(fragmentName.equals("NotifyFragment")) {
+            if(getToken() == null) {
+                accountTitle = "Notify me for a textbook!";
+                accountNavPosition = BUY;
+                wantedFragmentName = "NotifyFragment";
+                replaceFragment("AccountFragment");
+            }
+            else {
+                Fragment notifyFragment = fm.findFragmentByTag("NotifyFragment");
+                if(notifyFragment == null) {
+                    notifyFragment = new NotifyFragment();
+                }
+                if(!currentFragmentName.equals("NotifyFragment")) {
+                    handleValues("Notify me for a textbook!", BUY, "NotifyFragment");
+                    transaction.replace(R.id.fragment_container, notifyFragment, currentFragmentName);
+                    hasFragmentChanges = true;
+                }
             }
         }
 
