@@ -93,6 +93,7 @@
     <string name="menu_clearall_title">Clear All</string>
     <string name="menu_delete_conversation">Delete Conversation</string>
     <string name="edit_textbook_instruction">Tap on a textbook to edit.</string>
+    <string name="details_image_instruction">Tap on the image to enlarge.</string>
     <string name="conversation_placeholder_name">Other User\'s Name</string>
     <string name="conversation_placeholder_timestamp">Last message date</string>
     <string name="conversation_placeholder_preview">Last message preview</string>
