@@ -187,4 +187,14 @@ public interface TextbookService {
     Call<JsonArray> getNotifyItems(
         @Header("Authorization") String tokenString
     );
+
+    // NotifyFragment
+    @FormUrlEncoded
+    @POST("notify_items")
+    Call<Void> postNotifyItem(
+        @Header("Authorization") String tokenString,
+        @Field("user_id") String userId,
+        @Field("category") String category,
+        @Field("input") String input
+    );
 }
