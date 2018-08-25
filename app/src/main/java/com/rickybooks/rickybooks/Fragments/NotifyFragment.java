@@ -22,10 +22,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.rickybooks.rickybooks.Adapters.NotifyItemAdapter;
+import com.rickybooks.rickybooks.Adapters.TextbookAdapter;
 import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.NotifyItem;
+import com.rickybooks.rickybooks.Models.Textbook;
 import com.rickybooks.rickybooks.R;
 import com.rickybooks.rickybooks.Retrofit.GetNotifyItemsCall;
+import com.rickybooks.rickybooks.Retrofit.GetNotifyResultsCall;
 import com.rickybooks.rickybooks.Retrofit.PostNotifyItemCall;
 
 import java.util.ArrayList;
@@ -33,13 +36,17 @@ import java.util.List;
 
 public class NotifyFragment extends Fragment {
     private List<NotifyItem> notifyItems;
+    private List<Textbook> notifyResults;
     private NotifyItemAdapter notifyItemAdapter;
+    private TextbookAdapter notifyResultAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         notifyItems = new ArrayList<>();
+        notifyResults = new ArrayList<>();
         getNotifyItems();
+        getNotifyResults();
     }
 
     @Nullable
@@ -79,9 +86,19 @@ public class NotifyFragment extends Fragment {
         notifyResultsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                getNotifyResults();
                 notifyResultsRefresh.setRefreshing(false);
             }
         });
+
+        LinearLayoutManager notifyResultsLayoutManager = new LinearLayoutManager(activity);
+        notifyResultAdapter = new TextbookAdapter(activity, notifyResults);
+        RecyclerView notifyResultsRecycler = view.findViewById(R.id.notify_results_recycler);
+        notifyResultsRecycler.setHasFixedSize(true);
+        notifyResultsRecycler.setLayoutManager(notifyResultsLayoutManager);
+        notifyResultsRecycler.setAdapter(notifyResultAdapter);
+        notifyResultsRecycler.addItemDecoration(new DividerItemDecoration(notifyResultsRecycler.getContext(),
+                DividerItemDecoration.VERTICAL));
 
         return view;
     }
@@ -101,6 +118,27 @@ public class NotifyFragment extends Fragment {
                     @Override
                     public void run() {
                         notifyItemAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void getNotifyResults() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                notifyResults.clear();
+                MainActivity activity = (MainActivity) getActivity();
+                GetNotifyResultsCall getNotifyResultsCall = new GetNotifyResultsCall(activity);
+                getNotifyResultsCall.req();
+                if(getNotifyResultsCall.isSuccessful()) {
+                    notifyResults.addAll(getNotifyResultsCall.getData());
+                }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyResultAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -185,6 +223,7 @@ public class NotifyFragment extends Fragment {
 
                 if(postNotifyItemCall.isSuccessful()) {
                     getNotifyItems();
+                    getNotifyResults();
                 }
             }
         }).start();
