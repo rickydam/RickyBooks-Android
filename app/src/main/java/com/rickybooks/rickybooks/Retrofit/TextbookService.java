@@ -204,4 +204,11 @@ public interface TextbookService {
         @Header("Authorization") String tokenString,
         @Path("user_id") String userId
     );
+
+    // NotifyFragment
+    @DELETE("notify_items/{notify_item_id}")
+    Call<Void> deleteNotifyItem(
+        @Header("Authorization") String tokenString,
+        @Path("notify_item_id") String notifyItemId
+    );
 }
