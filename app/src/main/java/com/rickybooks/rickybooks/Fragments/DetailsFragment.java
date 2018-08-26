@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.rickybooks.rickybooks.MainActivity;
-import com.rickybooks.rickybooks.Other.Alert;
 import com.rickybooks.rickybooks.R;
 import com.rickybooks.rickybooks.Retrofit.CreateConversationCall;
 import com.rickybooks.rickybooks.Retrofit.SendMessageCall;
@@ -195,11 +194,6 @@ public class DetailsFragment extends Fragment {
                     activity.replaceFragment("MessagesFragment");
                 }
             });
-        }
-        else {
-            Alert alert = new Alert(activity);
-            alert.create("Oh no! Server problem!", "Seems like we are unable to " +
-                    "reach the server at the moment.\n\nPlease try again later.");
         }
     }
 }
