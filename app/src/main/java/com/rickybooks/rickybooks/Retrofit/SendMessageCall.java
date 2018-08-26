@@ -36,9 +36,16 @@ public class SendMessageCall {
 
             isSuccessful = response.isSuccessful();
             if(!isSuccessful) {
+                int responseCode = response.code();
                 Alert alert = new Alert(activity);
-                alert.create("Oh no! Server problem!", "Seems like we are unable to " +
-                        "reach the server at the moment.\n\nPlease try again later.");
+                if(responseCode == 422) {
+                    alert.create("No message sent...", "The message was blank.\n" +
+                            "Try again with a message this time!");
+                }
+                else {
+                    alert.create("Oh no! Server problem!", "Seems like we are unable to " +
+                            "reach the server at the moment.\n\nPlease try again later.");
+                }
             }
         } catch(IOException e) {
             e.printStackTrace();
