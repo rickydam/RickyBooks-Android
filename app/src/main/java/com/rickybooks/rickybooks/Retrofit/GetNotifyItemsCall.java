@@ -50,9 +50,10 @@ public class GetNotifyItemsCall {
                 JsonArray resData = response.body();
                 for(int i=0; i<resData.size(); i++) {
                     JsonObject obj = resData.get(i).getAsJsonObject();
+                    String idValue = obj.get("id").getAsString();
                     String categoryValue = obj.get("category").getAsString();
                     String inputValue = obj.get("input").getAsString();
-                    NotifyItem notifyItem = new NotifyItem(categoryValue, inputValue);
+                    NotifyItem notifyItem = new NotifyItem(idValue, categoryValue, inputValue);
                     notifyItems.add(notifyItem);
                 }
             }
