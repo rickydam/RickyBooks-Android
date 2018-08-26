@@ -240,19 +240,28 @@ public class ProfileFragment extends Fragment {
     }
 
     public void getUserTextbooks() {
-        textbooks.clear();
-        MainActivity activity = (MainActivity) getActivity();
-
-        GetUserTextbooksCall getUserTextbooksCall = new GetUserTextbooksCall(activity);
-        getUserTextbooksCall.req();
-        textbooks.addAll(getUserTextbooksCall.getData());
-
-        activity.runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                textbookAdapter.notifyDataSetChanged();
+                try {
+                    textbooks.clear();
+                    MainActivity activity = (MainActivity) getActivity();
+
+                    GetUserTextbooksCall getUserTextbooksCall = new GetUserTextbooksCall(activity);
+                    getUserTextbooksCall.req();
+                    textbooks.addAll(getUserTextbooksCall.getData());
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textbookAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        }).start();
     }
 
     public void logoutThread() {
