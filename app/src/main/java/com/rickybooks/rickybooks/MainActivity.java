@@ -392,6 +392,7 @@ public class MainActivity extends AppCompatActivity {
                     handleValues(title, PROFILE, "ProfileFragment");
                     transaction.replace(R.id.fragment_container, profileFragment, currentFragmentName);
                     hasFragmentChanges = true;
+                    ((ProfileFragment) profileFragment).getUserTextbooks();
                 }
             }
         }
