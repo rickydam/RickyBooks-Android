@@ -24,17 +24,19 @@ public class FirebaseService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             String message = remoteMessage.getData().get("body");
             String conversationId = remoteMessage.getData().get("conversation_id");
-            doNotification(title, message, conversationId);
+            String action = remoteMessage.getData().get("action");
+            doNotification(title, message, conversationId, action);
         }
     }
 
-    public void doNotification(String title, String message, String conversationId) {
+    public void doNotification(String title, String message, String conversationId, String action) {
         createNotificationChannel();
 
         Context context = getApplicationContext();
 
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("conversation_id", conversationId);
+        intent.putExtra("action", action);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 

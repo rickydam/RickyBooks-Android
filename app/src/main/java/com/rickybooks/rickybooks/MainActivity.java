@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
             setMessagesBundle(bundle);
             replaceFragment("MessagesFragment");
         }
+        if(intent.getStringExtra("action") != null) {
+            if(intent.getStringExtra("action").equals("NotifyFragment")) {
+                replaceFragment("NotifyFragment");
+            }
+        }
     }
 
     @Override
@@ -147,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("conversation_id", notificationConversationId);
             setMessagesBundle(bundle);
             replaceFragment("MessagesFragment");
+        }
+        if(getIntent().getStringExtra("action") != null) {
+            if(getIntent().getStringExtra("action").equals("NotifyFragment")) {
+                replaceFragment("NotifyFragment");
+            }
         }
     }
 
