@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
                     handleValues("Notify me for a textbook!", BUY, "NotifyFragment");
                     transaction.replace(R.id.fragment_container, notifyFragment, currentFragmentName);
                     hasFragmentChanges = true;
+                    ((NotifyFragment) notifyFragment).getNotifyResults();
                 }
             }
         }
