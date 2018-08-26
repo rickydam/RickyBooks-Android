@@ -250,19 +250,23 @@ public class NotifyFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                notifyResults.clear();
-                MainActivity activity = (MainActivity) getActivity();
-                GetNotifyResultsCall getNotifyResultsCall = new GetNotifyResultsCall(activity);
-                getNotifyResultsCall.req();
-                if(getNotifyResultsCall.isSuccessful()) {
-                    notifyResults.addAll(getNotifyResultsCall.getData());
-                }
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyResultAdapter.notifyDataSetChanged();
+                try {
+                    notifyResults.clear();
+                    MainActivity activity = (MainActivity) getActivity();
+                    GetNotifyResultsCall getNotifyResultsCall = new GetNotifyResultsCall(activity);
+                    getNotifyResultsCall.req();
+                    if(getNotifyResultsCall.isSuccessful()) {
+                        notifyResults.addAll(getNotifyResultsCall.getData());
                     }
-                });
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyResultAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
