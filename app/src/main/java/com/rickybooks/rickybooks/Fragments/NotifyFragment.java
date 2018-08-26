@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import com.rickybooks.rickybooks.MainActivity;
 import com.rickybooks.rickybooks.Models.NotifyItem;
 import com.rickybooks.rickybooks.Models.Textbook;
 import com.rickybooks.rickybooks.R;
+import com.rickybooks.rickybooks.Retrofit.DeleteNotifyItem;
 import com.rickybooks.rickybooks.Retrofit.GetNotifyItemsCall;
 import com.rickybooks.rickybooks.Retrofit.GetNotifyResultsCall;
 import com.rickybooks.rickybooks.Retrofit.PostNotifyItemCall;
@@ -39,6 +41,7 @@ import java.util.List;
 
 public class NotifyFragment extends Fragment {
     private List<NotifyItem> notifyItems;
+    private List<NotifyItem> selectedNotifyItems;
     private List<Textbook> notifyResults;
     private NotifyItemAdapter notifyItemAdapter;
     private TextbookAdapter notifyResultAdapter;
@@ -49,6 +52,7 @@ public class NotifyFragment extends Fragment {
         setHasOptionsMenu(true);
         notifyItems = new ArrayList<>();
         notifyResults = new ArrayList<>();
+        selectedNotifyItems = new ArrayList<>();
         getNotifyItems();
         getNotifyResults();
     }
@@ -78,7 +82,7 @@ public class NotifyFragment extends Fragment {
         });
 
         LinearLayoutManager notifyItemsLayoutManager = new LinearLayoutManager(activity);
-        notifyItemAdapter = new NotifyItemAdapter(notifyItems);
+        notifyItemAdapter = new NotifyItemAdapter(activity, notifyItems);
         RecyclerView notifyItemsRecycler = view.findViewById(R.id.notify_items_recycler);
         notifyItemsRecycler.setHasFixedSize(true);
         notifyItemsRecycler.setLayoutManager(notifyItemsLayoutManager);
@@ -116,10 +120,111 @@ public class NotifyFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.delete_notify_item_menu_item:
+                prepareSelection(null);
                 break;
         }
         return true;
     }
+
+    public void prepareSelection(final NotifyItem notifyItem) {
+        ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
+                activity.setMode(mode);
+                menu.add("DELETE").setIcon(R.drawable.ic_delete);
+                selectNotifyItem(notifyItem);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                if(item.toString().equals("DELETE")) {
+                    deleteActionPressed(mode);
+                }
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.setActionMode();
+                selectedNotifyItems.clear();
+                notifyItemAdapter.notifyDataSetChanged();
+            }
+        };
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.startSupportActionMode(actionModeCallbacks);
+    }
+
+    public void selectNotifyItem(NotifyItem notifyItem) {
+        if(notifyItem != null) {
+            if(!notifyItemExists(notifyItem)) {
+                selectedNotifyItems.add(notifyItem);
+            }
+            else {
+                selectedNotifyItems.remove(notifyItem);
+            }
+        }
+        MainActivity activity = (MainActivity) getActivity();
+        ActionMode mode = activity.getMode();
+        mode.setTitle(selectedNotifyItems.size() + " selected");
+    }
+
+    public boolean notifyItemExists(NotifyItem notifyItem) {
+        return selectedNotifyItems.contains(notifyItem);
+    }
+
+    public void deleteActionPressed(final ActionMode mode) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity activity = (MainActivity) getActivity();
+                int selectedNotifyItemsCount = selectedNotifyItems.size();
+
+                if(selectedNotifyItemsCount >= 1) {
+                    deleteNotifyItems(selectedNotifyItems);
+                }
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mode.finish();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void deleteNotifyItems(List<NotifyItem> notifyItemsToDelete) {
+        MainActivity activity = (MainActivity) getActivity();
+
+        for(int i=0; i<notifyItemsToDelete.size(); i++) {
+            NotifyItem notifyItem = notifyItemsToDelete.get(i);
+
+            DeleteNotifyItem deleteNotifyItem = new DeleteNotifyItem(activity);
+            deleteNotifyItem.req(notifyItem.getId());
+
+            if(deleteNotifyItem.isSuccessful()) {
+                notifyItems.remove(notifyItems.indexOf(notifyItem));
+            }
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyItemAdapter.notifyDataSetChanged();
+            }
+        });
+        getNotifyResults();
+    }
+
     public void getNotifyItems() {
         new Thread(new Runnable() {
             @Override
