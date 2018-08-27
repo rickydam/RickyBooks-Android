@@ -92,4 +92,7 @@
     <string name="notify_item_placeholder_category">Category</string>
     <string name="notify_item_placeholder_input">Input</string>
     <string name="menu_delete_notify_item_title">Delete Notify Item</string>
+    <string name="rickybooks_banner_description">RickyBooks banner image</string>
+    <string name="about_button_text">ABOUT</string>
+    <string name="intro">This app was made by Ricky Dam.</string>
 </resources>
