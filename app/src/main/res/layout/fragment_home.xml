@@ -1,15 +1,28 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:orientation="vertical">
 
-        <TextView
-            android:contentDescription="@string/bio_description"
-            android:id="@+id/textView"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:text="@string/bio_text"
-            android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/home_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/rickybooks_banner_description" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/home_about_button"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:background="@drawable/button_blue"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_below="@id/home_banner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/about_button_text"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+</RelativeLayout>
