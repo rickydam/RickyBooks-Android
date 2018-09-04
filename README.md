@@ -4,6 +4,19 @@
 
 <img src="RickyBooksBanner.svg" width="600" />
 
+## Features
+
+- View textbooks
+- Register/Login/Logout
+- Post textbooks with an image
+- Edit textbooks
+- Search for textbooks
+- Send messages
+- Get notifications for specific keywords
+- Get notifications for new messages
+- Delete textbooks
+- Delete conversations
+- Delete account
 
 ## Trello
 Extra Features <br>
