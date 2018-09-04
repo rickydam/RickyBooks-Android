@@ -18,6 +18,17 @@
 - Delete conversations
 - Delete account
 
+## Missing Features
+
+- Email authentication
+- Scalability for smaller devices
+- Accessibility
+- Edit account
+- Forgot password
+- Submit bugs
+- Delete messages
+- Block offensive words
+
 ## Trello
 Extra Features <br>
 https://trello.com/b/5oQWRqpH/extra-features
