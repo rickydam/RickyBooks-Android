@@ -32,4 +32,4 @@ Implement user accounts <br>
 https://trello.com/b/7EsquVjk/user-accounts
 
 ## Credits
-Icon and Banner by **Erin Cooper**
+Icon and Banner by <a href="https://cooper-erin-marie.format.com/"> **Erin Cooper** </a>
