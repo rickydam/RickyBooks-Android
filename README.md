@@ -27,8 +27,11 @@ All of these should be implemented by the January 1, 2019.
 - Delete messages
 - Block offensive words
 
-## Trello
-
+## Screenshots
+<img src="assets/Buy.jpg" width="190" />
+<img src="assets/Search.jpg" width="190" />
+<img src="assets/Notify.jpg" width="190" />
+<img src="assets/Sell.jpg" width="190" />
 
 ## Trello Boards
 <a href="https://trello.com/b/5oQWRqpH/extra-features">Extra Features</a><br>
