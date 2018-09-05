@@ -61,3 +61,6 @@ https://trello.com/b/7EsquVjk/user-accounts
 
 ## Credits
 Icon and Banner by <a href="https://cooper-erin-marie.format.com/"> **Erin Cooper** </a>
+
+## License
+RickyBooks-Android is available under the MIT license.
