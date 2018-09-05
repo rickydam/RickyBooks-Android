@@ -28,32 +28,24 @@ All of these should be implemented by the January 1, 2019.
 - Block offensive words
 
 ## Trello
-Extra Features <br>
-https://trello.com/b/5oQWRqpH/extra-features
 
-Issues and improvements <br>
-https://trello.com/b/2puSYgbJ/issues-and-improvements
 
-Notifications with Firebase Cloud Messaging (FCM) <br>
-https://trello.com/b/ki8jgEMa/notifications
+## Trello Boards
+<a href="https://trello.com/b/5oQWRqpH/extra-features">Extra Features</a><br>
+<a href="https://trello.com/b/2puSYgbJ/issues-and-improvements">Issues and improvements</a><br>
+<a href="https://trello.com/b/ki8jgEMa/notifications">Notifications with Firebase Cloud Messaging (FCM)</a><br>
+<a href="https://trello.com/b/0uoEUoEl/textbook-images">Implement textbook image upload</a><br>
+<a href="https://trello.com/b/85zzztsC/delete-and-profile">Improve the Profile Fragment and implement textbook deletion</a><br>
+<a href="https://trello.com/b/uBiYeOMW/fix-fragments">Rewrite fragment handling approach</a><br>
+<a href="https://trello.com/b/sURkgAis/messaging">Implement the messaging feature</a><br>
+<a href="https://trello.com/b/eA8rG8tt/merge-backends">Merge the backends</a><br>
+<a href="https://trello.com/b/7EsquVjk/user-accounts">Implement user accounts</a><br>
 
 Implement textbook image upload <br>
 https://trello.com/b/0uoEUoEl/textbook-images
 
 Improve the Profile Fragment and implement textbook deletion <br>
 https://trello.com/b/85zzztsC/delete-and-profile
-
-Rewrite fragment handling approach <br>
-https://trello.com/b/uBiYeOMW/fix-fragments
-
-Implement the messaging feature <br>
-https://trello.com/b/sURkgAis/messaging
-
-Merge the backends <br>
-https://trello.com/b/eA8rG8tt/merge-backends
-
-Implement user accounts <br>
-https://trello.com/b/7EsquVjk/user-accounts
 
 ## Credits
 Icon and Banner by <a href="https://cooper-erin-marie.format.com/"> **Erin Cooper** </a>
