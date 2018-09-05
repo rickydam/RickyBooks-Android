@@ -28,10 +28,10 @@ All of these should be implemented by the January 1, 2019.
 - Block offensive words
 
 ## Screenshots
-<img src="assets/Buy.jpg" width="190" style="display: inline" />
-<img src="assets/Search.jpg" width="190" style="display: inline" />
-<img src="assets/Notify.jpg" width="190" style="display: inline" />
-<img src="assets/Sell.jpg" width="190" style="display: inline" />
+<kbd><img src="assets/Buy.jpg" width="190" /></kbd>&nbsp;&nbsp;&nbsp;
+<kbd><img src="assets/Search.jpg" width="190" /></kbd>&nbsp;&nbsp;&nbsp;
+<kbd><img src="assets/Notify.jpg" width="190" /></kbd>&nbsp;&nbsp;&nbsp;
+<kbd><img src="assets/Sell.jpg" width="190" /></kbd>
 
 ## Trello Boards
 <a href="https://trello.com/b/5oQWRqpH/extra-features">Extra Features</a><br>
