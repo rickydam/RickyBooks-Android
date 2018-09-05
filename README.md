@@ -41,11 +41,11 @@ All of these should be implemented by the January 1, 2019.
 <a href="https://trello.com/b/eA8rG8tt/merge-backends">Merge the backends</a><br>
 <a href="https://trello.com/b/7EsquVjk/user-accounts">Implement user accounts</a><br>
 
-Implement textbook image upload <br>
-https://trello.com/b/0uoEUoEl/textbook-images
-
-Improve the Profile Fragment and implement textbook deletion <br>
-https://trello.com/b/85zzztsC/delete-and-profile
+## Libraries Used
+<a href="https://github.com/bumptech/glide"> Glide </a>: An image loading and caching library for Android focused on smooth scrolling <br>
+<a href="https://github.com/square/retrofit"> Retrofit </a>: Type-safe HTTP client for Android and Java by Square, Inc. <br>
+<a href="https://firebase.google.com/docs/cloud-messaging/android/client"> Firebase Cloud Messaging </a>: Firebase Cloud Messaging (FCM) is a cross-platform messaging solution that lets you reliably deliver messages. <br>
+<a href="https://github.com/chrisbanes/PhotoView"> PhotoView </a>: Implementation of ImageView for Android that supports zooming, by various touch gestures.
 
 ## Credits
 Icon and Banner by <a href="https://cooper-erin-marie.format.com/"> **Erin Cooper** </a>
