@@ -4,7 +4,6 @@
 <a href='https://play.google.com/store/apps/details?id=com.rickybooks.rickybooks&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png' width="200" /></a>
 
 ## Features
-
 - View textbooks
 - Register/Login/Logout
 - Post textbooks with an image
@@ -18,7 +17,7 @@
 - Delete account
 
 ## Missing Features
-
+All of these should be implemented by the January 1, 2019.
 - Email authentication
 - Scalability for smaller devices
 - Accessibility
